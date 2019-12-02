@@ -1,8 +1,10 @@
 package com.etsm.ETSM.Controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
@@ -14,18 +16,19 @@ import java.util.Map;
 public class MainController {
     //Main Page
     @GetMapping
-    public String TestHello(@RequestParam(name="name", required = false, defaultValue = "World") String name,
-                            Map<String, Object> model)
+    ModelAndView TestHello(@RequestParam(name="name", required = false, defaultValue = "World") String name)
     {
-        model.put("name", name);
-        return "main";
+        return new ModelAndView("main",
+                Map.of("name", name),
+                HttpStatus.OK);
     }
 
     //Second Page
     @GetMapping("/second")
-    public String TestHello(Map<String, Object> model)
+    public ModelAndView TestHello()
     {
-        model.put("text", "This is second page");
-        return "secondPage";
+        return new ModelAndView("/secondPage",
+                Map.of("text", "This is second page"),
+                HttpStatus.OK);
     }
 }
