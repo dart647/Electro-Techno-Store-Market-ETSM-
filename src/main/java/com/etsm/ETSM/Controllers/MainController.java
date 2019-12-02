@@ -11,7 +11,7 @@ import java.util.Map;
 // в return указывается имя страницы из templates, которую необходимо открыть
 
 @Controller
-public class TestController {
+public class MainController {
     //Main Page
     @GetMapping
     public String TestHello(@RequestParam(name="name", required = false, defaultValue = "World") String name,
