@@ -2,13 +2,37 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Главная страница ETSM</title>
 </head>
 <body>
-    <h1 data-th-text="'Hello,' + ${name}"></h1>
-    <p>Click <a th:href = "@{/user}">login</a> to login</p>
-    <form th:action="@{/catalog/list}" method="get">
-        <input type="submit" value="Catalog"/>
-    </form>
+    <table style="width: 675px;">
+        <tbody>
+        <tr>
+            <td style="width: 10px;"><form th:action="@{/}" method="get"><input type="submit" value="Главная"/></form></td>
+            <td style="width: 390px;"><form th:action="@{/catalog/list}" method="get"><input type="submit" value="Каталог товаров" /></form></td>
+            <td style="width: 87px;"><form th:action="@{/basket}" method="get"><input type="submit" value="Корзина" /></form></td>
+            <td style="width: 206px;"><form th:action="@{/user}" method="get"><input type="submit" value="Личный кабинет" /></form></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table style="width: 380px; height: 37px;">
+        <tbody>
+        <tr>
+            <td style="width: 274px;">
+                <h1><strong>Это главная страница</strong></h1>
+                <hr /></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p>Поиск товаров <input name="productID" type="text" /></p>
+    <table style="width: 679px;">
+        <tbody>
+        <tr>
+            <td style="width: 324px;">Тут будут выводиться рекомендации</td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

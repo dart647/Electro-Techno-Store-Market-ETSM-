@@ -36,4 +36,11 @@ public class MainController {
     public ModelAndView UserCabinet(){
         return new ModelAndView("/auth/userCabinet", HttpStatus.OK);
     }
+
+    //Basket Page
+    @GetMapping("/basket")
+    public ModelAndView Basket(){
+        return new ModelAndView("/auth/basket", HttpStatus.OK);
+    }
+
 }

@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>UserCabinet</title>
+    <title>Личный Кабинет</title>
 </head>
 <body>
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
+<table style="width: 675px;">
+    <tbody>
+    <tr>
+        <td style="width: 10px;"><form th:action="@{/}" method="get"><input type="submit" value="Главная"/></form></td>
+        <td style="width: 390px;"><form th:action="@{/catalog/list}" method="get"><input type="submit" value="Каталог товаров" /></form></td>
+        <td style="width: 87px;"><form th:action="@{/basket}" method="get"><input type="submit" value="Корзина" /></form></td>
+        <td style="width: 206px;"><form th:action="@{/user}" method="get"><input type="submit" value="Личный кабинет" /></form></td>
+    </tr>
+    </tbody>
+</table>
+
+<h1>Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<form th:action="@{/basket}" method="get">
+    <p><input type="submit" value="Корзина" /></p>
 </form>
-<form th:action="@{/catalog/list}" method="get">
-    <input type="submit" value="Catalog"/>
+<form th:action="@{/logout}" method="post">
+    <p><input type="submit" value="Выход" /></p>
 </form>
 </body>
 </html>
