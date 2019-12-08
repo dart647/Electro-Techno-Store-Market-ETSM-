@@ -1,0 +1,46 @@
+<!--
+  ~ Copyright (c) 2019. Nikita Smalkov
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>ETSM &#8211; Список пользователей</title>
+</head>
+<body>
+<table style="width: 675px;">
+    <tbody>
+    <tr>
+        <td style="width: 10px;"><form th:action="@{/}" method="get"><input type="submit" value="Главная"/></form></td>
+        <td style="width: 390px;"><form th:action="@{/catalog/list}" method="get"><input type="submit" value="Каталог товаров" /></form></td>
+        <td style="width: 390px;"><form th:action="@{/users/all}" method="get"><input type="submit" value="Список пользователей"/></form></td>
+        <td style="width: 87px;"><form th:action="@{/basket}" method="get"><input type="submit" value="Корзина" /></form></td>
+        <td style="width: 206px;"><form th:action="@{/user}" method="get"><input type="submit" value="Личный кабинет" /></form></td>
+    </tr>
+    </tbody>
+</table>
+
+<h1>Страница пользователей</h1>
+<table style="height: 16px;" width="701">
+    <tbody>
+    <tr>
+        <td style="width: 342px;">
+            <h3>UserID</h3>
+            <li data-th-each="userentity : ${users}" class="userentity">
+                <a data-th-href="@{/users/{userId}(userId=${userentity.id})}"
+                   data-th-text="${user.id}"><hr/></a>
+            </li>
+        </td>
+        <td style="width: 342px;">
+            <h3>Username</h3>
+            <li data-th-href="@{/users/{userId}(userId=${userentity.id})}"
+                data th-each="userentity : ${users}" class="userentity">
+                <a data-th-text="${user.email}"><hr/></a>
+            </li>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
