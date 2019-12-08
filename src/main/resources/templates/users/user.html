@@ -3,12 +3,26 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="user-id" data-th-content="${user.id}"/>
+    <title>[[${user.id}]] &#8211; ETSM</title>
 </head>
 <body>
+<table style="width: 675px;">
+    <tbody>
+    <tr>
+        <td style="width: 10px;"><form th:action="@{/}" method="get"><input type="submit" value="Главная"/></form></td>
+        <td style="width: 390px;"><form th:action="@{/catalog/list}" method="get"><input type="submit" value="Каталог товаров" /></form></td>
+        <td style="width: 390px;"><form th:action="@{/users/all}" method="get"><input type="submit" value="Список пользователей"/></form></td>
+        <td style="width: 87px;"><form th:action="@{/basket}" method="get"><input type="submit" value="Корзина" /></form></td>
+        <td style="width: 206px;"><form th:action="@{/user}" method="get"><input type="submit" value="Личный кабинет" /></form></td>
+    </tr>
+    </tbody>
+</table>
 
+<h1 data-th-text="${user.id}"></h1>
+<section id="email" data-th-text="${user.email}"></section>
 </body>
 </html>

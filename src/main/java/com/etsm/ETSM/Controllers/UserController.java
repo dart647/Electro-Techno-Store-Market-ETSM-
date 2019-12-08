@@ -6,12 +6,15 @@ package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.UserEntity;
 import com.etsm.ETSM.Models.UserRepository;
+import com.etsm.ETSM.Models.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /*
@@ -24,7 +27,7 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository = new UserRepositoryImpl();
 
     @PostMapping(path="/add/user")
     public @ResponseBody String addNewUser (@RequestParam String email,
@@ -45,9 +48,15 @@ public class UserController {
 
     @GetMapping("/all")
     public ModelAndView getAllUsers() {
-        return new ModelAndView("users/all",
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("users/all");
+        modelAndView.addObject(Map.of("users",this.userRepository.findAll()));
+        modelAndView.setStatus(HttpStatus.OK);
+        return modelAndView;
+        /*return new ModelAndView("users/all",
                 Map.of("users",this.userRepository.findAll()),
-                HttpStatus.OK);
+                HttpStatus.OK); */
     }
 
     @GetMapping("{userId}")
