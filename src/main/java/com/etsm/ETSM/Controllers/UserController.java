@@ -6,15 +6,12 @@ package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Models.UserRepository;
-import com.etsm.ETSM.Models.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /*
@@ -27,7 +24,7 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private UserRepository userRepository = new UserRepositoryImpl();
+    private UserRepository userRepository;
 
     @PostMapping(path="/add/user")
     public @ResponseBody String addNewUser (@RequestParam String email,
@@ -38,13 +35,6 @@ public class UserController {
         userRepository.save(newUser);
         return "Saved";
     }
-/*
-    @GetMapping(path="/all")
-    public @ResponseBody Iterable<UserEntity> getAllUsers() {
-        return userRepository.findAll();
-    }
-
- */
 
     @GetMapping("/all")
     public ModelAndView getAllUsers() {
@@ -60,6 +50,6 @@ public class UserController {
                         Map.of("user",user), HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error","Couldn't find a user"), HttpStatus.NOT_FOUND));
-        
+
     }
 }
