@@ -1,13 +1,15 @@
 package com.etsm.ETSM.Controllers;
 
+import com.etsm.ETSM.Models.Product;
+import com.etsm.ETSM.Models.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
+import java.util.*;
 
 // Это главный контроллер для авторизации и главной страницы
 // можно задавать @RequestParam, тогда при разных обращениях к странице получаем параметр (?name=имя), с которым можем работать
@@ -16,12 +18,21 @@ import java.util.Map;
 @Controller
 @RequestMapping("/")
 public class MainController {
+    @Autowired
+    ProductRepository productRepository;
     //Main Page
     @GetMapping
-    ModelAndView MainPage(@RequestParam(name="name", required = false, defaultValue = "World") String name)
+    ModelAndView MainPage()
     {
+        List<Product> products = new ArrayList<>();
+        if(productRepository.count()!=0) {
+            for (int i = 0; i < 5; i++) {
+                Product product = productRepository.findById((long) new Random().nextInt((int) productRepository.count())).get();
+                products.add(product);
+            }
+        }
         return new ModelAndView("main",
-                Map.of("name", name),
+                Map.of("products", products),
                 HttpStatus.OK);
     }
 

@@ -27,11 +27,16 @@
         </tbody>
     </table>
 
-    <p>Поиск товаров <input name="productID" type="text" /></p>
-    <table style="width: 679px;">
+    <p>Поиск товаров <input name="productID" type="search" /></p>
+    <h3>Рекомендации</h3>
+    <table style="width: 679px;" border="1">
         <tbody>
         <tr>
-            <td style="width: 324px;">Тут будут выводиться рекомендации</td>
+            <td th:each="product:${products}" class="product">
+                <form th:action="@{/catalog/{productId}(productId=${product.id})}" method="get">
+                    <button data-th-text="${product.name}"></button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -49,7 +49,7 @@ public class ProductsController {
         Product newProduct = new Product();
         newProduct.setDescription(product.getDescription());
         newProduct.setId(productRepository.count()+1);
-        newProduct.setTitle(product.getTitle());
+        newProduct.setName(product.getName());
         productRepository.saveAndFlush(newProduct);
 
         return new ModelAndView("catalog/list",

@@ -13,7 +13,11 @@ public class Product {
     @Column(name = "`id`", nullable = false)
     private long id; //ID продукта
     @Column(name = "`name`", nullable = false)
-    private String title; //Название
+    private String name; //Название
+    @Column(name = "`price`", nullable = false)
+    private int price; //Цена
+    @Column(name = "`subCategory_id`", nullable = false)
+    private int subCategory_id; //Подкатегория
     @Column(name = "`desc`")
     private String description; //Описание
 
@@ -25,14 +29,6 @@ public class Product {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -41,7 +37,27 @@ public class Product {
         this.description = description;
     }
 
-    public Product() {
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getSubCategory_id() {
+        return subCategory_id;
+    }
+
+    public void setSubCategory_id(int subCategory_id) {
+        this.subCategory_id = subCategory_id;
     }
 }

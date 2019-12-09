@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="product-id" data-th-content="${product.id}"/>
-    <title>[[${product.title}]] &#8211; ETSM</title>
+    <title>[[${product.name}]] &#8211; ETSM</title>
 </head>
 <body>
 <table style="width: 675px;">
@@ -18,7 +18,7 @@
     </tbody>
 </table>
 
-<h1 data-th-text="${product.title}"></h1>
+<h1 data-th-text="${product.name}"></h1>
 <section id="description" data-th-text="${product.description}"></section>
 </body>
 </html>
