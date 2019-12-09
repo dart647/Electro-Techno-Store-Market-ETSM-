@@ -48,15 +48,9 @@ public class UserController {
 
     @GetMapping("/all")
     public ModelAndView getAllUsers() {
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("users/all");
-        modelAndView.addObject(Map.of("users",this.userRepository.findAll()));
-        modelAndView.setStatus(HttpStatus.OK);
-        return modelAndView;
-        /*return new ModelAndView("users/all",
+        return new ModelAndView("users/all",
                 Map.of("users",this.userRepository.findAll()),
-                HttpStatus.OK); */
+                HttpStatus.OK);
     }
 
     @GetMapping("{userId}")

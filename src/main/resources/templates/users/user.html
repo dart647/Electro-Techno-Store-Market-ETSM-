@@ -5,9 +5,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="user-id" data-th-content="${user.id}"/>
-    <title>[[${user.id}]] &#8211; ETSM</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
 <table style="width: 675px;">
@@ -22,7 +21,7 @@
     </tbody>
 </table>
 
-<h1 data-th-text="${user.id}"></h1>
+<h1 data-th-text="${user.firstname}"></h1>
 <section id="email" data-th-text="${user.email}"></section>
 </body>
 </html>
