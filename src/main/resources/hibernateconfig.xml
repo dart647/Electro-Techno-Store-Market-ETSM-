@@ -11,6 +11,7 @@
     <property name="connection.url">jdbc:mysql://localhost:3306</property>
     <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
       <mapping class="com.etsm.ETSM.Models.UserEntity"/>
+    <mapping class="com.etsm.ETSM.Models.Product"/>
       <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 

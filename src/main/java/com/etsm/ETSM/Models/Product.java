@@ -1,18 +1,20 @@
 package com.etsm.ETSM.Models;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 // Описание продукта
 @Entity
 @Table(name = "product")
 public class Product {
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "`id`", nullable = false)
     private long id; //ID продукта
-    @Column(name = "name", nullable = false)
+    @Column(name = "`name`", nullable = false)
     private String title; //Название
-    @Column(name = "desc")
+    @Column(name = "`desc`")
     private String description; //Описание
 
     public long getId() {
