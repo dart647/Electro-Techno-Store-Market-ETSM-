@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "user", schema = "ecomm_db", catalog = "")
+@Table(name = "user")
 public class UserEntity {
     private long id;
     private String email;

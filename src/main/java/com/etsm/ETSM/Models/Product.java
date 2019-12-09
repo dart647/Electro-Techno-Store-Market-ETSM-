@@ -1,18 +1,25 @@
 package com.etsm.ETSM.Models;
 
-import java.util.UUID;
+import javax.persistence.*;
 
 // Описание продукта
+@Entity
+@Table(name = "product")
 public class Product {
-    private UUID id; //ID продукта
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id; //ID продукта
+    @Column(name = "name", nullable = false)
     private String title; //Название
+    @Column(name = "desc")
     private String description; //Описание
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -32,9 +39,7 @@ public class Product {
         this.description = description;
     }
 
-    public Product(UUID id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
+    public Product() {
+
     }
 }
