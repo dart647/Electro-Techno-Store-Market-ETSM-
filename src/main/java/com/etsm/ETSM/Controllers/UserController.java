@@ -4,7 +4,7 @@
 
 package com.etsm.ETSM.Controllers;
 
-import com.etsm.ETSM.Models.UserEntity;
+import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Models.UserRepository;
 import com.etsm.ETSM.Models.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping(path="/add/user")
     public @ResponseBody String addNewUser (@RequestParam String email,
                                             @RequestParam String password) {
-        UserEntity newUser = new UserEntity();
+        User newUser = new User();
         newUser.setEmail(email);
         newUser.setPassword(password);
         userRepository.save(newUser);

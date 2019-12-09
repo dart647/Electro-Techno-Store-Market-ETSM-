@@ -22,22 +22,24 @@
 </table>
 
 <h1>Страница пользователей</h1>
-<table style="height: 16px;" width="701">
+<table style="height: 16px;" width="701" border="1">
     <tbody>
-    <tr>
-        <td style="width: 342px;">
-            <h3>UserID</h3>
-            <li data-th-each="user : ${users}" class="UserEntity">
-                <a data-th-href="@{/users/{userId}(userId=${user.id})}"
-                   data-th-text="${user.id}"><hr/></a>
-            </li>
+    <tr data-th-each="user : ${users}">
+        <td>
+            <a data-th-href="@{/users/{userId}(userId=${user.id})}"
+               data-th-text="${user.id}"><hr/></a>
         </td>
-        <td style="width: 342px;">
-            <h3>Username</h3>
-            <li data th-each="user : ${users}" class="UserEntity">
-                <a data-th-href="@{/users/{userId}(userId=${user.id})}"
-                   data-th-text="${user.email}"><hr/></a>
-            </li>
+        <td>
+            <a data-th-href="@{/users/{userId}(userId=${user.id})}"
+               data-th-text="${user.email}"><hr/></a>
+        </td>
+        <td>
+            <a data-th-href="@{/users/{userId}(userId=${user.id})}"
+               data-th-text="${user.firstname}"><hr/></a>
+        </td>
+        <td>
+            <a data-th-href="@{/users/{userId}(userId=${user.id})}"
+               data-th-text="${user.lastname}"><hr/></a>
         </td>
     </tr>
     </tbody>

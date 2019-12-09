@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2019. Nikita Smalkov
- */
-
 package com.etsm.ETSM.Models;
 
 import javax.persistence.*;
@@ -9,8 +5,8 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "user", schema = "ecomm_db", catalog = "")
-public class UserEntity {
-    private int id;
+public class User {
+    private long id;
     private String email;
     private String password;
     private String roles;
@@ -23,12 +19,11 @@ public class UserEntity {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -127,25 +122,25 @@ public class UserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserEntity that = (UserEntity) o;
+        User user = (User) o;
 
-        if (id != that.id) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (roles != null ? !roles.equals(that.roles) : that.roles != null) return false;
-        if (enabled != null ? !enabled.equals(that.enabled) : that.enabled != null) return false;
-        if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) return false;
-        if (lastname != null ? !lastname.equals(that.lastname) : that.lastname != null) return false;
-        if (birthdate != null ? !birthdate.equals(that.birthdate) : that.birthdate != null) return false;
-        if (adress != null ? !adress.equals(that.adress) : that.adress != null) return false;
-        if (loyaltycode != null ? !loyaltycode.equals(that.loyaltycode) : that.loyaltycode != null) return false;
+        if (id != user.id) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (roles != null ? !roles.equals(user.roles) : user.roles != null) return false;
+        if (enabled != null ? !enabled.equals(user.enabled) : user.enabled != null) return false;
+        if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null) return false;
+        if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null) return false;
+        if (birthdate != null ? !birthdate.equals(user.birthdate) : user.birthdate != null) return false;
+        if (adress != null ? !adress.equals(user.adress) : user.adress != null) return false;
+        if (loyaltycode != null ? !loyaltycode.equals(user.loyaltycode) : user.loyaltycode != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (roles != null ? roles.hashCode() : 0);

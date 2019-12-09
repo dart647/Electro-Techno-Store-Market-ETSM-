@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserRepositoryImpl implements UserRepository {
     private static final AtomicInteger AUTO_ID = new AtomicInteger(0);
-    private static Map<Integer,UserEntity> users = new HashMap<>();
+    private static Map<Integer,User> users = new HashMap<>();
     private SessionFactory sessionFactory;
 
     @Autowired
@@ -24,22 +24,21 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public <S extends UserEntity> S save(S s) {
+    public <S extends User> S save(S s) {
         return null;
     }
 
     @Override
-    public <S extends UserEntity> Iterable<S> saveAll(Iterable<S> iterable) {
+    public <S extends User> Iterable<S> saveAll(Iterable<S> iterable) {
         return null;
     }
 
     @Override
-    public Optional<UserEntity> findById(Long aLong) {
+    public Optional<User> findById(Long aLong) {
         Session session = sessionFactory.getCurrentSession();
-        UserEntity user =
-                session.get(UserEntity.class,aLong);
-        Optional<UserEntity> foundUser = Optional.of(user);
-        return foundUser;
+        User user =
+                session.get(User.class,aLong);
+        return Optional.of(user);
     }
 
     @Override
@@ -49,13 +48,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Iterable<UserEntity> findAll() {
+    public Iterable<User> findAll() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from UserEntity").list();
+        return session.createQuery("from User ").list();
     }
 
     @Override
-    public Iterable<UserEntity> findAllById(Iterable<Long> iterable) {
+    public Iterable<User> findAllById(Iterable<Long> iterable) {
         return null;
     }
 
@@ -70,12 +69,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void delete(UserEntity userEntity) {
+    public void delete(User userEntity) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends UserEntity> iterable) {
+    public void deleteAll(Iterable<? extends User> iterable) {
 
     }
 
