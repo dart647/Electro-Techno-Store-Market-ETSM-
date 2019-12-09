@@ -10,7 +10,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "user", schema = "ecomm_db", catalog = "")
 public class UserEntity {
-    private int id;
+    private long id;
     private String email;
     private String password;
     private String roles;
@@ -23,11 +23,11 @@ public class UserEntity {
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -144,7 +144,7 @@ public class UserEntity {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = (int)id;
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (roles != null ? roles.hashCode() : 0);

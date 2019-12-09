@@ -32,7 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/","/main","/catalog/list","/catalog/{productId}").permitAll()//разрешенные сайты для входа без авторизации
+                .antMatchers("/",
+                        "/main",
+                        "/catalog/*",
+                        "/users/*").permitAll()//разрешенные сайты для входа без авторизации
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
