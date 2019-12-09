@@ -43,4 +43,9 @@ public class MainController {
         return new ModelAndView("/auth/basket", HttpStatus.OK);
     }
 
+    //Admin panel page
+    @GetMapping("/admin")
+    public ModelAndView Admin() {
+        return new ModelAndView("/auth/admin", HttpStatus.OK);
+    }
 }

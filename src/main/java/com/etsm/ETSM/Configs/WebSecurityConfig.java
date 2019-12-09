@@ -36,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/main",
                         "/catalog/*",
                         "/users/*").permitAll()//разрешенные сайты для входа без авторизации
+                .antMatchers("/","/main","/catalog/list","/catalog/{productId}","users/all","/users/{userId}","/admin").permitAll()//разрешенные сайты для входа без авторизации
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
