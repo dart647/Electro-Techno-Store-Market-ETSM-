@@ -61,5 +61,6 @@ public class UserController {
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error","Couldn't find a user"), HttpStatus.NOT_FOUND));
 
+
     }
 }
