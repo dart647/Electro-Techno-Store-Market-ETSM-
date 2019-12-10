@@ -1,8 +1,6 @@
 package com.etsm.ETSM.Models;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.mapping.Set;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +16,8 @@ public class User {
     @Column(name = "password")
     private String password;
     @Column(name = "roles")
-    private Set roles;
+    @Enumerated(EnumType.STRING)
+    private Role roles;
     @Column(name = "active")
     private Boolean active;
 
@@ -46,11 +45,11 @@ public class User {
         this.password = password;
     }
 
-    public Set getRoles() {
+    public Role getRoles() {
         return roles;
     }
 
-    public void setRoles(Set roles) {
+    public void setRoles(Role roles) {
         this.roles = roles;
     }
 
@@ -63,12 +62,3 @@ public class User {
     }
 
 }
-
-//enum Roles{
-//    ADMIN,
-//    USER,
-//    MANAGER;
-//
-//    Roles() {
-//    }
-//}
