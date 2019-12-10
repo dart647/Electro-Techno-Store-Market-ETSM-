@@ -1,7 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<!--
-  ~ Copyright (c) 2019. Nikita Smalkov
-  -->
 
 <!DOCTYPE hibernate-configuration PUBLIC
     "-//Hibernate/Hibernate Configuration DTD//EN"
@@ -10,11 +7,14 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://localhost:3306</property>
     <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-    <property name="connection.username">root</property>
-    <property name="connection.password">C9nA!e75RLB_Sn71_a</property>
-      <mapping class="com.etsm.ETSM.Models.UserEntity"/>
+    <mapping class="com.etsm.ETSM.Models.User"/>
     <mapping class="com.etsm.ETSM.Models.Product"/>
-      <!-- <property name="connection.username"/> -->
+    <mapping class="com.etsm.ETSM.Models.Category"/>
+    <mapping class="com.etsm.ETSM.Models.SubCategory"/>
+    <mapping class="com.etsm.ETSM.Models.Sales"/>
+    <mapping class="com.etsm.ETSM.Models.Sales_has_product"/>
+    <mapping class="com.etsm.ETSM.Models.UserInfo"/>
+    <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
     <!-- DB schema will be updated if needed -->

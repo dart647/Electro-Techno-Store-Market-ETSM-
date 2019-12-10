@@ -1,7 +1,8 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Models.ProductRepository;
+import com.etsm.ETSM.Repositories.ProductRepository;
+import com.etsm.ETSM.Repositories.SubCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,10 @@ import java.util.Map;
 @RequestMapping("/catalog")
 public class ProductsController {
     @Autowired
-    public ProductRepository productRepository;
+    private ProductRepository productRepository;
+
+    @Autowired
+    private SubCategoryRepository subCategoryRepository;
 
     //Products List Page
     @GetMapping("/list")
@@ -48,8 +52,9 @@ public class ProductsController {
     public ModelAndView AddProduct(@ModelAttribute Product product){
         Product newProduct = new Product();
         newProduct.setDescription(product.getDescription());
-        newProduct.setId(productRepository.count()+1);
         newProduct.setName(product.getName());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setSubCategory_id(this.subCategoryRepository.getOne(1l));
         productRepository.saveAndFlush(newProduct);
 
         return new ModelAndView("catalog/list",

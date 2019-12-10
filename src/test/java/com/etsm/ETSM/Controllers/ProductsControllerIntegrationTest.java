@@ -1,6 +1,6 @@
 package com.etsm.ETSM.Controllers;
 
-import com.etsm.ETSM.Models.ProductRepository;
+import com.etsm.ETSM.Repositories.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

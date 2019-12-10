@@ -1,7 +1,7 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Models.ProductRepository;
+import com.etsm.ETSM.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import java.util.*;
 @RequestMapping("/")
 public class MainController {
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
     //Main Page
     @GetMapping
     ModelAndView MainPage()

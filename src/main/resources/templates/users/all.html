@@ -24,7 +24,7 @@
 <h1>Страница пользователей</h1>
 <table style="height: 16px;" width="701" border="1">
     <tbody>
-    <tr data-th-each="user : ${users}">
+    <tr data-th-each="user : ${usersInfo}" class="UserInfo">
         <td>
                 <a data-th-href="@{/users/{userId}(userId=${user.id})}"
                    data-th-text="${user.id}"><hr/></a>
@@ -35,23 +35,23 @@
         </td>
         <td>
             <a data-th-href="@{/users/{userId}(userId=${user.id})}"
-               data-th-text="${user.firstname}"><hr/></a>
+               data-th-text="${user.fio}"><hr/></a>
         </td>
         <td>
             <a data-th-href="@{/users/{userId}(userId=${user.id})}"
-               data-th-text="${user.id}"><hr/></a>
+               data-th-text="${user.birthDate}"><hr/></a>
         </td>
         <td>
             <a data-th-href="@{/users/{userId}(userId=${user.id})}"
-               data-th-text="${user.email}"><hr/></a>
+               data-th-text="${user.address}"><hr/></a>
         </td>
         <td>
             <a data-th-href="@{/users/{userId}(userId=${user.id})}"
-               data-th-text="${user.firstname}"><hr/></a>
+               data-th-text="${user.wallet}"><hr/></a>
         </td>
         <td>
             <a data-th-href="@{/users/{userId}(userId=${user.id})}"
-               data-th-text="${user.lastname}"><hr/></a>
+               data-th-text="${user.loyaltyCode}"><hr/></a>
         </td>
     </tr>
     </tbody>
