@@ -3,6 +3,7 @@ package com.etsm.ETSM.Models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "sales")
@@ -20,8 +21,19 @@ public class Sales {
     private int nds;
     @Column(name = "`sum`")
     private int sum;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
+    @JoinColumn(name = "userInfo_id", referencedColumnName = "id")
     private UserInfo userInfo_id;
+    @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "sales_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Sales_has_product> salesHasProducts;
+
+    public List<Sales_has_product> getSalesHasProducts() {
+        return salesHasProducts;
+    }
+
+    public void setSalesHasProducts(List<Sales_has_product> salesHasProducts) {
+        this.salesHasProducts = salesHasProducts;
+    }
 
     public long getId() {
         return id;
@@ -68,6 +80,7 @@ public class Sales {
     }
 
     public void setUserInfo_id(UserInfo userInfo_id) {
+        userInfo_id.getSales().add(this);
         this.userInfo_id = userInfo_id;
     }
 }

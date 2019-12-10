@@ -1,6 +1,7 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.Product;
+import com.etsm.ETSM.Repositories.CategoryRepository;
 import com.etsm.ETSM.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,10 @@ import java.util.*;
 public class MainController {
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     //Main Page
     @GetMapping
     ModelAndView MainPage()

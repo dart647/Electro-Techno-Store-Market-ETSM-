@@ -4,7 +4,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.mapping.Set;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,10 +19,18 @@ public class SubCategory {
     @Column(name = "`attributes`")
     private Set attributes;
     @ManyToOne()
-    @JoinColumn(name = "Category_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category_id;
-    @OneToMany(targetEntity = Product.class, mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Product> productList = new ArrayList<>();
+    @OneToMany(targetEntity = Product.class, mappedBy = "subCategory_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Product> productList;
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }
 
     public long getId() {
         return id;
@@ -54,6 +61,7 @@ public class SubCategory {
     }
 
     public void setCategory_id(Category category_id) {
+        category_id.getSubCategories().add(this);
         this.category_id = category_id;
     }
 }

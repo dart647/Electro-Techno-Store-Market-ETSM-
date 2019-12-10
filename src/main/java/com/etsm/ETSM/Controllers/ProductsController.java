@@ -1,6 +1,7 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.Product;
+import com.etsm.ETSM.Repositories.CategoryRepository;
 import com.etsm.ETSM.Repositories.ProductRepository;
 import com.etsm.ETSM.Repositories.SubCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +23,41 @@ public class ProductsController {
     @Autowired
     private SubCategoryRepository subCategoryRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     //Products List Page
     @GetMapping("/list")
-    ModelAndView list(){
+    ModelAndView GetAllProducts(){
         return new ModelAndView("catalog/list",
                 Map.of("products", this.productRepository.findAll()),
                 HttpStatus.OK);
     }
 
     //Product Page
-    @GetMapping("{productId}")
-    public ModelAndView product(@PathVariable Long productId) {
+    @GetMapping("category/subCategory/{productId}")
+    public ModelAndView GetProduct(@PathVariable Long productId) {
         return this.productRepository.findById(productId)
-                .map(product -> new ModelAndView("catalog/product",
+                .map(product -> new ModelAndView("catalog/category/subCategory/product",
                         Map.of("product", product), HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find a product"), HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("category")
+    public ModelAndView GetCategory() {
+        return new ModelAndView("catalog/category",
+                Map.of("subCategories", subCategoryRepository.findAll()), HttpStatus.OK);
+    }
+
+    @GetMapping("category/{subCategoryId}")
+    public ModelAndView GetSubCategory(@PathVariable Long subCategoryId) {
+        return this.subCategoryRepository.findById(subCategoryId)
+                .map(product -> new ModelAndView("catalog/category/subCategory",
+                        Map.of("products", subCategoryRepository.findById(subCategoryId).get().getProductList()),
+                        HttpStatus.OK))
+                .orElseGet(() -> new ModelAndView("errors/404",
+                        Map.of("error", "Couldn't find a sub Category"), HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/addProduct")

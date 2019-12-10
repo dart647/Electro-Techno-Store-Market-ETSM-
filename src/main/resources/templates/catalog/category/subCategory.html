@@ -2,8 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="product-id" data-th-content="${product.id}"/>
-    <title>[[${product.name}]] &#8211; ETSM</title>
+    <title>Каталог &#8211; ETSM </title>
 </head>
 <body>
 <table style="width: 675px;">
@@ -11,6 +10,7 @@
     <tr>
         <td style="width: 10px;"><form th:action="@{/}" method="get"><input type="submit" value="Главная"/></form></td>
         <td style="width: 390px;"><form th:action="@{/catalog/list}" method="get"><input type="submit" value="Каталог товаров" /></form></td>
+        <td><form th:action="@{/catalog/category}" method="get"><input type="submit" value="Категории товаров"/></form></td>
         <td style="width: 390px;"><form th:action="@{/admin}" method="get"><input type="submit" value="Панель администратора"/></form></td>
         <td style="width: 87px;"><form th:action="@{/basket}" method="get"><input type="submit" value="Корзина" /></form></td>
         <td style="width: 206px;"><form th:action="@{/user}" method="get"><input type="submit" value="Личный кабинет" /></form></td>
@@ -18,7 +18,16 @@
     </tbody>
 </table>
 
-<h1 data-th-text="${product.name}"></h1>
-<section id="description" data-th-text="${product.description}"></section>
+<h1>Страница подкатегорий</h1>
+<table>
+    <tbody>
+    <tr>
+    <tr data-th-each="product : ${products}" class="product">
+        <td>
+            <a data-th-href="@{/catalog/category/subCategory/{productId}(productId=${product.id})}"
+               data-th-text="${product.name}"><hr/></a>
+        </td>
+    </tbody>
+</table>
 </body>
 </html>

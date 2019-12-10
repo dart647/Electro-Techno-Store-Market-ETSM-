@@ -34,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/",
                         "/main",
-                        "/catalog/*",
+                        "/catalog/**",
                         "/users/").permitAll()//разрешенные сайты для входа без авторизации
                 .anyRequest().authenticated()
                 .and()

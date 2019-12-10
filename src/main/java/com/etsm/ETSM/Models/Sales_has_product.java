@@ -1,17 +1,24 @@
 package com.etsm.ETSM.Models;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "sales_has_product")
 public class Sales_has_product {
     @Id
+    @Column(name = "`id`", nullable = false, unique = true)
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
+    @JoinColumn(name = "sales_id", referencedColumnName = "id")
     private Sales sales_id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product_id;
 
     @Column(name = "`count`")
@@ -30,6 +37,7 @@ public class Sales_has_product {
     }
 
     public void setSales_id(Sales sales_id) {
+        sales_id.getSalesHasProducts().add(this);
         this.sales_id = sales_id;
     }
 
@@ -38,6 +46,7 @@ public class Sales_has_product {
     }
 
     public void setProduct_id(Product product_id) {
+        product_id.getSalesHasProducts().add(this);
         this.product_id = product_id;
     }
 

@@ -1,6 +1,7 @@
 package com.etsm.ETSM.Models;
 
 import javax.persistence.*;
+import java.util.List;
 
 // Описание продукта
 @Entity
@@ -18,6 +19,16 @@ public class Product {
     private SubCategory subCategory_id; //Подкатегория
     @Column(name = "`desc`")
     private String description; //Описание
+    @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Sales_has_product> salesHasProducts;
+
+    public List<Sales_has_product> getSalesHasProducts() {
+        return salesHasProducts;
+    }
+
+    public void setSalesHasProducts(List<Sales_has_product> salesHasProducts) {
+        this.salesHasProducts = salesHasProducts;
+    }
 
     public long getId() {
         return id;
@@ -56,6 +67,7 @@ public class Product {
     }
 
     public void setSubCategory_id(SubCategory subCategory_id) {
+        subCategory_id.getProductList().add(this);
         this.subCategory_id = subCategory_id;
     }
 }

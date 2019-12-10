@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Добавить продукт</title>
+    <meta charset="UTF-8"/>
+    <title>Каталог &#8211; ETSM </title>
 </head>
 <body>
-<table>
+<table style="width: 675px;">
     <tbody>
     <tr>
         <td><form th:action="@{/}" method="get"><input type="submit" value="Главная"/></form></td>
+        <td style="width: 390px;"><form th:action="@{/catalog/list}" method="get"><input type="submit" value="Каталог товаров" /></form></td>
         <td><form th:action="@{/catalog/category}" method="get"><input type="submit" value="Категории товаров"/></form></td>
         <td><form th:action="@{/admin}" method="get"><input type="submit" value="Панель администратора"/></form></td>
         <td><form th:action="@{/basket}" method="get"><input type="submit" value="Корзина" /></form></td>
@@ -17,11 +18,16 @@
     </tbody>
 </table>
 
-<form th:action="@{/catalog/addProduct}" method="post">
-    <div><label> Название продукта : <input type="text" name="name"/> </label></div>
-    <div><label> Цена: <input type="text" name="price"/> </label></div>
-    <div><label> Описание: <input type="text" name="description"/> </label></div>
-    <div><input type="submit" value="Добавить"/></div>
-</form>
+<h1>Страница категорий</h1>
+<table>
+    <tbody>
+    <tr data-th-each="subCategory : ${subCategories}" class="subCategory">
+        <td>
+            <a data-th-href="@{/catalog/category/{subCategoryId}(subCategoryId=${subCategory.id})}"
+               data-th-text="${subCategory.name}"><hr/></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

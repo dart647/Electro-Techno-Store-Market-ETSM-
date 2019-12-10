@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -29,6 +30,16 @@ public class UserInfo {
     private transient User user_id;
     @Column(name = "`wallet`")
     private int wallet;
+    @OneToMany(targetEntity = Sales.class, mappedBy = "userInfo_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Sales> sales;
+
+    public List<Sales> getSales() {
+        return sales;
+    }
+
+    public void setSales(List<Sales> sales) {
+        this.sales = sales;
+    }
 
     public long getId() {
         return id;

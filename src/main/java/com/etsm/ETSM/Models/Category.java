@@ -18,8 +18,16 @@ public class Category {
     private String name;
     @Column(name = "`desc`")
     private String desc;
-    @OneToMany(targetEntity = SubCategory.class, mappedBy = "name", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<SubCategory> subCategories = new ArrayList<>();
+    @OneToMany(targetEntity = SubCategory.class, mappedBy = "category_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<SubCategory> subCategories = new ArrayList<>();
+
+    public List<SubCategory> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(List<SubCategory> subCategories) {
+        this.subCategories = subCategories;
+    }
 
     public List<SubCategory> getProductList() {
         return subCategories;
