@@ -38,10 +38,10 @@ public class MainController {
         return "main";
     }
 
-    //Login Page
     @GetMapping("/login")
-    public ModelAndView Login(){
-        return new ModelAndView("/auth/login", HttpStatus.OK);
+    public String Login(Principal principal, Model model) {
+        model.addAttribute(HttpStatus.OK);
+        return "login";
     }
 
     //User Cabinet Page

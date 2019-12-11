@@ -50,6 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/catalog/*",
                         "/login",
                         "/registration").permitAll()//разрешенные сайты для входа без авторизации
+                .antMatchers("/users/all").hasRole("ADMIN")
+                .antMatchers("/auth/admin","/addProduct").hasRole("MANAGER")
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login")
                 .defaultSuccessUrl("/main").failureUrl("/login?error").permitAll()
