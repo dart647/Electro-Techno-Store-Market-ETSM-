@@ -1,5 +1,6 @@
 package com.etsm.ETSM.Configs;
 
+import com.etsm.ETSM.Services.AuthProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import java.security.AuthProvider;
-
 //Конфигурация для авторизации
 //Изучить как работать с несколькими юзерами???
 //Логин user
@@ -28,8 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    //@Autowired
-    //private AuthProvider authProvider;
+    @Autowired
+    private AuthProvider authProvider;
 
     @Bean
     PasswordEncoder passwordEncoder() {

@@ -5,10 +5,12 @@ import com.etsm.ETSM.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.*;
 
 // Это главный контроллер для авторизации и главной страницы
@@ -22,7 +24,7 @@ public class MainController {
     private ProductRepository productRepository;
     //Main Page
     @GetMapping
-    ModelAndView MainPage()
+    public String MainPage(Principal principal, Model model)
     {
         List<Product> products = new ArrayList<>();
         if(productRepository.count()!=0) {
@@ -31,9 +33,9 @@ public class MainController {
                 products.add(product);
             }
         }
-        return new ModelAndView("main",
-                Map.of("products", products),
-                HttpStatus.OK);
+        model.addAttribute(Map.of("products", products));
+        model.addAttribute(HttpStatus.OK);
+        return "main";
     }
 
     //Login Page

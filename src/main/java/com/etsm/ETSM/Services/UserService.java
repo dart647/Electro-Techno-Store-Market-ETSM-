@@ -28,6 +28,18 @@ public class UserService implements UserDetailsService {
             return userFoundByUsername;
         }
 
+        if (userFoundByLogin != null) {
+            return userFoundByLogin;
+        }
 
+        if (userFoundByGoogleUsername != null) {
+            return userFoundByGoogleUsername;
+        }
+
+        if (userFoundByGoogleName != null) {
+            return userFoundByGoogleName;
+        }
+
+        return null;
     }
 }
