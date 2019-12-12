@@ -47,7 +47,7 @@ public class RegistrationController {
         newUser.setActive(true);
         newUser.setRoles(Collections.singleton(Role.USER));
         userRepository.saveAndFlush(newUser);
-        return new ModelAndView("/login",
+        return new ModelAndView("/",
                 HttpStatus.OK);
     }
 }

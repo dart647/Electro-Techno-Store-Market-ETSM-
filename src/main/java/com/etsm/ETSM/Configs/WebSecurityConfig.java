@@ -4,7 +4,6 @@ import com.etsm.ETSM.Services.AuthProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,14 +34,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/",
+                .antMatchers("/",
                         "/main",
                         "/catalog/**",
                         "/registration",
                         "/login").permitAll()//разрешенные сайты для входа без авторизации
-                .antMatchers(HttpMethod.GET,"/auth/userCabinet",
+                .antMatchers("/auth/userCabinet",
                         "/auth/basket").hasAnyAuthority("USER","MANAGER","ADMIN")
-                .antMatchers(HttpMethod.GET,"/auth/admin",
+                .antMatchers("/auth/admin",
                         "catalog/addProduct").hasAnyAuthority("MANAGER","ADMIN")
                 .antMatchers("/users/all").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
