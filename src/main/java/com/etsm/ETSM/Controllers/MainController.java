@@ -39,9 +39,9 @@ public class MainController {
     }
 
     @GetMapping("/login")
-    public String Login(Principal principal, Model model) {
-        model.addAttribute(HttpStatus.OK);
-        return "login";
+    public ModelAndView login() {
+        return new ModelAndView("/login",
+                HttpStatus.OK);
     }
 
     //User Cabinet Page

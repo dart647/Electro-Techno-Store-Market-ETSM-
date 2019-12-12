@@ -48,13 +48,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/",
                         "/main",
                         "/catalog/*",
-                        "/login",
                         "/registration").permitAll()//разрешенные сайты для входа без авторизации
-                .antMatchers("/users/all").hasRole("ADMIN")
-                .antMatchers("/auth/admin","/addProduct").hasRole("MANAGER")
-                .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login")
-                .defaultSuccessUrl("/main").failureUrl("/login?error").permitAll()
+                .antMatchers("/auth/admin",
+                        "/addProduct",
+                        "/user").hasRole("MANAGER")
+                .anyRequest().hasRole("ADMIN")
+                .and().formLogin().loginPage("/login").permitAll()
+                .defaultSuccessUrl("/main")
+                .failureUrl("/login?error").permitAll()
                 .and().logout().logoutSuccessUrl("/").permitAll();
     }
 }
