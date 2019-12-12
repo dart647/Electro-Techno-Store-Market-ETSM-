@@ -1,7 +1,9 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.Product;
+import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Repositories.ProductRepository;
+import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,9 @@ import java.util.*;
 public class MainController {
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private UserService userService;
     //Main Page
     @GetMapping
     public String MainPage(Principal principal, Model model)
@@ -36,12 +41,6 @@ public class MainController {
         model.addAttribute(Map.of("products", products));
         model.addAttribute(HttpStatus.OK);
         return "main";
-    }
-
-    @GetMapping("/login")
-    public ModelAndView login() {
-        return new ModelAndView("/login",
-                HttpStatus.OK);
     }
 
     //User Cabinet Page

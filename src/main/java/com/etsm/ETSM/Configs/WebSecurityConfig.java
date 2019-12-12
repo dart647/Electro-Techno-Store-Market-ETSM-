@@ -4,6 +4,7 @@ import com.etsm.ETSM.Services.AuthProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,8 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder;
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -45,17 +45,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/",
+                .antMatchers(HttpMethod.GET,"/",
                         "/main",
-                        "/catalog/*",
-                        "/registration").permitAll()//разрешенные сайты для входа без авторизации
-                .antMatchers("/auth/admin",
-                        "/addProduct",
-                        "/user").hasRole("MANAGER")
-                .anyRequest().hasRole("ADMIN")
-                .and().formLogin().loginPage("/login").permitAll()
-                .defaultSuccessUrl("/main")
-                .failureUrl("/login?error").permitAll()
+                        "/catalog/list",
+                        "/catalog/product",
+                        "/registration",
+                        "/login").permitAll()//разрешенные сайты для входа без авторизации
+                .antMatchers(HttpMethod.GET,"/auth/userCabinet",
+                        "/auth/basket").hasAnyAuthority("USER","MANAGER","ADMIN")
+                .antMatchers(HttpMethod.GET,"/auth/admin",
+                        "catalog/addProduct").hasAnyAuthority("MANAGER","ADMIN")
+                .antMatchers("/users/all").hasAuthority("ADMIN")
+                .anyRequest().authenticated()
+                .and().formLogin()
+                .defaultSuccessUrl("/auth/userCabinet").failureUrl("/login?error").permitAll()
                 .and().logout().logoutSuccessUrl("/").permitAll();
     }
 }

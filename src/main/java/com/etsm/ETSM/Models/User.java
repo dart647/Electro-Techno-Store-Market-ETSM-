@@ -113,22 +113,22 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return active;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return active;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return active;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return getActive();
     }
 
     @Override
