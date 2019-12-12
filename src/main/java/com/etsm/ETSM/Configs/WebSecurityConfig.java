@@ -45,15 +45,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/",
+                .antMatchers("/",
                         "/main",
                         "/catalog/list",
                         "/catalog/product",
                         "/registration",
                         "/login").permitAll()//разрешенные сайты для входа без авторизации
-                .antMatchers(HttpMethod.GET,"/auth/userCabinet",
+                .antMatchers("/auth/userCabinet",
                         "/auth/basket").hasAnyAuthority("USER","MANAGER","ADMIN")
-                .antMatchers(HttpMethod.GET,"/auth/admin",
+                .antMatchers("/auth/admin",
                         "catalog/addProduct").hasAnyAuthority("MANAGER","ADMIN")
                 .antMatchers("/users/all").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
