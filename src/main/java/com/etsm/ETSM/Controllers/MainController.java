@@ -1,7 +1,6 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Repositories.ProductRepository;
 import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 // Это главный контроллер для авторизации и главной страницы
 // можно задавать @RequestParam, тогда при разных обращениях к странице получаем параметр (?name=имя), с которым можем работать
@@ -39,7 +40,7 @@ public class MainController {
                 products.add(product);
             }
         }
-        model.addAttribute(Map.of("products", products));
+        model.addAttribute("products", products);
         model.addAttribute(HttpStatus.OK);
         return "main";
     }

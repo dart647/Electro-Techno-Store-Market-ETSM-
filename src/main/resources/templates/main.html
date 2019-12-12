@@ -34,7 +34,7 @@
     <table style="width: 679px;" border="1">
         <tbody>
         <tr>
-            <td th:each="product:${products}" class="product">
+            <td th:each="product:${products}">
                 <form th:action="@{/catalog/category/subCategory/{productId}(productId=${product.id})}" method="get">
                     <button data-th-text="${product.name}"></button>
                 </form>
