@@ -30,16 +30,6 @@ public class UserController {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
-    @PostMapping(path="/add/user")
-    public @ResponseBody String addNewUser (@RequestParam String email,
-                                            @RequestParam String password) {
-        User newUser = new User();
-        newUser.setLogin(email);
-        newUser.setPassword(password);
-        userRepository.save(newUser);
-        return "Saved";
-    }
-
     @GetMapping("/all")
     public ModelAndView getAllUsers() {
         return new ModelAndView("users/all",
