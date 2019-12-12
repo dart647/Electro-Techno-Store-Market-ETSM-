@@ -1,0 +1,48 @@
+<!--
+  ~ Copyright (c) 2019. Smalkov Nikita.
+  -->
+
+<!DOCTYPE html>
+<html xmlns:th=http://www.w3.org/1999/xhtml>
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+</head>
+<body>
+<table style="width: 675px;">
+    <tbody>
+    <tr>
+        <td style="width: 10px;"><form th:action="@{/}" method="get"><input type="submit" value="Главная"/></form></td>
+        <td style="width: 390px;"><form th:action="@{/catalog/list}" method="get"><input type="submit" value="Каталог товаров" /></form></td>
+        <td style="width: 390px;"><form th:action="@{/admin}" method="get"><input type="submit" value="Панель администратора"/></form></td>
+        <td style="width: 87px;"><form th:action="@{/basket}" method="get"><input type="submit" value="Корзина" /></form></td>
+        <td style="width: 206px;"><form th:action="@{/user}" method="get"><input type="submit" value="Личный кабинет" /></form></td>
+        <td style="width: 206px;"><form th:action="@{/registration}" method="get"><input type="submit" value="Регистрация" /></form></td>
+    </tr>
+    </tbody>
+</table>
+
+<section class="container">
+    <div class="mx-auto border my-5 py-3 px-3 form">
+        <form th:action="@{/registration}" method="post">
+            <div class="form-group">
+                <label for="login">Имя</label>
+                <input class="form-control" id="login" type="text" name="login">
+            </div>
+            <div class="form-group">
+                <label for="username">Email</label>
+                <input class="form-control" id="username" type="text" name="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input class="form-control" id="password" type="password" name="password">
+            </div>
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <input class="button" type="submit" value="Регистрация"/>
+        </form>
+    </div>
+</section>
+
+
+</body>
+</html>

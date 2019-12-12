@@ -5,8 +5,15 @@
 package com.etsm.ETSM.Repositories;
 
 import com.etsm.ETSM.Models.User;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-public interface UserRepository extends CrudRepository<User,Long> {
-
+@Service
+@Repository
+public interface UserRepository extends JpaRepository<User,Long> {
+    User findByUsername(String email);
+    User findByLogin(String name);
+    User findByGoogleUsername(String googleUsername);
+    User findByGoogleName(String googleName);
 }

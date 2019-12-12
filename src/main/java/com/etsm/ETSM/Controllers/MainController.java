@@ -1,15 +1,18 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Repositories.CategoryRepository;
+import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Repositories.ProductRepository;
+import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.*;
 
 // Это главный контроллер для авторизации и главной страницы
@@ -23,11 +26,11 @@ public class MainController {
     private ProductRepository productRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private UserService userService;
 
     //Main Page
     @GetMapping
-    ModelAndView MainPage()
+    public String MainPage(Principal principal, Model model)
     {
         List<Product> products = new ArrayList<>();
         if(productRepository.count()!=0) {
@@ -36,15 +39,9 @@ public class MainController {
                 products.add(product);
             }
         }
-        return new ModelAndView("main",
-                Map.of("products", products),
-                HttpStatus.OK);
-    }
-
-    //Login Page
-    @GetMapping("/login")
-    public ModelAndView Login(){
-        return new ModelAndView("/auth/login", HttpStatus.OK);
+        model.addAttribute(Map.of("products", products));
+        model.addAttribute(HttpStatus.OK);
+        return "main";
     }
 
     //User Cabinet Page
