@@ -20,7 +20,7 @@ public class Product {
     @Column(name = "`desc`")
     private String description; //Описание
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Sales_has_product> salesHasProducts;
+    private transient List<Sales_has_product> salesHasProducts;
 
     public List<Sales_has_product> getSalesHasProducts() {
         return salesHasProducts;

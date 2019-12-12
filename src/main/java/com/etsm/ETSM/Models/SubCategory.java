@@ -1,7 +1,6 @@
 package com.etsm.ETSM.Models;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.mapping.Set;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,9 +15,7 @@ public class SubCategory {
     private long id;
     @Column(name = "`name`")
     private String name;
-    @Column(name = "`attributes`")
-    private Set attributes;
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category_id;
     @OneToMany(targetEntity = Product.class, mappedBy = "subCategory_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -48,14 +45,6 @@ public class SubCategory {
         this.name = name;
     }
 
-    public Set getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Set attributes) {
-        this.attributes = attributes;
-    }
-
     public Category getCategory_id() {
         return category_id;
     }
@@ -66,11 +55,3 @@ public class SubCategory {
     }
 }
 
-//enum ProductAttributes{
-//    RED,
-//    GREEN,
-//    BLUE;
-//
-//    ProductAttributes() {
-//    }
-//}

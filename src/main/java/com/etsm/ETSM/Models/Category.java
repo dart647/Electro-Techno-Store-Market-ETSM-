@@ -16,8 +16,6 @@ public class Category {
     private long id;
     @Column(name = "`name`")
     private String name;
-    @Column(name = "`desc`")
-    private String desc;
     @OneToMany(targetEntity = SubCategory.class, mappedBy = "category_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<SubCategory> subCategories = new ArrayList<>();
 
@@ -51,14 +49,6 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
     }
 }
 

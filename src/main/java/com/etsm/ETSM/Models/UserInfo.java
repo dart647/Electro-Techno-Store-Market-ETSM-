@@ -1,6 +1,5 @@
 package com.etsm.ETSM.Models;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -11,27 +10,26 @@ import java.util.List;
 @Table(name = "userInfo")
 public class UserInfo {
     @Id
-    @Column(name = "id", nullable = false, unique = true)
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
+    @Column(name = "`id`", nullable = false, unique = true)
+//    @GeneratedValue(generator = "increment")
+//    @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
     @Column(name = "`fio`")
     private String fio;
-    @Column(name = "`email`")
-    private String email;
     @Column(name = "`birthDate`")
     private LocalDate birthDate;
     @Column(name = "`address`")
     private String address;
     @Column(name = "`loyaltyCode`")
     private String loyaltyCode;
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private transient User user_id;
     @Column(name = "`wallet`")
     private int wallet;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private User user_id;
     @OneToMany(targetEntity = Sales.class, mappedBy = "userInfo_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Sales> sales;
+    private transient List<Sales> sales;
 
     public List<Sales> getSales() {
         return sales;
@@ -55,14 +53,6 @@ public class UserInfo {
 
     public void setFio(String fio) {
         this.fio = fio;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public LocalDate getBirthDate() {

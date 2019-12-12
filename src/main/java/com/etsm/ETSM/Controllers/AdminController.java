@@ -27,7 +27,7 @@ public class AdminController {
     public ModelAndView user(@PathVariable long userId) {
         return service.findUserById(userId)
                 .map(user -> new ModelAndView("admin/user",
-                        Map.of("userInfo",user), HttpStatus.OK))
+                        Map.of("user",user), HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error","Couldn't find a user"), HttpStatus.NOT_FOUND));
 

@@ -42,6 +42,18 @@ public class User implements UserDetails {
     @Column(name = "googleName")
     private String googleName;
 
+    @OneToOne(mappedBy = "user_id", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private transient UserInfo userInfo;
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
     public String getPassword() {
         return password;
     }

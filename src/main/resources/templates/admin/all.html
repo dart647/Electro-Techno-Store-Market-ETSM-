@@ -27,15 +27,15 @@
     <tbody>
     <tr data-th-each="user : ${users}">
         <td>
-                <a data-th-href="@{/users/{userId}(userId=${user.id})}"
+                <a data-th-href="@{/admin/{userId}(userId=${user.id})}"
                    data-th-text="${user.id}"><hr/></a>
         </td>
         <td>
-            <a data-th-href="@{/users/{userId}(userId=${user.id})}"
+            <a data-th-href="@{/admin/{userId}(userId=${user.id})}"
                data-th-text="${user.username}"><hr/></a>
         </td>
         <td>
-            <a data-th-href="@{/users/{userId}(userId=${user.id})}"
+            <a data-th-href="@{/admin/{userId}(userId=${user.id})}"
                data-th-text="${user.login}"><hr/></a>
         </td>
     </tr>

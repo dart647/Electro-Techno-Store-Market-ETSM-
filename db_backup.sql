@@ -16,6 +16,61 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `attribute`
+--
+
+DROP TABLE IF EXISTS `attribute`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `attribute` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `attribute`
+--
+
+LOCK TABLES `attribute` WRITE;
+/*!40000 ALTER TABLE `attribute` DISABLE KEYS */;
+INSERT INTO `attribute` VALUES (1,'Black'),(2,'Red'),(3,'Silver'),(4,'FullHd'),(5,'Hd'),(6,'Intel'),(7,'AMD'),(8,'Android'),(9,'Apple');
+/*!40000 ALTER TABLE `attribute` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `attribute_has_product`
+--
+
+DROP TABLE IF EXISTS `attribute_has_product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `attribute_has_product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `attribute_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`attribute_id`,`product_id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_attribute_has_product_product1_idx` (`product_id`),
+  KEY `fk_attribute_has_product_attribute1_idx` (`attribute_id`),
+  CONSTRAINT `fk_attribute_has_product_attribute1` FOREIGN KEY (`attribute_id`) REFERENCES `attribute` (`id`),
+  CONSTRAINT `fk_attribute_has_product_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `attribute_has_product`
+--
+
+LOCK TABLES `attribute_has_product` WRITE;
+/*!40000 ALTER TABLE `attribute_has_product` DISABLE KEYS */;
+INSERT INTO `attribute_has_product` VALUES (1,2,1),(2,1,3),(3,5,2),(4,7,4),(5,3,2);
+/*!40000 ALTER TABLE `attribute_has_product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `category`
 --
 
@@ -25,11 +80,10 @@ DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `desc` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +92,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Ноутбуки','Категория ноутбуков');
+INSERT INTO `category` VALUES (1,'PC'),(2,'Telephone');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,16 +105,16 @@ DROP TABLE IF EXISTS `product`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subCategory_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `price` int(11) NOT NULL,
   `desc` longtext,
-  `subCategory_id` int(11) NOT NULL,
   PRIMARY KEY (`id`,`subCategory_id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_product_subCategory1_idx` (`subCategory_id`),
-  CONSTRAINT `fk_product_subCategory1` FOREIGN KEY (`subCategory_id`) REFERENCES `subcategory` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_product_subCategory1` FOREIGN KEY (`subCategory_id`) REFERENCES `subcategory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +123,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (0,'ASUS WR102 MS',72999,'Игровой ноутбук',1),(1,'ASUS ASD12',89556,'Рабочий ноутбук',1),(2,'ASUS JKH9979',12356,'Игровой ноутбук',1),(3,'ASUS ROGE',46545,'Рабочий ноутбук',1),(4,'Test',12000,'test',1);
+INSERT INTO `product` VALUES (1,1,'ASUS ROGE',56465,'New Generation of Pc gaming'),(2,2,'MacBook Pro 14',80013,'Just for work'),(3,4,'Panasonic',1200,'Home using'),(4,3,'Honor 8x',16000,'Poewr of the univers');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +144,7 @@ CREATE TABLE `sales` (
   PRIMARY KEY (`id`,`userInfo_id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_sales_userInfo1_idx` (`userInfo_id`),
-  CONSTRAINT `fk_sales_userInfo1` FOREIGN KEY (`userInfo_id`) REFERENCES `userinfo` (`id`)
+  CONSTRAINT `fk_sales_userInfo1` FOREIGN KEY (`userInfo_id`) REFERENCES `userinfo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -100,7 +154,7 @@ CREATE TABLE `sales` (
 
 LOCK TABLES `sales` WRITE;
 /*!40000 ALTER TABLE `sales` DISABLE KEYS */;
-INSERT INTO `sales` VALUES (1,1,12000,10,18,12744);
+INSERT INTO `sales` VALUES (1,1,10000,10,10,10000);
 /*!40000 ALTER TABLE `sales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,15 +166,17 @@ DROP TABLE IF EXISTS `sales_has_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sales_has_product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `sales_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `count` int(11) NOT NULL,
-  PRIMARY KEY (`sales_id`,`product_id`),
+  PRIMARY KEY (`id`,`sales_id`,`product_id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_sales_has_product_product1_idx` (`product_id`),
   KEY `fk_sales_has_product_sales1_idx` (`sales_id`),
-  CONSTRAINT `fk_sales_has_product_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
-  CONSTRAINT `fk_sales_has_product_sales1` FOREIGN KEY (`sales_id`) REFERENCES `sales` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_sales_has_product_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_sales_has_product_sales1` FOREIGN KEY (`sales_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +185,7 @@ CREATE TABLE `sales_has_product` (
 
 LOCK TABLES `sales_has_product` WRITE;
 /*!40000 ALTER TABLE `sales_has_product` DISABLE KEYS */;
-INSERT INTO `sales_has_product` VALUES (1,0,2),(1,1,10),(1,3,4);
+INSERT INTO `sales_has_product` VALUES (1,1,2,4),(2,1,1,2);
 /*!40000 ALTER TABLE `sales_has_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,14 +199,13 @@ DROP TABLE IF EXISTS `subcategory`;
 CREATE TABLE `subcategory` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `attributes` set('') DEFAULT NULL,
   `category_id` int(11) NOT NULL,
   PRIMARY KEY (`id`,`category_id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_subCategory_category1_idx` (`category_id`),
-  CONSTRAINT `fk_subCategory_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_subCategory_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +214,7 @@ CREATE TABLE `subcategory` (
 
 LOCK TABLES `subcategory` WRITE;
 /*!40000 ALTER TABLE `subcategory` DISABLE KEYS */;
-INSERT INTO `subcategory` VALUES (1,'ASUS',NULL,1);
+INSERT INTO `subcategory` VALUES (1,'Gaming PC',1),(2,'Home PC',1),(4,'Home telephone',2),(3,'Smartphone',2);
 /*!40000 ALTER TABLE `subcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,14 +227,17 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `login` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `roles` set('USER','ADMIN','MANAGER') NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `roles` enum('USER','MANAGER','ADMIN') NOT NULL,
   `active` tinyint(4) NOT NULL,
-  PRIMARY KEY (`id`),
+  `login` varchar(255) NOT NULL,
+  `googleUsername` varchar(255) DEFAULT NULL,
+  `googleName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`,`username`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `login_UNIQUE` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `login_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,8 +246,33 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'dart647','04011999','ADMIN',1);
+INSERT INTO `user` VALUES (1,'test@yandex.ru','$2a$10$Lc/Jv/JbWc9SozVle1my9uQDme6iOq7cPslGkOfS3pP.sNcfIW5DW','ADMIN',1,'test',NULL,NULL),(2,'spivak@mail.ru','$2a$10$q7tevVPzrXtJ44n4mk9IkeXyc9QcFxWc9RKvitWDfoqhUKT9EXKf.','ADMIN',1,'dart647',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_roles`
+--
+
+DROP TABLE IF EXISTS `user_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_roles` (
+  `id` int(11) NOT NULL,
+  `roles` enum('USER','MANAGER','ADMIN') DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `user_rolesFK` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_roles`
+--
+
+LOCK TABLES `user_roles` WRITE;
+/*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
+INSERT INTO `user_roles` VALUES (1,'USER'),(2,'ADMIN');
+/*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -201,19 +284,16 @@ DROP TABLE IF EXISTS `userinfo`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `userinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fio` varchar(45) NOT NULL,
-  `email` varchar(60) NOT NULL,
+  `fio` varchar(45) NOT NULL DEFAULT 'new user',
   `birthDate` date DEFAULT NULL,
   `address` longtext,
   `loyaltyCode` varchar(10) DEFAULT NULL,
-  `user_id` int(11) NOT NULL,
-  `wallet` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`,`user_id`),
+  `wallet` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `loyaltyCode_UNIQUE` (`loyaltyCode`),
-  KEY `fk_userInfo_user_idx` (`user_id`),
-  CONSTRAINT `fk_userInfo_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  KEY `fk_userinfo_user1` (`id`),
+  CONSTRAINT `fk_userinfo_user1` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -223,7 +303,7 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` VALUES (1,'САА','test@yandex.ru',NULL,NULL,NULL,1,1000000);
+INSERT INTO `userinfo` VALUES (1,'SAA','1999-01-04','Moscow','132as1d',100000000);
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -236,4 +316,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-10 17:33:06
+-- Dump completed on 2019-12-13  1:34:29

@@ -16,6 +16,8 @@
     <mapping class="com.etsm.ETSM.Models.Sales"/>
     <mapping class="com.etsm.ETSM.Models.Sales_has_product"/>
     <mapping class="com.etsm.ETSM.Models.UserInfo"/>
+    <mapping class="com.etsm.ETSM.Models.Role"/>
+    <mapping class="com.etsm.ETSM.Models.Attribute"/>
     <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
