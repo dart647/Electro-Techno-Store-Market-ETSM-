@@ -33,7 +33,7 @@ class AdminServiceImpl implements AdminService{
         newProduct.setDescription(product.getDescription());
         newProduct.setName(product.getName());
         newProduct.setPrice(product.getPrice());
-        newProduct.setSubCategory_id(this.subCategoryRepository.getOne(1l));
+        newProduct.setSubCategory_id(this.subCategoryRepository.findById(1L).get());
         productRepository.saveAndFlush(newProduct);
     }
 

@@ -1,5 +1,7 @@
 package com.etsm.ETSM.Models;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,6 +11,8 @@ import java.util.List;
 public class Product {
     @Id
     @Column(name = "`id`", nullable = false)
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private long id; //ID продукта
     @Column(name = "`name`", nullable = false)
     private String name; //Название
