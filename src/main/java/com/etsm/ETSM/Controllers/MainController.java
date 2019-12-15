@@ -26,25 +26,32 @@ public class MainController {
     public ModelAndView MainPage(Principal principal)
     {
         return new ModelAndView("/main",
-                Map.of("products", service.SetRecommendations()),
+                Map.of("products", service.SetRecommendations(),
+                        "categories", service.GetAllCategories()),
                 HttpStatus.OK);
     }
 
     //User Cabinet Page
     @GetMapping("/user")
     public ModelAndView UserCabinet(){
-        return new ModelAndView("/auth/userCabinet", HttpStatus.OK);
+        return new ModelAndView("/auth/userCabinet",
+                Map.of("categories", service.GetAllCategories()),
+                HttpStatus.OK);
     }
 
     //Basket Page
     @GetMapping("/basket")
     public ModelAndView Basket(){
-        return new ModelAndView("/auth/basket", HttpStatus.OK);
+        return new ModelAndView("/auth/basket",
+                Map.of("categories", service.GetAllCategories()),
+                HttpStatus.OK);
     }
 
     //Admin panel page
     @GetMapping("/admin")
     public ModelAndView Admin() {
-        return new ModelAndView("/auth/admin", HttpStatus.OK);
+        return new ModelAndView("/auth/admin",
+                Map.of("categories", service.GetAllCategories()),
+                HttpStatus.OK);
     }
 }

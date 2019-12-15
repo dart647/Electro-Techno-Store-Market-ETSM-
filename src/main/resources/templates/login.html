@@ -5,23 +5,95 @@
 <!DOCTYPE html>
 <html xmlns:th=http://www.w3.org/1999/xhtml>
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Вход</title>
 </head>
+
 <body>
-<table style="width: 675px;">
-    <tbody>
-    <tr>
-        <td style="width: 10px;"><form th:action="@{/}" method="get"><input type="submit" value="Главная"/></form></td>
-        <td style="width: 390px;"><form th:action="@{/catalog/list}" method="get"><input type="submit" value="Каталог товаров" /></form></td>
-        <td><form th:action="@{/catalog/category}" method="get"><input type="submit" value="Категории товаров"/></form></td>
-        <td style="width: 390px;"><form th:action="@{/admin}" method="get"><input type="submit" value="Панель администратора"/></form></td>
-        <td style="width: 87px;"><form th:action="@{/basket}" method="get"><input type="submit" value="Корзина" /></form></td>
-        <td style="width: 206px;"><form th:action="@{/user}" method="get"><input type="submit" value="Личный кабинет" /></form></td>
-        <td style="width: 206px;"><form th:action="@{/registration}" method="get"><input type="submit" value="Регистрация" /></form></td>
-    </tr>
-    </tbody>
-</table>
+<!--Header-->
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand">ETSM</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link">Адреса магазинов</a></li>
+                    <li class="nav-item"><a class="nav-link">Обратная связь</a></li>
+                    <li class="nav-item"><a class="nav-link">О нас</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active"><a class="nav-link" href="/">Главная</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Каталог <b
+                            class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li th:each="cat: ${categories}">
+                            <a th:text="${cat.name}" th:href="@{/catalog/{categoryName}(categoryName=${cat.name})}"
+                               class="dropdown-item"></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/catalog/list">Все товары</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin">Панель администратора</a></li>
+                <li class="nav-item"><a class="nav-link" href="/user">Личный Кабинет</a></li>
+                <li class="nav-item"><a class="nav-link" href="/registration">Регистрация</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basket">Корзина</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!--Main-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2">
+            <h3>Категории товаров</h3>
+            <ul class="nav flex-column" th:each="cat: ${categories}">
+                <li class="nav-item">
+                    <a class="btn btn-outline-secondary btn-block"
+                       th:href="@{/catalog/{categoryName}(categoryName=${cat.name})}" th:text="${cat.name}"></a>
+                </li>
+            </ul>
+        </div>
+        <!--Заменяемая часть-->
+        <div class="col">
+            <h1 th:text="${product.name}"></h1>
+            <!--            <img src="">-->
+            <h3 th:text="${product.description}"></h3>
+
+            <table class="table">
+                <thead>
+                <th scope="col">Название</th>
+                <th scope="col">Цена</th>
+                <th scope="col">Подкатегория</th>
+                <th scope="col">Атрибуты</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${product.name}"
+                    </td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.subCategory_id.name}"></td>
+                    <td> В разработке</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <div th:if="${param.error}">
     Invalid username and password.
@@ -45,5 +117,15 @@
         </form>
     </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.etsm.ETSM.Controllers;
 
+import com.etsm.ETSM.Services.MainService;
 import com.etsm.ETSM.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,37 +18,46 @@ import java.util.Map;
 @RequestMapping("/catalog")
 public class ProductsController {
     @Autowired
-    ProductService service;
+    ProductService productService;
+    @Autowired
+    MainService mainService;
 
     //Products List Page
     @GetMapping("/list")
-    ModelAndView GetAllProducts(){
+    ModelAndView GetAllProducts() {
         return new ModelAndView("catalog/list",
-                Map.of("products", service.findAllProducts()),
+                Map.of("products", productService.findAllProducts(),
+                        "categories", mainService.GetAllCategories()),
                 HttpStatus.OK);
     }
 
     //Product Page
-    @GetMapping("category/subCategory/{productId}")
-    public ModelAndView GetProduct(@PathVariable Long productId) {
-        return service.findProductById(productId)
+    @GetMapping("category/subCategory/{productName}")
+    public ModelAndView GetProduct(@PathVariable String productName) {
+        return productService.findProductByName(productName)
                 .map(product -> new ModelAndView("catalog/category/subCategory/product",
-                        Map.of("product", product), HttpStatus.OK))
+                        Map.of("product", product,
+                                "categories", mainService.GetAllCategories()), HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find a product"), HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("category")
-    public ModelAndView GetCategory() {
-        return new ModelAndView("catalog/category",
-                Map.of("subCategories", service.findSubCategories()), HttpStatus.OK);
+    @GetMapping("{categoryName}")
+    public ModelAndView GetCategory(@PathVariable String categoryName) {
+        return productService.findCategoryByName(categoryName)
+                .map(product -> new ModelAndView("catalog/category",
+                        Map.of("subCategories", productService.findSubCategoriesFromCategory(categoryName),
+                                "categories", mainService.GetAllCategories()), HttpStatus.OK))
+                .orElseGet(() -> new ModelAndView("errors/404",
+                        Map.of("error", "Couldn't find a product"), HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("category/{subCategoryId}")
-    public ModelAndView GetSubCategory(@PathVariable Long subCategoryId) {
-        return service.findSubCategoryById(subCategoryId)
-                .map(product -> new ModelAndView("catalog/category/subCategory",
-                        Map.of("products", service.findSubCategoryById(subCategoryId).get().getProductList()),
+    @GetMapping("category/{subCategoryName}")
+    public ModelAndView GetSubCategory(@PathVariable String subCategoryName) {
+        return productService.findSubCategoryByName(subCategoryName)
+                .map(product -> new ModelAndView("/catalog/category/productsInSubCategory",
+                        Map.of("products", productService.findProductsFromSubCategory(subCategoryName),
+                                "categories", mainService.GetAllCategories()),
                         HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find a sub Category"), HttpStatus.NOT_FOUND));

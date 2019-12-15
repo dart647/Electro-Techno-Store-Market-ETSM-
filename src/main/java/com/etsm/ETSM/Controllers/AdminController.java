@@ -2,6 +2,7 @@ package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Services.AdminService;
+import com.etsm.ETSM.Services.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -14,20 +15,24 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
-    private AdminService service;
+    private AdminService adminService;
+    @Autowired
+    MainService mainService;
 
     @GetMapping("/all")
     public ModelAndView getAllUsers() {
         return new ModelAndView("admin/all",
-                Map.of("users", service.findUsers()),
+                Map.of("users", adminService.findUsers(),
+                        "categories", mainService.GetAllCategories()),
                 HttpStatus.OK);
     }
 
     @GetMapping("{userId}")
     public ModelAndView user(@PathVariable long userId) {
-        return service.findUserById(userId)
+        return adminService.findUserById(userId)
                 .map(user -> new ModelAndView("admin/user",
-                        Map.of("user",user), HttpStatus.OK))
+                        Map.of("user",user,
+                                "categories", mainService.GetAllCategories()), HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error","Couldn't find a user"), HttpStatus.NOT_FOUND));
 
@@ -37,13 +42,14 @@ public class AdminController {
     public ModelAndView AddProduct(){
         Product product = new Product();
         return new ModelAndView("admin/addProduct",
-                Map.of("product", product),
+                Map.of("product", product,
+                        "categories", mainService.GetAllCategories()),
                 HttpStatus.OK);
     }
 
     @PostMapping("/addProduct")
     public String AddProduct(@ModelAttribute Product product){
-        service.addNewProduct(product);
+        adminService.addNewProduct(product);
         return "redirect:/catalog/list";
     }
 }

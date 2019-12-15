@@ -1,5 +1,6 @@
 package com.etsm.ETSM.Services;
 
+import com.etsm.ETSM.Models.Category;
 import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Models.SubCategory;
 import com.etsm.ETSM.Repositories.CategoryRepository;
@@ -14,7 +15,12 @@ import java.util.Optional;
 public interface ProductService {
     List<Product> findAllProducts();
     List<SubCategory> findSubCategories();
+    List<SubCategory> findSubCategoriesFromCategory(String categoryName);
+    List<Product> findProductsFromSubCategory(String subCategoryName);
     Optional<Product> findProductById(Long id);
+    Optional<Product> findProductByName(String name);
+    Optional<Category> findCategoryByName(String name);
+    Optional<SubCategory> findSubCategoryByName(String name);
     Optional<SubCategory> findSubCategoryById(Long id);
 }
 
@@ -40,8 +46,33 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<SubCategory> findSubCategoriesFromCategory(String categoryName) {
+        return findCategoryByName(categoryName).get().getSubCategories();
+    }
+
+    @Override
+    public List<Product> findProductsFromSubCategory(String subCategoryName) {
+        return findSubCategoryByName(subCategoryName).get().getProductList();
+    }
+
+    @Override
     public Optional<Product> findProductById(Long id) {
         return productRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Product> findProductByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    @Override
+    public Optional<Category> findCategoryByName(String name) {
+        return categoryRepository.findByName(name);
+    }
+
+    @Override
+    public Optional<SubCategory> findSubCategoryByName(String name) {
+        return subCategoryRepository.findByName(name);
     }
 
     @Override
