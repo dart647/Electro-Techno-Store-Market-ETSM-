@@ -5,6 +5,7 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.User;
+import com.etsm.ETSM.Models.UserInfo;
 import com.etsm.ETSM.Services.UserInformationService;
 import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,17 @@ import java.util.Map;
  */
 @Controller
 public class UserController {
-    @Autowired
     private UserService userService;
-    @Autowired
     private UserInformationService userInformationService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+    @Autowired
+    public void setUserInformationService(UserInformationService userInformationService) {
+        this.userInformationService = userInformationService;
+    }
 
     @GetMapping("/auth/editAuth")
     public ModelAndView editAuth(Principal principal) {
@@ -45,5 +53,21 @@ public class UserController {
             return "/auth/editAuth";
     }
 
-
+    @GetMapping("/auth/addUserInfo")
+    public ModelAndView addUserInfo(Principal principal) {
+        User user = (User) userService.loadUserByUsername(principal.getName());
+        UserInfo userInfo = new UserInfo();
+        return new ModelAndView("/auth/addUserInfo",
+                Map.of("user",user,
+                        "userInfo",userInfo),
+                HttpStatus.OK);
+    }
+    //Add additional user information
+    @PostMapping("/auth/addUserInfo")
+    public String addUserInfo(@ModelAttribute User user, @ModelAttribute UserInfo userInfo) {
+        if (userInformationService.addUserInfo(user,userInfo))
+            return "redirect:/";
+        else
+            return "/auth/addUserInfo";
+    }
 }

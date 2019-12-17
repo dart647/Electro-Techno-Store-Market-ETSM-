@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLDataException;
-import java.sql.SQLException;
 import java.util.Collections;
 
 public interface RegistrationService{
@@ -17,14 +15,24 @@ public interface RegistrationService{
 
 @Service
 class RegistrationServiceImpl implements RegistrationService {
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     public boolean AddNewUser(User user) {
         if (userService.loadUserByUsername(user.getUsername()) == null) {

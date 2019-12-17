@@ -5,38 +5,66 @@
 package com.etsm.ETSM.Services;
 
 import com.etsm.ETSM.Models.User;
+import com.etsm.ETSM.Models.UserInfo;
 import com.etsm.ETSM.Repositories.UserInfoRepository;
 import com.etsm.ETSM.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.ArrayList;
 
 public interface UserInformationService {
-    void addUserInfo(User user);
+    boolean addUserInfo(User user, UserInfo userInfo);
     void editUserInfo(User user);
     boolean editUserAuth(User user);
     void addLoyalty(User user);
 }
 @Service
 class UserInformationServiceImpl implements UserInformationService {
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private UserInfoRepository userInfoRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private UserService userService;
 
-    @Override
-    public void addUserInfo(User user) {
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
+    @Autowired
+    public void setUserInfoRepository(UserInfoRepository userInfoRepository) {
+        this.userInfoRepository = userInfoRepository;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Override
+    public boolean addUserInfo(User user, UserInfo userInfo) {
+        try {
+            int loyaltyCode = Integer.parseInt(userInfo.getLoyaltyCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        UserInfo newInfo = new UserInfo();
+        newInfo.setUser_id(user);
+        newInfo.setLoyaltyCode(userInfo.getLoyaltyCode());
+        newInfo.setAddress(userInfo.getAddress());
+        newInfo.setBirthDate(userInfo.getBirthDate());
+        newInfo.setWallet(0);
+        newInfo.setSales(new ArrayList<>());
+        newInfo.setFio(userInfo.getFio());
+        userInfoRepository.saveAndFlush(newInfo);
+        return true;
     }
 
     @Override
@@ -46,6 +74,15 @@ class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public boolean editUserAuth(User user) {
+        try {
+            User foundUser = userRepository.findByLogin(user.getLogin());
+            User foundUser2 = userRepository.findByUsername(user.getUsername());
+            if (foundUser != null && foundUser2 != null) {
+                return false;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         User editedUser = (User) userService.loadUserByUsername(user.getUsername());
         editedUser.setLogin(user.getLogin());
         editedUser.setUsername(user.getUsername());
