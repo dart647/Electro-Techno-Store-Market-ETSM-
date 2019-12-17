@@ -38,7 +38,9 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser (@ModelAttribute User user) {
-        registrationService.AddNewUser(user);
-        return "redirect:/";
+        if (registrationService.AddNewUser(user))
+            return "redirect:/";
+        else
+            return "/registration";
     }
 }
