@@ -1,5 +1,6 @@
 package com.etsm.ETSM.Models;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -10,9 +11,9 @@ import java.util.List;
 @Table(name = "userInfo")
 public class UserInfo {
     @Id
-    @Column(name = "`id`", nullable = false, unique = true)
-//    @GeneratedValue(generator = "increment")
-//    @GenericGenerator(name = "increment", strategy = "increment")
+    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
     @Column(name = "`fio`")
     private String fio;
