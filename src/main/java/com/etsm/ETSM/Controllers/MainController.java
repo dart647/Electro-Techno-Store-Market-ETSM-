@@ -1,6 +1,8 @@
 package com.etsm.ETSM.Controllers;
 
+import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Services.MainService;
+import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,8 @@ import java.util.Map;
 public class MainController {
     @Autowired
     private MainService service;
+    @Autowired
+    private UserService userService;
 
     //Main Page
     @GetMapping
@@ -33,9 +37,10 @@ public class MainController {
 
     //User Cabinet Page
     @GetMapping("/user")
-    public ModelAndView UserCabinet(){
+    public ModelAndView UserCabinet(Principal principal){
+        User user = (User) userService.loadUserByUsername(principal.getName());
         return new ModelAndView("/auth/userCabinet",
-                Map.of("categories", service.GetAllCategories()),
+                Map.of("user", user),
                 HttpStatus.OK);
     }
 
@@ -51,7 +56,11 @@ public class MainController {
     @GetMapping("/admin")
     public ModelAndView Admin() {
         return new ModelAndView("/auth/admin",
-                Map.of("categories", service.GetAllCategories()),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/uLogin")
+    public ModelAndView Login(){
+        return new ModelAndView("/auth/login", HttpStatus.OK);
     }
 }

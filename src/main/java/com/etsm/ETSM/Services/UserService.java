@@ -21,8 +21,6 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User userFoundByUsername = userRepository.findByUsername(username);
         User userFoundByLogin = userRepository.findByLogin(username);
-        User userFoundByGoogleUsername = userRepository.findByGoogleUsername(username);
-        User userFoundByGoogleName = userRepository.findByGoogleName(username);
 
         if (userFoundByUsername != null) {
             return userFoundByUsername;
@@ -30,14 +28,6 @@ public class UserService implements UserDetailsService {
 
         if (userFoundByLogin != null) {
             return userFoundByLogin;
-        }
-
-        if (userFoundByGoogleUsername != null) {
-            return userFoundByGoogleUsername;
-        }
-
-        if (userFoundByGoogleName != null) {
-            return userFoundByGoogleName;
         }
 
         return null;

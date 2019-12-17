@@ -55,7 +55,7 @@ class UserInformationServiceImpl implements UserInformationService {
             e.printStackTrace();
             return false;
         }
-        UserInfo newInfo = new UserInfo();
+        UserInfo newInfo = user.getUserInfo();
         newInfo.setUser_id(user);
         newInfo.setLoyaltyCode(userInfo.getLoyaltyCode());
         newInfo.setAddress(userInfo.getAddress());

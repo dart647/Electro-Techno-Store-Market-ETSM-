@@ -23,6 +23,8 @@ public class Product {
     private SubCategory subCategory_id; //Подкатегория
     @Column(name = "`desc`")
     private String description; //Описание
+    @Column(name = "`img`")
+    private String img;
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private transient List<Sales_has_product> salesHasProducts;
 
