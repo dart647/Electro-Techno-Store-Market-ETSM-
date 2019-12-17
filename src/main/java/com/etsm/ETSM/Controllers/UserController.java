@@ -26,17 +26,10 @@ import java.util.Map;
  */
 @Controller
 public class UserController {
+    @Autowired
     private UserService userService;
+    @Autowired
     private UserInformationService userInformationService;
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-    @Autowired
-    public void setUserInformationService(UserInformationService userInformationService) {
-        this.userInformationService = userInformationService;
-    }
 
     @GetMapping("/auth/editAuth")
     public ModelAndView editAuth(Principal principal) {
@@ -58,15 +51,15 @@ public class UserController {
     @GetMapping("/auth/addUserInfo")
     public ModelAndView addUserInfo(Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
-        UserInfo userInfo = new UserInfo();
         return new ModelAndView("/auth/addUserInfo",
                 Map.of("user",user,
-                        "userInfo",userInfo),
+                        "userInfo",user.getUserInfo()),
                 HttpStatus.OK);
     }
     //Add additional user information
     @PostMapping("/auth/addUserInfo")
-    public String addUserInfo(@ModelAttribute User user, @ModelAttribute UserInfo userInfo) {
+    public String addUserInfo(@ModelAttribute UserInfo userInfo, Principal principal) {
+        User user = (User) userService.loadUserByUsername(principal.getName());
         if (userInformationService.addUserInfo(user,userInfo))
             return "redirect:/";
         else

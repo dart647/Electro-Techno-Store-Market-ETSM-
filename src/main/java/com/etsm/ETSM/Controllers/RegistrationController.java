@@ -5,7 +5,6 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.User;
-import com.etsm.ETSM.Services.MainService;
 import com.etsm.ETSM.Services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,25 +21,14 @@ import java.util.Map;
  */
 @Controller
 public class RegistrationController {
+    @Autowired
     RegistrationService registrationService;
-    MainService mainService;
-
-    @Autowired
-    public void setRegistrationService(RegistrationService registrationService) {
-        this.registrationService = registrationService;
-    }
-
-    @Autowired
-    public void setMainService(MainService mainService) {
-        this.mainService = mainService;
-    }
 
     @GetMapping("/registration")
     public ModelAndView registration() {
         User user = new User();
         return new ModelAndView("/registration",
-                Map.of("user",user,
-                        "categories", mainService.GetAllCategories()),
+                Map.of("user",user),
                 HttpStatus.OK);
     }
 

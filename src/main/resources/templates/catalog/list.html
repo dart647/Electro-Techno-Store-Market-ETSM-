@@ -10,82 +10,29 @@
 
 <body>
 <!--Header-->
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/" class="navbar-brand">ETSM</a>
-            </div>
-
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link">Адреса магазинов</a></li>
-                    <li class="nav-item"><a class="nav-link">Обратная связь</a></li>
-                    <li class="nav-item"><a class="nav-link">О нас</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active"><a class="nav-link" href="/">Главная</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Каталог <b
-                            class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li th:each="cat: ${categories}">
-                            <a th:text="${cat.name}" th:href="@{/catalog/{categoryName}(categoryName=${cat.name})}"
-                               class="dropdown-item"></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="/admin">Панель администратора</a></li>
-                <li class="nav-item"><a class="nav-link" href="/user">Личный Кабинет</a></li>
-                <li class="nav-item"><a class="nav-link" href="/registration">Регистрация</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basket">Корзина</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<header th:replace="header :: head"/>
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-2">
-            <h3>Категории товаров</h3>
-            <ul class="nav flex-column" th:each="cat: ${categories}">
-                <li class="nav-item">
-                    <a class="btn btn-outline-secondary btn-block"
-                       th:href="@{/catalog/{categoryName}(categoryName=${cat.name})}" th:text="${cat.name}"></a>
-                </li>
-            </ul>
-        </div>
+        <div th:replace="header :: leftBar"/>
         <!--Заменяемая часть-->
         <div class="col">
-            <h1>Все товары</h1>
-
-            <table class="table">
-                <thead>
-                <th scope="col">#</th>
-                <th scope="col">Изображение</th>
-                <th scope="col">Название</th>
-                <th scope="col">Цена</th>
-                <th scope="col">Подкатегория</th>
-                <th scope="col">Атрибуты</th>
-                </thead>
-                <tbody>
-                <tr th:each="product: ${products}">
-                    <th scope="row" th:text="${product.id}"></th>
-                    <td> В разработке</td>
-                    <td><a th:text="${product.name}" th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}"></a></td>
-                    <td th:text="${product.price}"></td>
-                    <td th:text="${product.subCategory_id.name}"></td>
-                    <td> В разработке</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="container">
+                <h1>Все товары</h1>
+                <div class="row">
+                    <div class="col-4" th:each="product: ${products}">
+                        <div>
+                            <a class="btn btn-outline-dark" th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}">
+                                <!--                    <img src="">-->
+                                <label th:text="${'Название ' + product.name}"></label>
+                                <br>
+                                <label th:text="${'Цена ' + product.price}"></label>
+                            </a>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

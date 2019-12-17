@@ -59,15 +59,6 @@
 <!--Main-->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-2">
-            <h3>Категории товаров</h3>
-            <ul class="nav flex-column" th:each="cat: ${categories}">
-                <li class="nav-item">
-                    <a class="btn btn-outline-secondary btn-block"
-                       th:href="@{/catalog/{categoryName}(categoryName=${cat.name})}" th:text="${cat.name}"></a>
-                </li>
-            </ul>
-        </div>
         <!--Заменяемая часть-->
         <form th:action="@{/auth/addUserInfo}" method="post">
             <div class="form-group">
@@ -76,7 +67,7 @@
             </div>
             <div class="form-group">
                 <label for="birthdate">Дата рождения</label>
-                <input class="form-control" id="birthdate" type="date" name="birthdate">
+                <input class="form-control" id="birthdate" type="date" name="birthDate">
             </div>
             <div class="form-group">
                 <label for="address">Адрес</label>

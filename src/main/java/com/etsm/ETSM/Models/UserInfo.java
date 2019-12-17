@@ -1,7 +1,6 @@
 package com.etsm.ETSM.Models;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,16 +17,15 @@ public class UserInfo {
     @Column(name = "`fio`")
     private String fio;
     @Column(name = "`birthDate`")
-    private LocalDate birthDate;
+    private String birthDate;
     @Column(name = "`address`")
     private String address;
     @Column(name = "`loyaltyCode`")
     private String loyaltyCode;
     @Column(name = "`wallet`")
     private int wallet;
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private User user_id;
     @OneToMany(targetEntity = Sales.class, mappedBy = "userInfo_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private transient List<Sales> sales;
@@ -56,11 +54,11 @@ public class UserInfo {
         this.fio = fio;
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

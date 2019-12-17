@@ -36,15 +36,10 @@ public class User implements UserDetails {
     @Column(name = "login")
     private String login;
 
-    @Column(name = "googleUsername")
-    private String googleUsername;
-
-    @Column(name = "googleName")
-    private String googleName;
-
-    @OneToOne(mappedBy = "user_id", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private transient UserInfo userInfo;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private UserInfo userInfo;
 
     public UserInfo getUserInfo() {
         return userInfo;
@@ -102,22 +97,6 @@ public class User implements UserDetails {
         this.login = login;
     }
 
-    public String getGoogleUsername() {
-        return googleUsername;
-    }
-
-    public void setGoogleUsername(String googleUsername) {
-        this.googleUsername = googleUsername;
-    }
-
-    public String getGoogleName() {
-        return googleName;
-    }
-
-    public void setGoogleName(String googleName) {
-        this.googleName = googleName;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -158,9 +137,7 @@ public class User implements UserDetails {
                 Objects.equals(getUsername(), user.getUsername()) &&
                 Objects.equals(getPassword(), user.getPassword()) &&
                 Objects.equals(getRoles(), user.getRoles()) &&
-                Objects.equals(getLogin(), user.getLogin()) &&
-                Objects.equals(getGoogleUsername(), user.getGoogleUsername()) &&
-                Objects.equals(getGoogleName(), user.getGoogleName());
+                Objects.equals(getLogin(), user.getLogin());
     }
 
     @Override
@@ -172,8 +149,6 @@ public class User implements UserDetails {
                 ", login = " + login +
                 ", roles = " + roles +
                 ", active = " + active +
-                ", Google Username = " + googleUsername +
-                ", Google Name = " + googleName +
                 "}";
     }
 }
