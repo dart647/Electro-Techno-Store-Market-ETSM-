@@ -109,6 +109,7 @@ CREATE TABLE `product` (
   `name` varchar(100) NOT NULL,
   `price` int(11) NOT NULL,
   `desc` longtext,
+  `img` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`,`subCategory_id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
@@ -123,7 +124,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,1,'ASUS ROGE',56465,'New Generation of Pc gaming'),(2,2,'MacBook Pro 14',80013,'Just for work'),(3,4,'Panasonic',1200,'Home using'),(4,3,'Honor 8x',16000,'Poewr of the univers');
+INSERT INTO `product` VALUES (1,1,'ASUS ROGE',56465,'New Generation of Pc gaming',NULL),(2,2,'MacBook Pro 14',80013,'Just for work',NULL),(3,4,'Panasonic',1200,'Home using',NULL),(4,3,'Honor 8x',16000,'Poewr of the univers',NULL),(5,1,'qwe',1235,'asd',NULL),(6,1,'asd',1651,'2',NULL);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,11 +233,10 @@ CREATE TABLE `user` (
   `roles` enum('USER','MANAGER','ADMIN') NOT NULL,
   `active` tinyint(4) NOT NULL,
   `login` varchar(255) NOT NULL,
-  `googleUsername` varchar(255) DEFAULT NULL,
-  `googleName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`,`username`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `login_UNIQUE` (`username`)
+  UNIQUE KEY `login_UNIQUE` (`username`),
+  CONSTRAINT `fk_user_userinfo1` FOREIGN KEY (`id`) REFERENCES `userinfo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -246,7 +246,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'test@yandex.ru','$2a$10$Lc/Jv/JbWc9SozVle1my9uQDme6iOq7cPslGkOfS3pP.sNcfIW5DW','ADMIN',1,'test',NULL,NULL),(2,'spivak@mail.ru','$2a$10$q7tevVPzrXtJ44n4mk9IkeXyc9QcFxWc9RKvitWDfoqhUKT9EXKf.','ADMIN',1,'dart647',NULL,NULL);
+INSERT INTO `user` VALUES (1,'test@yandex.ru','$2a$10$.FkITywKvhx5w5yCCkprzelLoMinY0OlKvOUqT/CoqlrLPfr/iAga','ADMIN',1,'test2'),(2,'spivak@mail.ru','$2a$10$q7tevVPzrXtJ44n4mk9IkeXyc9QcFxWc9RKvitWDfoqhUKT9EXKf.','ADMIN',1,'dart647'),(3,'test@mail.ru','$2a$10$bwKKlYuA95UQgH9awpTP1.lAFOQzSTURIg1f8BLg0NKW3jlxht.a.','USER',1,'qwe');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,7 +271,7 @@ CREATE TABLE `user_roles` (
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` VALUES (1,'USER'),(2,'ADMIN');
+INSERT INTO `user_roles` VALUES (1,'USER'),(2,'ADMIN'),(3,'USER');
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,16 +285,15 @@ DROP TABLE IF EXISTS `userinfo`;
 CREATE TABLE `userinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fio` varchar(45) NOT NULL DEFAULT 'new user',
-  `birthDate` date DEFAULT NULL,
+  `birthDate` varchar(45) DEFAULT NULL,
   `address` longtext,
   `loyaltyCode` varchar(10) DEFAULT NULL,
   `wallet` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `loyaltyCode_UNIQUE` (`loyaltyCode`),
-  KEY `fk_userinfo_user1` (`id`),
-  CONSTRAINT `fk_userinfo_user1` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_userinfo_user1` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,7 +302,7 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` VALUES (1,'SAA','1999-01-04','Moscow','132as1d',100000000);
+INSERT INTO `userinfo` VALUES (1,'SAA','1999-01-04','Moscow','132as1d',100000000),(2,'asd','2019-12-12','qwe','13215',0),(3,'Test',NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -316,4 +315,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-13  1:34:29
+-- Dump completed on 2019-12-18  0:16:01
