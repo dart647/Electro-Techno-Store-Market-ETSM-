@@ -10,24 +10,40 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 public interface RegistrationService{
-    void AddNewUser(User user);
+    boolean AddNewUser(User user);
 }
 
 @Service
-class RegistrationServiceImpl implements RegistrationService{
-    @Autowired
+class RegistrationServiceImpl implements RegistrationService {
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-    public void AddNewUser(User user){
-        User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setLogin(user.getLogin());
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        newUser.setActive(true);
-        newUser.setRoles(Collections.singleton(Role.USER));
-        userRepository.saveAndFlush(newUser);
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public boolean AddNewUser(User user) {
+        if (userService.loadUserByUsername(user.getUsername()) == null) {
+            User newUser = new User();
+            newUser.setUsername(user.getUsername());
+            newUser.setLogin(user.getLogin());
+            newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            newUser.setActive(true);
+            newUser.setRoles(Collections.singleton(Role.USER));
+            userRepository.saveAndFlush(newUser);
+            return true;
+        } else return false;
     }
 }

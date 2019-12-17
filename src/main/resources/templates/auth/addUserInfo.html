@@ -1,12 +1,15 @@
+<!--
+  ~ Copyright (c) 2019. Smalkov Nikita.
+  -->
+
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th=http://www.w3.org/1999/xhtml>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <title>Личный Кабинет</title>
+    <title>Вход</title>
 </head>
 
 <body>
@@ -66,13 +69,28 @@
             </ul>
         </div>
         <!--Заменяемая часть-->
-        <div class="col justify-content-center">
-            <!--            <h1 th:text="'Привет, ' + ${user.login}"></h1>-->
-            <!--            <h2 th:text="${user.username}"></h2>-->
-            <a class="nav-link" href="/auth/editAuth">Изменить логин/пароль</a>
-            <a class="nav-link" href="/auth/addUserInfo">Добавить дополнительную информацию</a>
-        </div>
+        <form th:action="@{/auth/addUserInfo}" method="post">
+            <div class="form-group">
+                <label for="fio">ФИО</label>
+                <input class="form-control" id="fio" type="text" name="fio">
+            </div>
+            <div class="form-group">
+                <label for="birthdate">Дата рождения</label>
+                <input class="form-control" id="birthdate" type="date" name="birthdate">
+            </div>
+            <div class="form-group">
+                <label for="address">Адрес</label>
+                <input class="form-control" id="address" type="text" name="address">
+            </div>
+            <div class="form-group">
+                <label for="loyaltyCode">Код карты постоянного покупателя</label>
+                <input class="form-control" id="loyaltyCode" type="text" name="loyaltyCode">
+            </div>
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <input type="submit" value="Регистрация" class="btn btn-success"/>
+        </form>
     </div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

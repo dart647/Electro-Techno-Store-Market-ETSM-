@@ -22,10 +22,18 @@ import java.util.Map;
  */
 @Controller
 public class RegistrationController {
-    @Autowired
     RegistrationService registrationService;
-    @Autowired
     MainService mainService;
+
+    @Autowired
+    public void setRegistrationService(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
+
+    @Autowired
+    public void setMainService(MainService mainService) {
+        this.mainService = mainService;
+    }
 
     @GetMapping("/registration")
     public ModelAndView registration() {
@@ -38,7 +46,9 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser (@ModelAttribute User user) {
-        registrationService.AddNewUser(user);
-        return "redirect:/";
+        if (registrationService.AddNewUser(user))
+            return "redirect:/";
+        else
+            return "/registration";
     }
 }
