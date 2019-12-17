@@ -38,14 +38,13 @@ public class MainController {
     }
 
     @PostMapping("/")
-    @ResponseBody
-    public ModelAndView MainPageWithSearch(@RequestBody String search)
+    public ModelAndView MainPageWithSearch(@ModelAttribute("searching") String searching)
     {
         return new ModelAndView("/main",
                 Map.of("products", service.SetRecommendations(),
                         "categories", service.GetAllCategories(),
-                        "searchProducts", service.GetSearchProducts(search),
-                        "search", search),
+                        "searchProducts", service.GetSearchProducts(searching),
+                        "search", searching),
                 HttpStatus.OK);
     }
 
