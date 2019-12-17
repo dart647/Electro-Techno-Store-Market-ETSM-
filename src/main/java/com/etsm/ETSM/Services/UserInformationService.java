@@ -16,9 +16,8 @@ import java.util.ArrayList;
 
 public interface UserInformationService {
     boolean addUserInfo(User user, UserInfo userInfo);
-    void editUserInfo(User user);
     boolean editUserAuth(User user);
-    void addLoyalty(User user);
+    void deleteUser(User user);
 }
 @Service
 class UserInformationServiceImpl implements UserInformationService {
@@ -49,12 +48,6 @@ class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public boolean addUserInfo(User user, UserInfo userInfo) {
-        try {
-            int loyaltyCode = Integer.parseInt(userInfo.getLoyaltyCode());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
         UserInfo newInfo = new UserInfo();
         newInfo.setUser_id(user);
         newInfo.setLoyaltyCode(userInfo.getLoyaltyCode());
@@ -65,11 +58,6 @@ class UserInformationServiceImpl implements UserInformationService {
         newInfo.setFio(userInfo.getFio());
         userInfoRepository.saveAndFlush(newInfo);
         return true;
-    }
-
-    @Override
-    public void editUserInfo(User user) {
-
     }
 
     @Override
@@ -92,7 +80,7 @@ class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
-    public void addLoyalty(User user) {
-
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 }

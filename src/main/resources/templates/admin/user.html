@@ -74,6 +74,7 @@
             <h1 th:text="${user.login}"></h1>
             <h2 th:text="${user.username}"></h2>
         </div>
+        <a class="nav-link" data-th-href="@{/admin/{userId}/deleteUser(userId=${user.id})}">Удалить аккаунт</a>
     </div>
 </div>
 
