@@ -6,8 +6,7 @@ import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
@@ -26,12 +25,27 @@ public class MainController {
     private UserService userService;
 
     //Main Page
-    @GetMapping
+    @GetMapping("/")
     public ModelAndView MainPage(Principal principal)
+    {
+        String search = "";
+        return new ModelAndView("/main",
+                Map.of("products", service.SetRecommendations(),
+                        "categories", service.GetAllCategories(),
+                        "searchProducts", service.GetSearchProducts(""),
+                        "search", search),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/")
+    @ResponseBody
+    public ModelAndView MainPageWithSearch(@RequestBody String search)
     {
         return new ModelAndView("/main",
                 Map.of("products", service.SetRecommendations(),
-                        "categories", service.GetAllCategories()),
+                        "categories", service.GetAllCategories(),
+                        "searchProducts", service.GetSearchProducts(search),
+                        "search", search),
                 HttpStatus.OK);
     }
 

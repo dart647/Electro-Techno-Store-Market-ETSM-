@@ -17,6 +17,7 @@ public interface MainService{
     List<Product> SetRecommendations();
     List<Category> GetAllCategories();
     User GetUser(String login);
+    List<Product> GetSearchProducts(String searchingProduct);
 }
 
 @Service
@@ -48,5 +49,10 @@ class MainServiceImpl implements MainService{
     @Override
     public User GetUser(String login) {
         return userRepository.findByLogin(login);
+    }
+
+    @Override
+    public List<Product> GetSearchProducts(String searchingProduct) {
+        return productRepository.findByNameLike("%"+searchingProduct+"%");
     }
 }
