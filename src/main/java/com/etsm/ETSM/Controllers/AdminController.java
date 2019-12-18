@@ -1,28 +1,81 @@
 package com.etsm.ETSM.Controllers;
 
+<<<<<<< HEAD
 import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Services.AdminService;
 import com.etsm.ETSM.Services.UserService;
+=======
+import com.etsm.ETSM.Models.*;
+import com.etsm.ETSM.Repositories.CategoryRepository;
+import com.etsm.ETSM.Repositories.SubCategoryRepository;
+import com.etsm.ETSM.Repositories.UserRepository;
+import com.etsm.ETSM.Services.AdminService;
+import com.etsm.ETSM.Services.MainService;
+import com.etsm.ETSM.Services.ProductService;
+import com.etsm.ETSM.Services.UserInformationService;
+>>>>>>> d347646c3ec1e2dd4da614d4cbe7d369d00574f2
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+<<<<<<< HEAD
 import java.security.Principal;
 import java.util.Collections;
 import java.util.HashSet;
+=======
+import java.util.List;
+>>>>>>> d347646c3ec1e2dd4da614d4cbe7d369d00574f2
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    @Autowired
     private AdminService adminService;
+<<<<<<< HEAD
     @Autowired
     private UserService userService;
+=======
+    MainService mainService;
+    UserInformationService userInformationService;
+    private CategoryRepository categoryRepository;
+    private SubCategoryRepository subCategoryRepository;
+    private ProductService productService;
+
+    @Autowired
+    public void setAdminService(AdminService adminService) {
+        this.adminService = adminService;
+    }
+
+    @Autowired
+    public void setMainService(MainService mainService) {
+        this.mainService = mainService;
+    }
+
+    @Autowired
+    public void setUserInformationService(UserInformationService userInformationService) {
+        this.userInformationService = userInformationService;
+    }
+
+    @Autowired
+    public void setCategoryRepository(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    @Autowired
+    public void setSubCategoryRepository(SubCategoryRepository subCategoryRepository) {
+        this.subCategoryRepository = subCategoryRepository;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
+>>>>>>> d347646c3ec1e2dd4da614d4cbe7d369d00574f2
 
     @GetMapping("/all")
     public ModelAndView getAllUsers(Principal principal) {
@@ -56,6 +109,13 @@ public class AdminController {
 
     }
 
+    @GetMapping("{userId}/deleteUser")
+    public String deleteOneUser(@PathVariable long userId) {
+        Optional<User> optionalUser = adminService.findUserById(userId);
+        optionalUser.ifPresent(user -> userInformationService.deleteUser(user));
+        return "redirect:/admin";
+    }
+
     @GetMapping("/addProduct")
     public ModelAndView AddProduct(Principal principal){
         User userForRole = new User();
@@ -64,15 +124,75 @@ public class AdminController {
             userForRole = (User) userService.loadUserByUsername(principal.getName());
         }
         Product product = new Product();
+        String subCategoryName = "";
+        List<SubCategory> subCategoryList = subCategoryRepository.findAll();
         return new ModelAndView("admin/addProduct",
                 Map.of("product", product,
+<<<<<<< HEAD
                         "role", userForRole.getRoles().toArray()[0].toString()),
+=======
+                        "subCategoryName",subCategoryName,
+                        "subCategoryList",subCategoryList),
+>>>>>>> d347646c3ec1e2dd4da614d4cbe7d369d00574f2
                 HttpStatus.OK);
     }
 
+
     @PostMapping("/addProduct")
-    public String AddProduct(@ModelAttribute Product product){
-        adminService.addNewProduct(product);
+    public String AddProduct(@ModelAttribute Product product,
+                             @ModelAttribute("subCategoryName") String subCategoryName){
+        adminService.addNewProduct(product,subCategoryName);
         return "redirect:/catalog/list";
+    }
+
+    @GetMapping("/addCategory")
+    public ModelAndView addCategory() {
+        Category category = new Category();
+        List<Category> categoryList = categoryRepository.findAll();
+        return new ModelAndView("admin/addCategory",
+                Map.of("category", category,
+                        "categoryList",categoryList),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/addCategory")
+    public String addCategory(@ModelAttribute Category category) {
+        adminService.addNewCategory(category);
+        return "redirect:/admin/addCategory";
+    }
+
+    @GetMapping("/addSubCategory")
+    public ModelAndView addSubCategory() {
+        SubCategory subCategory = new SubCategory();
+        String categoryName = "";
+        List<Category> categoryList = categoryRepository.findAll();
+        return new ModelAndView("admin/addSubCategory",
+                Map.of("subCategory", subCategory,
+                        "categoryName",categoryName,
+                        "categoryList",categoryList
+                        ),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/addSubCategory")
+    public String addSubCategory(@ModelAttribute SubCategory subCategory,
+                                 @ModelAttribute("categoryName") String categoryName
+                                 ) {
+        adminService.addNewSubCategory(categoryName,subCategory);
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/addAttribute")
+    public ModelAndView addAttribute() {
+        Attribute attribute = new Attribute();
+        return new ModelAndView("admin/addAttribute",
+                Map.of("attribute",attribute),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/addAttribute")
+    public String addAttribute(@ModelAttribute Attribute attribute) {
+        adminService.addNewAttribute(attribute);
+        return "redirect:/admin";
     }
 }
