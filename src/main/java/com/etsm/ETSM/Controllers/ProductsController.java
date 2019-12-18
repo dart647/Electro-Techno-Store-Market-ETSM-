@@ -23,12 +23,18 @@ import java.util.Map;
 @Controller
 @RequestMapping("/catalog")
 public class ProductsController {
-    @Autowired
-    ProductService productService;
-    @Autowired
-    MainService mainService;
-    @Autowired
+
+    private ProductService productService;
+
+    private MainService mainService;
+
     private UserService userService;
+
+    public ProductsController(ProductService productService, MainService mainService, UserService userService) {
+        this.productService = productService;
+        this.mainService = mainService;
+        this.userService = userService;
+    }
 
     //Products List Page
     @GetMapping("/list")
@@ -97,5 +103,16 @@ public class ProductsController {
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find a sub Category"), HttpStatus.NOT_FOUND));
     }
-
+@Autowired
+    public void setMainService(MainService mainService) {
+        this.mainService = mainService;
+    }
+@Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
+@Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 }

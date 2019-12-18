@@ -17,13 +17,22 @@ import java.util.*;
 @RequestMapping("/admin")
 public class AdminController {
     private AdminService adminService;
-    @Autowired
     private UserService userService;
     MainService mainService;
     UserInformationService userInformationService;
     private CategoryRepository categoryRepository;
     private SubCategoryRepository subCategoryRepository;
     private ProductService productService;
+
+    public AdminController(AdminService adminService, UserService userService, MainService mainService, UserInformationService userInformationService, CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository, ProductService productService) {
+        this.adminService = adminService;
+        this.userService = userService;
+        this.mainService = mainService;
+        this.userInformationService = userInformationService;
+        this.categoryRepository = categoryRepository;
+        this.subCategoryRepository = subCategoryRepository;
+        this.productService = productService;
+    }
 
     @Autowired
     public void setAdminService(AdminService adminService) {
@@ -169,5 +178,9 @@ public class AdminController {
     public String addAttribute(@ModelAttribute Attribute attribute) {
         adminService.addNewAttribute(attribute);
         return "redirect:/admin";
+    }
+@Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

@@ -26,10 +26,15 @@ import java.util.Map;
  */
 @Controller
 public class RegistrationController {
-    @Autowired
-    RegistrationService registrationService;
-    @Autowired
+
+    private RegistrationService registrationService;
+
     private UserService userService;
+
+    public RegistrationController(RegistrationService registrationService, UserService userService) {
+        this.registrationService = registrationService;
+        this.userService = userService;
+    }
 
     @GetMapping("/registration")
     public ModelAndView registration(Principal principal) {
@@ -50,5 +55,13 @@ public class RegistrationController {
             return "redirect:/";
         else
             return "/registration";
+    }
+@Autowired
+    public void setRegistrationService(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }
