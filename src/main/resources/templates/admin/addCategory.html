@@ -1,5 +1,9 @@
+<!--
+  ~ Copyright (c) 2019. Smalkov Nikita.
+  -->
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Latest compiled and minified CSS -->
@@ -16,21 +20,24 @@
     <div class="row">
         <!--Заменяемая часть-->
         <div class="col">
-            <h1>Добавить товар</h1>
-            <form th:action="@{/admin/addProduct}" method="post">
+            <h1>Добавить категорию</h1>
+            <form th:action="@{/admin/addCategory}" method="post">
                 <div class="form-group">
-                    <label for="Name"> Название продукта:</label>
-                    <input type="text" name="name" id="Name"/>
-                    <label for="Price"> Цена:</label>
-                    <input type="text" name="price" id="Price"/>
-                    <label for="Desc"> Описание:</label>
-                    <input type="text" name="description" id="Desc"/>
-                    <label for="subCategoryName"> Название подкатегории:</label>
-                    <input type="text" name="subCategoryName" id="subCategoryName"/>
+                    <label for="name"> Название категории:</label>
+                    <input type="text" name="name" id="name"/>
                     <input type="submit" value="Добавить" class="btn btn-success"/>
                 </div>
             </form>
         </div>
+    </div>
+</div>
+
+<div class="col">
+    <h1>Страница категорий</h1>
+
+    <div data-th-each="category : ${categoryList}" class="category">
+        <label th:text="'ID - '+ ${category.id}"></label>
+        <label th:text="'Название - '+ ${category.name}"></label>
     </div>
 </div>
 
