@@ -1,45 +1,24 @@
 package com.etsm.ETSM.Controllers;
 
-<<<<<<< HEAD
-import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Models.Role;
-import com.etsm.ETSM.Models.User;
-import com.etsm.ETSM.Services.AdminService;
-import com.etsm.ETSM.Services.UserService;
-=======
 import com.etsm.ETSM.Models.*;
 import com.etsm.ETSM.Repositories.CategoryRepository;
 import com.etsm.ETSM.Repositories.SubCategoryRepository;
-import com.etsm.ETSM.Repositories.UserRepository;
-import com.etsm.ETSM.Services.AdminService;
-import com.etsm.ETSM.Services.MainService;
-import com.etsm.ETSM.Services.ProductService;
-import com.etsm.ETSM.Services.UserInformationService;
->>>>>>> d347646c3ec1e2dd4da614d4cbe7d369d00574f2
+import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-<<<<<<< HEAD
 import java.security.Principal;
-import java.util.Collections;
-import java.util.HashSet;
-=======
-import java.util.List;
->>>>>>> d347646c3ec1e2dd4da614d4cbe7d369d00574f2
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private AdminService adminService;
-<<<<<<< HEAD
     @Autowired
     private UserService userService;
-=======
     MainService mainService;
     UserInformationService userInformationService;
     private CategoryRepository categoryRepository;
@@ -75,7 +54,6 @@ public class AdminController {
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
->>>>>>> d347646c3ec1e2dd4da614d4cbe7d369d00574f2
 
     @GetMapping("/all")
     public ModelAndView getAllUsers(Principal principal) {
@@ -128,12 +106,9 @@ public class AdminController {
         List<SubCategory> subCategoryList = subCategoryRepository.findAll();
         return new ModelAndView("admin/addProduct",
                 Map.of("product", product,
-<<<<<<< HEAD
-                        "role", userForRole.getRoles().toArray()[0].toString()),
-=======
+                        "role", userForRole.getRoles().toArray()[0].toString(),
                         "subCategoryName",subCategoryName,
                         "subCategoryList",subCategoryList),
->>>>>>> d347646c3ec1e2dd4da614d4cbe7d369d00574f2
                 HttpStatus.OK);
     }
 

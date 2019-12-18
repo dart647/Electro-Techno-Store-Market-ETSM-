@@ -27,7 +27,7 @@ CREATE TABLE `attribute` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `attribute` (
 
 LOCK TABLES `attribute` WRITE;
 /*!40000 ALTER TABLE `attribute` DISABLE KEYS */;
-INSERT INTO `attribute` VALUES (1,'Black'),(2,'Red'),(3,'Silver'),(4,'FullHd'),(5,'Hd'),(6,'Intel'),(7,'AMD'),(8,'Android'),(9,'Apple');
+INSERT INTO `attribute` VALUES (1,'Black'),(2,'Red'),(3,'Silver'),(4,'FullHd'),(5,'Hd'),(6,'Intel'),(7,'AMD'),(8,'Android'),(9,'Apple'),(10,'atrib');
 /*!40000 ALTER TABLE `attribute` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +83,7 @@ CREATE TABLE `category` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +124,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,1,'ASUS ROGE',56465,'New Generation of Pc gaming',NULL),(2,2,'MacBook Pro 14',80013,'Just for work',NULL),(3,4,'Panasonic',1200,'Home using',NULL),(4,3,'Honor 8x',16000,'Poewr of the univers',NULL),(5,1,'qwe',1235,'asd',NULL),(6,1,'asd',1651,'2',NULL);
+INSERT INTO `product` VALUES (1,1,'ASUS ROGE',56465,'New Generation of Pc gaming','https://www.acharyasushilmuni.org/images/404.jpg'),(2,2,'MacBook Pro 14',80013,'Just for work','https://www.acharyasushilmuni.org/images/404.jpg'),(3,4,'Panasonic',1200,'Home using','https://www.acharyasushilmuni.org/images/404.jpg'),(4,3,'Honor 8x',16000,'Poewr of the univers','https://www.acharyasushilmuni.org/images/404.jpg');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +206,7 @@ CREATE TABLE `subcategory` (
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_subCategory_category1_idx` (`category_id`),
   CONSTRAINT `fk_subCategory_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,7 +215,7 @@ CREATE TABLE `subcategory` (
 
 LOCK TABLES `subcategory` WRITE;
 /*!40000 ALTER TABLE `subcategory` DISABLE KEYS */;
-INSERT INTO `subcategory` VALUES (1,'Gaming PC',1),(2,'Home PC',1),(4,'Home telephone',2),(3,'Smartphone',2);
+INSERT INTO `subcategory` VALUES (5,'asdw',1),(1,'Gaming PC',1),(2,'Home PC',1),(4,'Home telephone',2),(3,'Smartphone',2);
 /*!40000 ALTER TABLE `subcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,7 +246,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'test@yandex.ru','$2a$10$.FkITywKvhx5w5yCCkprzelLoMinY0OlKvOUqT/CoqlrLPfr/iAga','ADMIN',1,'test2'),(2,'spivak@mail.ru','$2a$10$q7tevVPzrXtJ44n4mk9IkeXyc9QcFxWc9RKvitWDfoqhUKT9EXKf.','ADMIN',1,'dart647'),(3,'test@mail.ru','$2a$10$bwKKlYuA95UQgH9awpTP1.lAFOQzSTURIg1f8BLg0NKW3jlxht.a.','USER',1,'qwe');
+INSERT INTO `user` VALUES (1,'test@yandex.ru','$2a$10$.FkITywKvhx5w5yCCkprzelLoMinY0OlKvOUqT/CoqlrLPfr/iAga','ADMIN',1,'test2'),(2,'spivak@mail.ru','$2a$10$q7tevVPzrXtJ44n4mk9IkeXyc9QcFxWc9RKvitWDfoqhUKT9EXKf.','ADMIN',1,'dart647'),(3,'test@mail.ru','$2a$10$bwKKlYuA95UQgH9awpTP1.lAFOQzSTURIg1f8BLg0NKW3jlxht.a.','USER',1,'qwe'),(4,'testM@yandex.ru','$2a$10$dzJVQMyjFmd3Z6xEyVl/5exLPg8UfFLR5kth6.hiIo0M.ICl3UcVO','MANAGER',1,'testM');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,7 +271,7 @@ CREATE TABLE `user_roles` (
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` VALUES (1,'USER'),(2,'ADMIN'),(3,'USER');
+INSERT INTO `user_roles` VALUES (1,'USER'),(2,'ADMIN'),(3,'USER'),(4,'MANAGER');
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,7 +293,7 @@ CREATE TABLE `userinfo` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `loyaltyCode_UNIQUE` (`loyaltyCode`),
   KEY `fk_userinfo_user1` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -302,7 +302,7 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` VALUES (1,'SAA','1999-01-04','Moscow','132as1d',100000000),(2,'asd','2019-12-12','qwe','13215',0),(3,'Test',NULL,NULL,NULL,0);
+INSERT INTO `userinfo` VALUES (1,'SAA','1999-01-04','Moscow','132as1d',100000000),(2,'asd','2019-12-12','qwe','13215',0),(3,'Test',NULL,NULL,NULL,0),(4,'new user',NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -315,4 +315,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-18  0:16:01
+-- Dump completed on 2019-12-18 12:51:21
