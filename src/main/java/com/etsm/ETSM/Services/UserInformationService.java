@@ -48,13 +48,6 @@ class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public boolean addUserInfo(User user, UserInfo userInfo) {
-        UserInfo newInfo = new UserInfo();
-        try {
-            int loyaltyCode = Integer.parseInt(userInfo.getLoyaltyCode());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
         UserInfo newInfo = user.getUserInfo();
         newInfo.setUser_id(user);
         newInfo.setLoyaltyCode(userInfo.getLoyaltyCode());

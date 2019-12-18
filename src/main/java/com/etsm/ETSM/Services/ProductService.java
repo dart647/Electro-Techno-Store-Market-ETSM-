@@ -22,18 +22,27 @@ public interface ProductService {
     Optional<Category> findCategoryByName(String name);
     Optional<SubCategory> findSubCategoryByName(String name);
     Optional<SubCategory> findSubCategoryById(Long id);
+    List<Category> findCategories();
 }
 
 @Service
 class ProductServiceImpl implements ProductService {
-    @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
     private SubCategoryRepository subCategoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+    @Autowired
+    public void setSubCategoryRepository(SubCategoryRepository subCategoryRepository) {
+        this.subCategoryRepository = subCategoryRepository;
+    }
+    @Autowired
+    public void setCategoryRepository(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public List<Product> findAllProducts() {
@@ -79,4 +88,11 @@ class ProductServiceImpl implements ProductService {
     public Optional<SubCategory> findSubCategoryById(Long id) {
         return subCategoryRepository.findById(id);
     }
+
+    @Override
+    public List<Category> findCategories() {
+        return categoryRepository.findAll();
+    }
+
+
 }
