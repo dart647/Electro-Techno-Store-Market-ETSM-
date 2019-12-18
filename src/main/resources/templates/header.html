@@ -12,7 +12,7 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link">Адреса магазинов</a></li>
                     <li class="nav-item"><a class="nav-link">Обратная связь</a></li>
-                    <li class="nav-item"><a class="nav-link">О нас</a></li>
+                    <li class="nav-item"><a href="/about" class="nav-link">О нас</a></li>
                 </ul>
             </div>
         </div>
@@ -33,10 +33,16 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="/catalog/list">Все товары</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin">Панель администратора</a></li>
                     <li class="nav-item"><a class="nav-link" href="/user">Личный Кабинет</a></li>
                     <li class="nav-item"><a class="nav-link" href="/registration">Регистрация</a></li>
                     <li class="nav-item"><a class="nav-link" href="/basket">Корзина</a></li>
+<!--                    <div th:if="${user.roles}">-->
+<!--                        <div th:switch="${user.roles}">  th:case="${Role.ADMIN}"-->
+                            <li class="nav-item"><a class="nav-link" href="/admin">Панель администратора</a></li>
+<!--                            <li th:case="${Role.MANAGER}" class="nav-item"><a class="nav-link" href="/admin">Панель менеджера</a></li>-->
+<!--                            <li th:case="*">проверка</li>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </ul>
             </div>
         </div>

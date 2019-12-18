@@ -33,7 +33,7 @@
                     <br>
                     <div>
                         <a class="btn btn-outline-dark" th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}">
-                            <!--                    <img src="">-->
+                            <img class="img-thumbnail" th:src="${product.img}">
                             <label th:text="${'Название ' + product.name}"></label>
                             <br>
                             <label th:text="${'Цена ' + product.price}"></label>
@@ -50,6 +50,7 @@
                 <li class="nav-item">
                     <a class="btn btn-outline-secondary btn-block"
                        th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}">
+                        <img class="img-thumbnail" th:src="${product.img}">
                         <label th:text="'Название - '+ ${product.name}"></label>
                         <br>
                         <label th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}"

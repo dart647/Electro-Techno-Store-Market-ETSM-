@@ -68,6 +68,14 @@ public class Product {
         this.price = price;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     public SubCategory getSubCategory_id() {
         return subCategory_id;
     }
