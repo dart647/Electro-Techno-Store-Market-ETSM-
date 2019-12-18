@@ -23,8 +23,10 @@
             <div th:each="product : ${products}">
                 <a class="btn btn-outline-secondary btn-block"
                    th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}">
+                    <img class="img-thumbnail" th:src="${product.img}">
                     <label th:text="'Название - '+ ${product.name}"></label>
                 </a>
+                <br>
             </div>
         </div>
     </div>

@@ -1,34 +1,29 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Главная страница ETSM</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <title>Личный Кабинет</title>
 </head>
 
 <body>
 <!--Header-->
 <header th:replace="header :: head"/>
-
-<!--Main-->
-<div class="container">
+<div class="container mt-100">
     <div class="row">
-        <!--Заменяемая часть-->
-        <div class="col justify-content-center">
-            <form>
-                <div class="form-group">
-                    <h1 th:text="'Привет, ' + ${user.login}"></h1>
-                    <h2 th:text="${user.username}"></h2>
-                    <a class="btn btn-outline-secondary" href="/auth/editAuth">Изменить логин/пароль</a>
-                    <a class="btn btn-outline-secondary" href="/auth/addUserInfo">Добавить дополнительную информацию</a>
-                </div>
-<!--                <div th:action="@{/logout}" method="post">-->
-                    <a href="/logout" class="btn btn-danger">Выход</a>
-<!--                </div>-->
-            </form>
+        <div class="col mx-auto">
+            <div class="text-center">
+                <h1>О нас!</h1>
+                <h2>Группа:</h2>
+                <h3>БСТ1601</h3>
+                <h2>Участники:</h2>
+                <h3>Спивак Александр</h3>
+                <h3>Смальков Никита</h3>
+                <h3>Георгий Буланов</h3>
+                <h3>Лыков Александр</h3>
+            </div>
         </div>
     </div>
 </div>

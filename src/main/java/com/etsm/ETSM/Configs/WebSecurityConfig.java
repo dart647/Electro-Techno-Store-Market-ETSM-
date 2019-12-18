@@ -38,7 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/main",
                         "/catalog/**",
                         "/registration",
-                        "/login").permitAll()//разрешенные сайты для входа без авторизации
+                        "/login",
+                        "/about").permitAll()//разрешенные сайты для входа без авторизации
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/userCabinet",
@@ -55,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
 //                .loginPage("/uLogin")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/user").failureUrl("/login").permitAll()
+                .defaultSuccessUrl("/auth/userCabinet").failureUrl("/login").permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll();
     }
