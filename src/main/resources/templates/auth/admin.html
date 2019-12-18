@@ -19,7 +19,9 @@
         <!--Заменяемая часть-->
         <div class="col">
             <h1>Панель администратора</h1>
-            <a href="/admin/all" class="btn btn-warning">Все пользователи</a>
+            <div th:switch="${role}">
+                <a th:case="ADMIN" href="/admin/all" class="btn btn-warning">Все пользователи</a>
+            </div>
             <a href="/admin/addProduct" class="btn btn-warning">Добавить товар</a>
         </div>
     </div>

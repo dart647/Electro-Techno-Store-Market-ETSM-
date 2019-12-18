@@ -4,6 +4,7 @@
 
 package com.etsm.ETSM.Controllers;
 
+import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Models.UserInfo;
 import com.etsm.ETSM.Services.UserInformationService;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 
 /*
@@ -31,9 +34,14 @@ public class UserController {
 
     @GetMapping("/auth/editAuth")
     public ModelAndView editAuth(Principal principal) {
-        User user = (User) userService.loadUserByUsername(principal.getName());
+        User userForRole = new User();
+        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
+        if (principal != null) {
+            userForRole = (User) userService.loadUserByUsername(principal.getName());
+        }
         return new ModelAndView("/auth/editAuth",
-                Map.of("user",user),
+                Map.of("user",userForRole,
+                        "role", userForRole.getRoles().toArray()[0].toString()),
                 HttpStatus.OK);
     }
 
@@ -48,10 +56,15 @@ public class UserController {
 
     @GetMapping("/auth/addUserInfo")
     public ModelAndView addUserInfo(Principal principal) {
-        User user = (User) userService.loadUserByUsername(principal.getName());
+        User userForRole = new User();
+        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
+        if (principal != null) {
+            userForRole = (User) userService.loadUserByUsername(principal.getName());
+        }
         return new ModelAndView("/auth/addUserInfo",
-                Map.of("user",user,
-                        "userInfo",user.getUserInfo()),
+                Map.of("user",userForRole,
+                        "userInfo",userForRole.getUserInfo(),
+                        "role", userForRole.getRoles().toArray()[0].toString()),
                 HttpStatus.OK);
     }
     //Add additional user information

@@ -4,8 +4,10 @@
 
 package com.etsm.ETSM.Controllers;
 
+import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Services.RegistrationService;
+import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 
 /*
@@ -23,12 +28,19 @@ import java.util.Map;
 public class RegistrationController {
     @Autowired
     RegistrationService registrationService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/registration")
-    public ModelAndView registration() {
-        User user = new User();
+    public ModelAndView registration(Principal principal) {
+        User userForRole = new User();
+        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
+        if (principal != null) {
+            userForRole = (User) userService.loadUserByUsername(principal.getName());
+        }
         return new ModelAndView("/registration",
-                Map.of("user",user),
+                Map.of("user",userForRole,
+                        "role", userForRole.getRoles().toArray()[0].toString()),
                 HttpStatus.OK);
     }
 
