@@ -101,7 +101,7 @@ public class ProductsController {
     @GetMapping("category/subCategory/minorCategory/{productName}")
     public ModelAndView GetProduct(@PathVariable String productName) {
         return productService.findProductByName(productName)
-                .map(product -> new ModelAndView("catalog/category/subCategory/product",
+                .map(product -> new ModelAndView("catalog/category/subCategory/minorCategory/product",
                         Map.of("product", product,
                                 "categories", mainService.GetAllCategories()), HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",

@@ -14,6 +14,7 @@ public interface AdminService{
     Optional<User> findUserById(Long id);
     boolean addNewCategory(Category category);
     boolean addNewSubCategory(String CategoryName, SubCategory subCategory);
+    boolean addNewMinorCategory(String subCategoryName, MinorCategory minorCategory);
     boolean addNewAttribute(Attribute attribute);
 }
 
@@ -77,6 +78,19 @@ class AdminServiceImpl implements AdminService{
         newSubCategory.setCategory_id(category);
         newSubCategory.setName(subCategory.getName());
         subCategoryRepository.saveAndFlush(newSubCategory);
+        return true;
+    }
+
+    @Override
+    public boolean addNewMinorCategory(String subCategoryName, MinorCategory minorCategory) {
+        if (minorCategoryRepository.findByName(minorCategory.getName()).isPresent()) {
+            return false;
+        }
+        SubCategory subCategory = subCategoryRepository.findByName(subCategoryName).get();
+        MinorCategory newMinorCategory = new MinorCategory();
+        newMinorCategory.setSubcategory_id(subCategory);
+        newMinorCategory.setName(minorCategory.getName());
+        minorCategoryRepository.saveAndFlush(newMinorCategory);
         return true;
     }
 

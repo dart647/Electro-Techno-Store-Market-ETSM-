@@ -66,7 +66,7 @@ public class MainController {
         String search = "";
         List<Product> products = service.GetSearchProducts("");
         return new ModelAndView("/main",
-                Map.of("products", service.SetRecommendations(),
+                Map.of(
                         "categories", service.GetAllCategories(),
                         "searchProducts", products,
                         "search", search,
