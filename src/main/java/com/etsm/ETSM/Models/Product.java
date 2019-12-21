@@ -35,6 +35,25 @@ public class Product {
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private transient List<Sales_has_product> salesHasProducts;
 
+    @OneToMany(targetEntity = Attribute_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private transient List<Attribute_has_product> attributeHasProducts;
+
+    public MinorCategory getMinorcategory_id() {
+        return minorcategory_id;
+    }
+
+    public void setMinorcategory_id(MinorCategory minorcategory_id) {
+        this.minorcategory_id = minorcategory_id;
+    }
+
+    public List<Attribute_has_product> getAttributeHasProducts() {
+        return attributeHasProducts;
+    }
+
+    public void setAttributeHasProducts(List<Attribute_has_product> attributeHasProducts) {
+        this.attributeHasProducts = attributeHasProducts;
+    }
+
     public List<Sales_has_product> getSalesHasProducts() {
         return salesHasProducts;
     }

@@ -6,6 +6,8 @@ package com.etsm.ETSM.Configs;
 
 import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
+import com.etsm.ETSM.Models.UserInfo;
+import com.etsm.ETSM.Repositories.UserInfoRepository;
 import com.etsm.ETSM.Repositories.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,6 +45,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private UserInfoRepository userInfoRepository;
 
     public CustomUserInfoTokenServices(){}
 
@@ -105,12 +108,21 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
             String googleUsername = (String) map.get("email");
 
             User user = userRepository.findByGoogleUsername(googleUsername);
+            UserInfo userInfo = null;
+
+            if (user != null) {
+                userInfo = userInfoRepository.findById(user.getId()).get();
+            }
 
             if(user == null)
             {
+                userInfo = new UserInfo();
+                userInfo.setFio("new user");
+                userInfo.setWallet(0);
                 user = new User();
                 user.setActive(true);
                 user.setRoles(Collections.singleton(Role.USER));
+                user.setUserInfo(userInfo);
             }
 
             user.setLogin(googleName);
@@ -120,7 +132,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
 
             user.setPassword(passwordEncoder.encode("oauth2user"));
 
-            userRepository.save(user);
+            userRepository.saveAndFlush(user);
         }
 
         if (map.containsKey("error"))

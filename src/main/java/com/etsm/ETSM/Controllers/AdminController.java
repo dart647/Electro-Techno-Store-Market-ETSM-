@@ -2,6 +2,7 @@ package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.*;
 import com.etsm.ETSM.Repositories.CategoryRepository;
+import com.etsm.ETSM.Repositories.MinorCategoryRepository;
 import com.etsm.ETSM.Repositories.SubCategoryRepository;
 import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,12 @@ public class AdminController {
     private CategoryRepository categoryRepository;
     private SubCategoryRepository subCategoryRepository;
     private ProductService productService;
+    private MinorCategoryRepository minorCategoryRepository;
 
-    public AdminController(AdminService adminService, UserService userService, MainService mainService, UserInformationService userInformationService, CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository, ProductService productService) {
+    public AdminController(AdminService adminService, UserService userService,
+                           MainService mainService, UserInformationService userInformationService,
+                           CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository,
+                           ProductService productService, MinorCategoryRepository minorCategoryRepository) {
         this.adminService = adminService;
         this.userService = userService;
         this.mainService = mainService;
@@ -32,6 +37,7 @@ public class AdminController {
         this.categoryRepository = categoryRepository;
         this.subCategoryRepository = subCategoryRepository;
         this.productService = productService;
+        this.minorCategoryRepository = minorCategoryRepository;
     }
 
     @Autowired
@@ -62,6 +68,11 @@ public class AdminController {
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
+    }
+
+    @Autowired
+    public void setMinorCategoryRepository(MinorCategoryRepository minorCategoryRepository) {
+        this.minorCategoryRepository = minorCategoryRepository;
     }
 
     @GetMapping("/all")
@@ -111,21 +122,26 @@ public class AdminController {
             userForRole = (User) userService.loadUserByUsername(principal.getName());
         }
         Product product = new Product();
-        String subCategoryName = "";
+        String minorCategoryName = "";
+        List<Category> categoryList = categoryRepository.findAll();
         List<SubCategory> subCategoryList = subCategoryRepository.findAll();
+        List<MinorCategory> minorCategoryList = minorCategoryRepository.findAll();
         return new ModelAndView("admin/addProduct",
                 Map.of("product", product,
                         "role", userForRole.getRoles().toArray()[0].toString(),
-                        "subCategoryName",subCategoryName,
-                        "subCategoryList",subCategoryList),
+                        "minorCategoryName",minorCategoryName,
+                        "categoryList",categoryList,
+                        "subCategoryList",subCategoryList,
+                        "minorCategoryList",minorCategoryList
+                        ),
                 HttpStatus.OK);
     }
 
 
     @PostMapping("/addProduct")
     public String AddProduct(@ModelAttribute Product product,
-                             @ModelAttribute("subCategoryName") String subCategoryName){
-        adminService.addNewProduct(product,subCategoryName);
+                             @ModelAttribute("minorCategoryName") String minorCategoryName){
+        adminService.addNewProduct(product,minorCategoryName);
         return "redirect:/catalog/list";
     }
 
@@ -163,6 +179,25 @@ public class AdminController {
                                  @ModelAttribute("categoryName") String categoryName
                                  ) {
         adminService.addNewSubCategory(categoryName,subCategory);
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/addMinorCategory")
+    public ModelAndView addMinorCategory() {
+        MinorCategory minorCategory = new MinorCategory();
+        String subCategoryName = "";
+        List<SubCategory> subCategoryList = subCategoryRepository.findAll();
+        return new ModelAndView("admin/addMinorCategory",
+                Map.of("minorCategory", minorCategory,
+                "subCategoryName", subCategoryName,
+                "subCategoryList", subCategoryList),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/addMinorCategory")
+    public String addMinorCategory(@ModelAttribute MinorCategory minorCategory,
+                                   @ModelAttribute("subCategoryName") String subCategoryName) {
+        adminService.addNewMinorCategory(subCategoryName,minorCategory);
         return "redirect:/admin";
     }
 

@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.context.request.RequestContextListener;
 
 import javax.servlet.Filter;
 
@@ -125,6 +126,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll();
         http.
                 addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public RequestContextListener requestContextListener() {
+        return new RequestContextListener();
     }
 
 }
