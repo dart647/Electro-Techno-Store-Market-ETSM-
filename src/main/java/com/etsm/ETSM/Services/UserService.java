@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
+
     private UserRepository userRepository;
 
     @Autowired
@@ -47,5 +48,11 @@ public class UserService implements UserDetailsService {
         }
 
         return null;
+    }
+
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

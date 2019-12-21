@@ -3,30 +3,36 @@ package com.etsm.ETSM.Controllers;
 import com.etsm.ETSM.Models.*;
 import com.etsm.ETSM.Repositories.CategoryRepository;
 import com.etsm.ETSM.Repositories.SubCategoryRepository;
-import com.etsm.ETSM.Repositories.UserRepository;
-import com.etsm.ETSM.Services.AdminService;
-import com.etsm.ETSM.Services.MainService;
-import com.etsm.ETSM.Services.ProductService;
-import com.etsm.ETSM.Services.UserInformationService;
+import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.security.Principal;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private AdminService adminService;
+    private UserService userService;
     MainService mainService;
     UserInformationService userInformationService;
     private CategoryRepository categoryRepository;
     private SubCategoryRepository subCategoryRepository;
     private ProductService productService;
+
+    public AdminController(AdminService adminService, UserService userService, MainService mainService, UserInformationService userInformationService, CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository, ProductService productService) {
+        this.adminService = adminService;
+        this.userService = userService;
+        this.mainService = mainService;
+        this.userInformationService = userInformationService;
+        this.categoryRepository = categoryRepository;
+        this.subCategoryRepository = subCategoryRepository;
+        this.productService = productService;
+    }
 
     @Autowired
     public void setAdminService(AdminService adminService) {
@@ -59,17 +65,32 @@ public class AdminController {
     }
 
     @GetMapping("/all")
-    public ModelAndView getAllUsers() {
+    public ModelAndView getAllUsers(Principal principal) {
+        User userForRole = new User();
+        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
+        if (principal != null) {
+            userForRole = (User) userService.loadUserByUsername(principal.getName());
+        }
         return new ModelAndView("admin/all",
-                Map.of("users", adminService.findUsers()),
+                Map.of("users", adminService.findUsers(),
+                        "role", userForRole.getRoles().toArray()[0].toString()),
                 HttpStatus.OK);
     }
 
     @GetMapping("{userId}")
-    public ModelAndView user(@PathVariable long userId) {
+    public ModelAndView user(@PathVariable long userId, Principal principal) {
+        User userForRole = new User();
+        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
+        if (principal != null) {
+            userForRole = (User) userService.loadUserByUsername(principal.getName());
+        }
+
+        User finalUserForRole = userForRole;
+
         return adminService.findUserById(userId)
                 .map(user -> new ModelAndView("admin/user",
-                        Map.of("user",user), HttpStatus.OK))
+                        Map.of("user",user,
+                                "role", finalUserForRole.getRoles().toArray()[0].toString()), HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error","Couldn't find a user"), HttpStatus.NOT_FOUND));
 
@@ -83,12 +104,18 @@ public class AdminController {
     }
 
     @GetMapping("/addProduct")
-    public ModelAndView AddProduct(){
+    public ModelAndView AddProduct(Principal principal){
+        User userForRole = new User();
+        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
+        if (principal != null) {
+            userForRole = (User) userService.loadUserByUsername(principal.getName());
+        }
         Product product = new Product();
         String subCategoryName = "";
         List<SubCategory> subCategoryList = subCategoryRepository.findAll();
         return new ModelAndView("admin/addProduct",
                 Map.of("product", product,
+                        "role", userForRole.getRoles().toArray()[0].toString(),
                         "subCategoryName",subCategoryName,
                         "subCategoryList",subCategoryList),
                 HttpStatus.OK);
@@ -151,5 +178,9 @@ public class AdminController {
     public String addAttribute(@ModelAttribute Attribute attribute) {
         adminService.addNewAttribute(attribute);
         return "redirect:/admin";
+    }
+@Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

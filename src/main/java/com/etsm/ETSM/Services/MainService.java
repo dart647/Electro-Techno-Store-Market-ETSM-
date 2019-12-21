@@ -13,15 +13,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public interface MainService{
+public interface MainService {
     List<Product> SetRecommendations();
+
     List<Category> GetAllCategories();
+
     User GetUser(String login);
+
     List<Product> GetSearchProducts(String searchingProduct);
+
 }
 
 @Service
-class MainServiceImpl implements MainService{
+class MainServiceImpl implements MainService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -29,7 +33,7 @@ class MainServiceImpl implements MainService{
     @Autowired
     private UserRepository userRepository;
 
-    public List<Product> SetRecommendations(){
+    public List<Product> SetRecommendations() {
         List<Product> products = new ArrayList<>();
         if(productRepository.count()!=0) {
             for (int i = 0; i < 3; i++) {
@@ -53,6 +57,7 @@ class MainServiceImpl implements MainService{
 
     @Override
     public List<Product> GetSearchProducts(String searchingProduct) {
-        return productRepository.findByNameLike("%"+searchingProduct+"%");
+        return productRepository.findByNameLike("%" + searchingProduct + "%");
     }
+
 }
