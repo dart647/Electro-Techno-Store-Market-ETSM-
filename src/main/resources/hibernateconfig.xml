@@ -13,6 +13,7 @@
     <mapping class="com.etsm.ETSM.Models.Product"/>
     <mapping class="com.etsm.ETSM.Models.Category"/>
     <mapping class="com.etsm.ETSM.Models.SubCategory"/>
+      <mapping class="com.etsm.ETSM.Models.MinorCategory"/>
     <mapping class="com.etsm.ETSM.Models.Sales"/>
     <mapping class="com.etsm.ETSM.Models.Sales_has_product"/>
     <mapping class="com.etsm.ETSM.Models.UserInfo"/>

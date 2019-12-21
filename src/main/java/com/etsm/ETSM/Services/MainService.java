@@ -32,7 +32,7 @@ class MainServiceImpl implements MainService{
     public List<Product> SetRecommendations(){
         List<Product> products = new ArrayList<>();
         if(productRepository.count()!=0) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 3; i++) {
                 long rand = (long) new Random().nextInt((int) productRepository.count());
                 Product product = productRepository.findById(rand + 1).get();
                 products.add(product);

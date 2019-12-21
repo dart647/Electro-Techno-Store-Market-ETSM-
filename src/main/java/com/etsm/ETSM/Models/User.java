@@ -36,6 +36,12 @@ public class User implements UserDetails {
     @Column(name = "login")
     private String login;
 
+    @Column(name = "googleName")
+    private String googleName;
+
+    @Column(name = "googleUsername")
+    private String googleUsername;
+
     @OneToOne
     @MapsId
     @JoinColumn(name = "id")
@@ -95,6 +101,22 @@ public class User implements UserDetails {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getGoogleName() {
+        return googleName;
+    }
+
+    public void setGoogleName(String googleName) {
+        this.googleName = googleName;
+    }
+
+    public String getGoogleUsername() {
+        return googleUsername;
+    }
+
+    public void setGoogleUsername(String googleUsername) {
+        this.googleUsername = googleUsername;
     }
 
     @Override

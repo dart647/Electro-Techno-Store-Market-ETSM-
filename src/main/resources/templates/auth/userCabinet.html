@@ -5,7 +5,6 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
     <title>Личный Кабинет</title>
 </head>
 
@@ -25,9 +24,8 @@
                     <a class="btn btn-outline-secondary" href="/auth/editAuth">Изменить логин/пароль</a>
                     <a class="btn btn-outline-secondary" href="/auth/addUserInfo">Добавить дополнительную информацию</a>
                 </div>
-<!--                <div th:action="@{/logout}" method="post">-->
-                    <a href="/logout" class="btn btn-danger">Выход</a>
-<!--                </div>-->
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                <a href="/logout" class="btn btn-danger">Выход</a>
             </form>
         </div>
     </div>

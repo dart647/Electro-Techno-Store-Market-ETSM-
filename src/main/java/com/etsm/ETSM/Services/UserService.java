@@ -14,13 +14,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User userFoundByUsername = userRepository.findByUsername(username);
         User userFoundByLogin = userRepository.findByLogin(username);
+        User userFindByGoogleUsername = userRepository.findByGoogleUsername(username);
+        User userFindByGoogleName = userRepository.findByGoogleName(username);
 
         if (userFoundByUsername != null) {
             return userFoundByUsername;
@@ -28,6 +34,16 @@ public class UserService implements UserDetailsService {
 
         if (userFoundByLogin != null) {
             return userFoundByLogin;
+        }
+
+        if(userFindByGoogleUsername != null)
+        {
+            return userFindByGoogleUsername;
+        }
+
+        if(userFindByGoogleName != null)
+        {
+            return userFindByGoogleName;
         }
 
         return null;

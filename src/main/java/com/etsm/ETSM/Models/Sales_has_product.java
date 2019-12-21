@@ -13,6 +13,15 @@ public class Sales_has_product {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 
+    @Column(name = "`count`")
+    private int count;
+
+    @Column(name = "`discount`")
+    private float discount;
+
+    @Column(name = "`summ`")
+    private int summ;
+
     @ManyToOne()
     @JoinColumn(name = "sales_id", referencedColumnName = "id")
     private Sales sales_id;
@@ -21,15 +30,28 @@ public class Sales_has_product {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product_id;
 
-    @Column(name = "`count`")
-    private int count;
-
     public int getCount() {
         return count;
     }
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
+    }
+
+    public int getSumm() {
+        return summ;
+    }
+
+    public void setSumm(int summ) {
+        this.summ = summ;
     }
 
     public Sales getSales_id() {
