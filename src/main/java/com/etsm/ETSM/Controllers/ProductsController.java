@@ -79,8 +79,6 @@ public class ProductsController {
         return productService.findSubCategoryByName(subCategoryName)
                 .map(product -> new ModelAndView("/catalog/category/productsInSubCategory",
                         Map.of("minorCategories", productService.findMinorCategoriesFromSubCategory(subCategoryName),
-                                "categories", mainService.GetAllCategories()),
-                        Map.of("products", productService.findProductsFromSubCategory(subCategoryName),
                                 "categories", mainService.GetAllCategories(),
                                 "role", finalUserForRole.getRoles().toArray()[0].toString()),
                         HttpStatus.OK))
@@ -108,7 +106,7 @@ public class ProductsController {
                                 "categories", mainService.GetAllCategories()), HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find a product"), HttpStatus.NOT_FOUND));
-
+    }
 @Autowired
     public void setMainService(MainService mainService) {
         this.mainService = mainService;

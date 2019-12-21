@@ -49,10 +49,4 @@ public class UserService implements UserDetailsService {
 
         return null;
     }
-
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 }
