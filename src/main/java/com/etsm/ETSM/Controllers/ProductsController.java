@@ -51,24 +51,6 @@ public class ProductsController {
                 HttpStatus.OK);
     }
 
-    //Product Page
-    @GetMapping("category/subCategory/{productName}")
-    public ModelAndView GetProduct(@PathVariable String productName, Principal principal) {
-        User userForRole = new User();
-        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            userForRole = (User) userService.loadUserByUsername(principal.getName());
-        }
-        User finalUserForRole = userForRole;
-        return productService.findProductByName(productName)
-                .map(product -> new ModelAndView("catalog/category/subCategory/product",
-                        Map.of("product", product,
-                                "categories", mainService.GetAllCategories(),
-                                "role", finalUserForRole.getRoles().toArray()[0].toString()), HttpStatus.OK))
-                .orElseGet(() -> new ModelAndView("errors/404",
-                        Map.of("error", "Couldn't find a product"), HttpStatus.NOT_FOUND));
-    }
-
     @GetMapping("{categoryName}")
     public ModelAndView GetCategory(@PathVariable String categoryName, Principal principal) {
         User userForRole = new User();
@@ -96,12 +78,34 @@ public class ProductsController {
         User finalUserForRole = userForRole;
         return productService.findSubCategoryByName(subCategoryName)
                 .map(product -> new ModelAndView("/catalog/category/productsInSubCategory",
-                        Map.of("products", productService.findProductsFromSubCategory(subCategoryName),
+                        Map.of("minorCategories", productService.findMinorCategoriesFromSubCategory(subCategoryName),
                                 "categories", mainService.GetAllCategories(),
                                 "role", finalUserForRole.getRoles().toArray()[0].toString()),
                         HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find a sub Category"), HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("category/subCategory/{minorCategoryName}")
+    public ModelAndView GetMinorCategory(@PathVariable String minorCategoryName) {
+        return productService.findMinorCategoryByName(minorCategoryName)
+                .map(product -> new ModelAndView("/catalog/category/subCategory/productsinMinCategory",
+                        Map.of("products", productService.findProductsFromMinorCategory(minorCategoryName),
+                                "categories", mainService.GetAllCategories()),
+                        HttpStatus.OK))
+                .orElseGet(() -> new ModelAndView("errors/404",
+                        Map.of("error", "Couldn't find third layer category"), HttpStatus.NOT_FOUND));
+    }
+
+    //Product Page
+    @GetMapping("category/subCategory/minorCategory/{productName}")
+    public ModelAndView GetProduct(@PathVariable String productName) {
+        return productService.findProductByName(productName)
+                .map(product -> new ModelAndView("catalog/category/subCategory/product",
+                        Map.of("product", product,
+                                "categories", mainService.GetAllCategories()), HttpStatus.OK))
+                .orElseGet(() -> new ModelAndView("errors/404",
+                        Map.of("error", "Couldn't find a product"), HttpStatus.NOT_FOUND));
     }
 @Autowired
     public void setMainService(MainService mainService) {

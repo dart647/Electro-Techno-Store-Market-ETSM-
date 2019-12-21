@@ -14,8 +14,10 @@ public class Category {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
+
     @Column(name = "`name`")
     private String name;
+
     @OneToMany(targetEntity = SubCategory.class, mappedBy = "category_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<SubCategory> subCategories = new ArrayList<>();
 
@@ -25,14 +27,6 @@ public class Category {
 
     public void setSubCategories(List<SubCategory> subCategories) {
         this.subCategories = subCategories;
-    }
-
-    public List<SubCategory> getProductList() {
-        return subCategories;
-    }
-
-    public void setProductList(List<SubCategory> productList) {
-        this.subCategories = productList;
     }
 
     public long getId() {

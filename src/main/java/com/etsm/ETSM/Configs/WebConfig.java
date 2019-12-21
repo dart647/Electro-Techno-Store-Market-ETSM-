@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Nikita Smalkov
+ * Copyright (c) 2019. Smalkov Nikita.
  */
 
 package com.etsm.ETSM.Configs;

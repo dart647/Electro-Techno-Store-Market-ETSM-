@@ -1,9 +1,11 @@
 package com.etsm.ETSM.Services;
 
 import com.etsm.ETSM.Models.Category;
+import com.etsm.ETSM.Models.MinorCategory;
 import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Models.SubCategory;
 import com.etsm.ETSM.Repositories.CategoryRepository;
+import com.etsm.ETSM.Repositories.MinorCategoryRepository;
 import com.etsm.ETSM.Repositories.ProductRepository;
 import com.etsm.ETSM.Repositories.SubCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,16 @@ public interface ProductService {
     List<Product> findAllProducts();
     List<SubCategory> findSubCategories();
     List<SubCategory> findSubCategoriesFromCategory(String categoryName);
-    List<Product> findProductsFromSubCategory(String subCategoryName);
+    List<MinorCategory> findMinorCategoriesFromSubCategory(String subCategoryName);
+    List<Product> findProductsFromMinorCategory(String minorCategoryName);
     Optional<Product> findProductById(Long id);
     Optional<Product> findProductByName(String name);
     Optional<Category> findCategoryByName(String name);
     Optional<SubCategory> findSubCategoryByName(String name);
+    Optional<MinorCategory> findMinorCategoryByName(String name);
     Optional<SubCategory> findSubCategoryById(Long id);
     List<Category> findCategories();
+    List<MinorCategory> findMinorCategories();
 }
 
 @Service
@@ -30,7 +35,7 @@ class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     private SubCategoryRepository subCategoryRepository;
     private CategoryRepository categoryRepository;
-
+    private MinorCategoryRepository minorCategoryRepository;
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -42,6 +47,10 @@ class ProductServiceImpl implements ProductService {
     @Autowired
     public void setCategoryRepository(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
+    }
+    @Autowired
+    public void setMinorCategoryRepository(MinorCategoryRepository minorCategoryRepository) {
+        this.minorCategoryRepository = minorCategoryRepository;
     }
 
     @Override
@@ -60,8 +69,13 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findProductsFromSubCategory(String subCategoryName) {
-        return findSubCategoryByName(subCategoryName).get().getProductList();
+    public List<MinorCategory> findMinorCategoriesFromSubCategory(String subCategoryName) {
+        return findSubCategoryByName(subCategoryName).get().getMinorCategoryList();
+    }
+
+    @Override
+    public List<Product> findProductsFromMinorCategory(String minorCategoryName) {
+        return findMinorCategoryByName(minorCategoryName).get().getProductList();
     }
 
     @Override
@@ -85,6 +99,11 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Optional<MinorCategory> findMinorCategoryByName(String name) {
+        return minorCategoryRepository.findByName(name);
+    }
+
+    @Override
     public Optional<SubCategory> findSubCategoryById(Long id) {
         return subCategoryRepository.findById(id);
     }
@@ -94,5 +113,8 @@ class ProductServiceImpl implements ProductService {
         return categoryRepository.findAll();
     }
 
-
+    @Override
+    public List<MinorCategory> findMinorCategories() {
+        return minorCategoryRepository.findAll();
+    }
 }

@@ -8,6 +8,7 @@ import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -127,11 +128,6 @@ public class MainController {
                 HttpStatus.OK);
     }
 
-//    @GetMapping("/uLogin")
-//    public ModelAndView Login(){
-//        return new ModelAndView("/auth/login", HttpStatus.OK);
-//    }
-
     @GetMapping("/about")
     public ModelAndView About(Principal principal) {
         User user = new User();
@@ -142,5 +138,12 @@ public class MainController {
         return new ModelAndView("/about",
                 Map.of("role", user.getRoles().toArray()[0].toString()),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/login")
+    public String loginPage(Model model) {
+        model.addAttribute("view","login");
+        model.addAttribute("title","Вход");
+        return "login";
     }
 }
