@@ -23,21 +23,21 @@
             <h1>Добавить 1 категорию</h1>
             <form th:action="@{/admin/addCategory}" method="post">
                 <div class="form-group">
-                    <label for="name"> Название 1 категории:</label>
-                    <input type="text" name="name" id="name"/>
+                    <div class="form-group">
+                        <label for="name"> Название категории первого уровня:</label>
+                        <input type="text" name="name" id="name"/>
+                    </div>
                     <input type="submit" value="Добавить" class="btn btn-success"/>
                 </div>
             </form>
+            <div>
+                <h1>Существующие категории - 1</h1>
+                <div data-th-each="category : ${categoryList}">
+                    <label th:text="'ID - '+ ${category.id}"></label>
+                    <label th:text="'Название - '+ ${category.name}"></label>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
-<div class="col">
-    <h1>Страница категорий</h1>
-
-    <div data-th-each="category : ${categoryList}" class="category">
-        <label th:text="'ID - '+ ${category.id}"></label>
-        <label th:text="'Название - '+ ${category.name}"></label>
     </div>
 </div>
 

@@ -61,8 +61,7 @@ public class MainController {
         String search = "";
         List<Product> products = service.GetSearchProducts("");
         return new ModelAndView("/main",
-                Map.of(
-                        "categories", service.GetAllCategories(),
+                Map.of( "categories", service.GetAllCategories(),
                         "searchProducts", products,
                         "search", search,
                         "role", headerService.getHeaderRole(),
@@ -75,11 +74,11 @@ public class MainController {
         headerService.setHeader(principal);
         List<Product> products = service.GetSearchProducts(searching);
         return new ModelAndView("/main",
-                Map.of("products", service.SetRecommendations(),
-                        "categories", service.GetAllCategories(),
+                Map.of("categories", service.GetAllCategories(),
                         "searchProducts", products,
                         "search", searching,
-                        "role", headerService.getHeaderRole()),
+                        "role", headerService.getHeaderRole(),
+                        "recommendations", service.SetRecommendations()),
                 HttpStatus.OK);
     }
 
@@ -108,6 +107,24 @@ public class MainController {
     public ModelAndView About(Principal principal) {
         headerService.setHeader(principal);
         return new ModelAndView("/about",
+                Map.of("role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/feedback")
+    public ModelAndView Feedback(Principal principal) {
+        headerService.setHeader(principal);
+        return new ModelAndView("/feedback",
+                Map.of("role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/ourAddresses")
+    public ModelAndView Addresses(Principal principal) {
+        headerService.setHeader(principal);
+        return new ModelAndView("/ourAddresses",
                 Map.of("role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);

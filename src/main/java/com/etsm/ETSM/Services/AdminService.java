@@ -8,18 +8,24 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-public interface AdminService{
+public interface AdminService {
     boolean addNewProduct(Product product, String subCategoryName);
+
     List<User> findUsers();
+
     Optional<User> findUserById(Long id);
+
     boolean addNewCategory(Category category);
+
     boolean addNewSubCategory(String CategoryName, SubCategory subCategory);
+
     boolean addNewMinorCategory(String subCategoryName, MinorCategory minorCategory);
+
     boolean addNewAttribute(Attribute attribute);
 }
 
 @Service
-class AdminServiceImpl implements AdminService{
+class AdminServiceImpl implements AdminService {
 
     private UserRepository userRepository;
 
@@ -33,8 +39,11 @@ class AdminServiceImpl implements AdminService{
 
     MinorCategoryRepository minorCategoryRepository;
 
-    public boolean addNewProduct(Product product, String minorCategoryName){
+    public boolean addNewProduct(Product product, String minorCategoryName) {
         if (productRepository.findByName(product.getName()).isPresent()) {
+            return false;
+        }
+        if (product.getPrice() < 0) {
             return false;
         }
         MinorCategory minorCategory = minorCategoryRepository.findByName(minorCategoryName).get();
@@ -109,22 +118,27 @@ class AdminServiceImpl implements AdminService{
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     @Autowired
     public void setSubCategoryRepository(SubCategoryRepository subCategoryRepository) {
         this.subCategoryRepository = subCategoryRepository;
     }
+
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+
     @Autowired
     public void setCategoryRepository(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
     @Autowired
     public void setAttributeRepository(AttributeRepository attributeRepository) {
         this.attributeRepository = attributeRepository;
     }
+
     @Autowired
     public void setMinorCategoryRepository(MinorCategoryRepository minorCategoryRepository) {
         this.minorCategoryRepository = minorCategoryRepository;

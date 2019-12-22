@@ -133,7 +133,8 @@ public class AdminController {
                         "minorCategoryName", minorCategoryName,
                         "categoryList", categoryList,
                         "subCategoryList", subCategoryList,
-                        "minorCategoryList", minorCategoryList
+                        "minorCategoryList", minorCategoryList,
+                        "productList", productService.findAllProducts()
                 ),
                 HttpStatus.OK);
     }
@@ -143,7 +144,7 @@ public class AdminController {
     public String AddProduct(@ModelAttribute Product product,
                              @ModelAttribute("minorCategoryName") String minorCategoryName) {
         adminService.addNewProduct(product, minorCategoryName);
-        return "redirect:/catalog/list";
+        return "redirect:/admin/addProduct";
     }
 
     @GetMapping("/addCategory")
@@ -154,6 +155,7 @@ public class AdminController {
         return new ModelAndView("admin/addCategory",
                 Map.of("category", category,
                         "categoryList", categoryList,
+                        "productList", productService.findAllProducts(),
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);
@@ -175,6 +177,7 @@ public class AdminController {
                 Map.of("subCategory", subCategory,
                         "categoryName", categoryName,
                         "categoryList", categoryList,
+                        "subCategoryList", productService.findSubCategories(),
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);
@@ -185,7 +188,7 @@ public class AdminController {
                                  @ModelAttribute("categoryName") String categoryName
     ) {
         adminService.addNewSubCategory(categoryName, subCategory);
-        return "redirect:/admin";
+        return "redirect:/admin/addSubCategory";
     }
 
     @GetMapping("/addMinorCategory")
@@ -198,6 +201,7 @@ public class AdminController {
                 Map.of("minorCategory", minorCategory,
                         "subCategoryName", subCategoryName,
                         "subCategoryList", subCategoryList,
+                        "minorCategoryList", productService.findMinorCategories(),
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);
@@ -207,7 +211,7 @@ public class AdminController {
     public String addMinorCategory(@ModelAttribute MinorCategory minorCategory,
                                    @ModelAttribute("subCategoryName") String subCategoryName) {
         adminService.addNewMinorCategory(subCategoryName, minorCategory);
-        return "redirect:/admin";
+        return "redirect:/admin/addMinorCategory";
     }
 
     @GetMapping("/addAttribute")
@@ -217,14 +221,15 @@ public class AdminController {
         return new ModelAndView("admin/addAttribute",
                 Map.of("attribute", attribute,
                         "role", headerService.getHeaderRole(),
-                        "categories", headerService.getHeaderCategories()),
+                        "categories", headerService.getHeaderCategories(),
+                        "attributesList", productService.findAttributes()),
                 HttpStatus.OK);
     }
 
     @PostMapping("/addAttribute")
     public String addAttribute(@ModelAttribute Attribute attribute) {
         adminService.addNewAttribute(attribute);
-        return "redirect:/admin";
+        return "redirect:/admin/addAttribute";
     }
 
 }

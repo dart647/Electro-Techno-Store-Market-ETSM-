@@ -1,13 +1,7 @@
 package com.etsm.ETSM.Services;
 
-import com.etsm.ETSM.Models.Category;
-import com.etsm.ETSM.Models.MinorCategory;
-import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Models.SubCategory;
-import com.etsm.ETSM.Repositories.CategoryRepository;
-import com.etsm.ETSM.Repositories.MinorCategoryRepository;
-import com.etsm.ETSM.Repositories.ProductRepository;
-import com.etsm.ETSM.Repositories.SubCategoryRepository;
+import com.etsm.ETSM.Models.*;
+import com.etsm.ETSM.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +22,7 @@ public interface ProductService {
     Optional<SubCategory> findSubCategoryById(Long id);
     List<Category> findCategories();
     List<MinorCategory> findMinorCategories();
+    List<Attribute> findAttributes();
 }
 
 @Service
@@ -36,6 +31,13 @@ class ProductServiceImpl implements ProductService {
     private SubCategoryRepository subCategoryRepository;
     private CategoryRepository categoryRepository;
     private MinorCategoryRepository minorCategoryRepository;
+    private AttributeRepository attributeRepository;
+
+    @Autowired
+    public void setAttributeRepository(AttributeRepository attributeRepository) {
+        this.attributeRepository = attributeRepository;
+    }
+
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -116,5 +118,10 @@ class ProductServiceImpl implements ProductService {
     @Override
     public List<MinorCategory> findMinorCategories() {
         return minorCategoryRepository.findAll();
+    }
+
+    @Override
+    public List<Attribute> findAttributes() {
+        return attributeRepository.findAll();
     }
 }

@@ -72,7 +72,7 @@ public class UserController {
     public String addUserInfo(@ModelAttribute UserInfo userInfo, Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
         if (userInformationService.addUserInfo(user, userInfo))
-            return "redirect:/";
+            return "redirect:/user";
         else
             return "/auth/addUserInfo";
     }

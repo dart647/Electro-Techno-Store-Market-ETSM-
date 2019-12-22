@@ -19,10 +19,14 @@
         <div class="col justify-content-center">
             <form th:action="@{/logout}" method="post">
                 <div class="form-group">
-                    <h1 th:text="'Привет, ' + ${user.login}"></h1>
-                    <h2 th:text="${user.username}"></h2>
+                    <h1 th:text="'Привет, ' + ${user.userInfo.fio}"></h1>
+                    <div><h3 th:text="'День рождения: ' + ${user.userInfo.birthDate}"></h3></div>
+                    <div><h3 th:text="'Адрес: ' + ${user.userInfo.address}"></h3></div>
+                    <div><h3 th:text="'Код лояльности: ' + ${user.userInfo.loyaltyCode}"></h3></div>
+                </div>
+                <div class="form-group">
                     <a class="btn btn-outline-secondary" href="/auth/editAuth">Изменить логин/пароль</a>
-                    <a class="btn btn-outline-secondary" href="/auth/addUserInfo">Добавить дополнительную информацию</a>
+                    <a class="btn btn-outline-secondary" href="/auth/addUserInfo">Изменить дополнительную информацию</a>
                 </div>
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
                 <input type="submit" class="btn btn-danger" value="Выход"/>
