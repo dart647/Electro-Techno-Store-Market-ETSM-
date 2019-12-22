@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public interface UserInformationService {
     boolean addUserInfo(User user, UserInfo userInfo);
-    boolean editUserAuth(User user);
+    boolean editUserAuth(User oldUser, User newUser);
     void deleteUser(User user);
 }
 @Service
@@ -61,21 +61,20 @@ class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
-    public boolean editUserAuth(User user) {
+    public boolean editUserAuth(User oldUser, User newUser) {
         try {
-            User foundUser = userRepository.findByLogin(user.getLogin());
-            User foundUser2 = userRepository.findByUsername(user.getUsername());
+            User foundUser = userRepository.findByLogin(newUser.getLogin());
+            User foundUser2 = userRepository.findByUsername(newUser.getUsername());
             if (foundUser != null && foundUser2 != null) {
                 return false;
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        User editedUser = (User) userService.loadUserByUsername(user.getUsername());
-        editedUser.setLogin(user.getLogin());
-        editedUser.setUsername(user.getUsername());
-        editedUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.saveAndFlush(editedUser);
+        oldUser.setLogin(newUser.getLogin());
+        oldUser.setUsername(newUser.getUsername());
+        oldUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        userRepository.saveAndFlush(oldUser);
         return true;
     }
 
