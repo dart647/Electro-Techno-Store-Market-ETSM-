@@ -3,12 +3,12 @@ package com.etsm.ETSM.Controllers;
 import com.etsm.ETSM.Services.HeaderService;
 import com.etsm.ETSM.Services.MainService;
 import com.etsm.ETSM.Services.ProductService;
-import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,14 +25,12 @@ public class ProductsController {
 
     private MainService mainService;
 
-    private UserService userService;
-
     private HeaderService headerService;
 
-    public ProductsController(ProductService productService, MainService mainService, UserService userService) {
+    public ProductsController(ProductService productService, MainService mainService, HeaderService headerService) {
         this.productService = productService;
         this.mainService = mainService;
-        this.userService = userService;
+        this.headerService = headerService;
     }
 
     //Products List Page
@@ -114,11 +112,6 @@ public class ProductsController {
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     @Autowired

@@ -48,9 +48,10 @@ public class UserController {
 
     //Edit auth information
     @PostMapping("/auth/editAuth")
-    public String editAuth(@ModelAttribute User user) {
-        if (userInformationService.editUserAuth(user))
-            return "redirect:/user";
+    public String editAuth(@ModelAttribute User user, Principal principal) {
+        User oldUser = (User) userService.loadUserByUsername(principal.getName());
+        if (userInformationService.editUserAuth(oldUser,user))
+            return "redirect:/";
         else
             return "/auth/editAuth";
     }

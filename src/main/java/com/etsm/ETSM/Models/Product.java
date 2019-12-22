@@ -109,4 +109,5 @@ public class Product {
         minorCategory_id.getProductList().add(this);
         this.minorcategory_id = minorCategory_id;
     }
+
 }

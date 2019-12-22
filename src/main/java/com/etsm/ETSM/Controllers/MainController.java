@@ -3,15 +3,14 @@ package com.etsm.ETSM.Controllers;
 import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Services.HeaderService;
 import com.etsm.ETSM.Services.MainService;
+import com.etsm.ETSM.Services.ProductService;
+import com.etsm.ETSM.Services.ShoppingCartService;
 import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
@@ -27,7 +26,8 @@ import java.util.Map;
 public class MainController {
 
     private MainService service;
-    private UserService userService;
+    private ProductService productService;
+    private ShoppingCartService shoppingCartService;
     private HeaderService headerService;
 
     @Autowired
@@ -41,13 +41,17 @@ public class MainController {
     }
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
+    @Autowired
+    public void setShoppingCartService(ShoppingCartService shoppingCartService) {
+        this.shoppingCartService = shoppingCartService;
     }
 
     public MainController(MainService service, UserService userService) {
         this.service = service;
-        this.userService = userService;
+
     }
 
     //Main Page
@@ -85,16 +89,6 @@ public class MainController {
         return new ModelAndView("/auth/userCabinet",
                 Map.of("user", headerService.getUser(),
                         "role", headerService.getHeaderRole(),
-                        "categories", headerService.getHeaderCategories()),
-                HttpStatus.OK);
-    }
-
-    //Basket Page
-    @GetMapping("/basket")
-    public ModelAndView Basket(Principal principal) {
-        headerService.setHeader(principal);
-        return new ModelAndView("/auth/basket",
-                Map.of("role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);
     }
@@ -144,5 +138,19 @@ public class MainController {
         model.addAttribute("role", headerService.getHeaderRole());
         model.addAttribute("categories", headerService.getHeaderCategories());
         return "login";
+    }
+
+    @GetMapping("/buyProduct")
+    public String addToCart(@RequestParam(value = "code") String code) {
+        Long id = Long.parseLong(code);
+        Product product = productService.findProductById(id).get();
+        shoppingCartService.addItemToCart(product);
+        return "redirect:/orderSuggestion";
+    }
+
+    @GetMapping("/orderSuggestion")
+    public ModelAndView getCartPage() {
+        return new ModelAndView("/catalog/orderSuggestion",
+                HttpStatus.OK);
     }
 }

@@ -31,14 +31,19 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <!--                    <td th:text="${product.name}"</td>-->
-                    <!--                    <td th:text="${product.price}"></td>-->
-                    <!--                    <td th:text="${product.subCategory_id.name}"></td>-->
-                    <!--                    <td> В разработке </td>-->
-                    <!--                    <td> <button class="btn btn-outline-warning">убрать</button> </td>-->
+                    <div th:each="productEntry: ${items}">
+                        <p th:text="${productEntry.key.name}"></p>
+                        <p th:text="${productEntry.key.price}"></p>
+                        <p th:text="${productEntry.key.img}"></p>
+                        <a th:href="@{/basket/delete?code={id}(id=${productEntry.key.id})}">Удалить товар</a>
+                        <a th:href="@{/basket/change?code={id}&type=minus(id=${productEntry.key.id})}">-</a>
+                        <p th:text="${productEntry.value}"></p>
+                        <a th:href="@{/basket/change?code={id}&type=plus(id=${productEntry.key.id})}">+</a>
+                    </div>
                 </tr>
                 </tbody>
             </table>
+
         </div>
     </div>
 </div>

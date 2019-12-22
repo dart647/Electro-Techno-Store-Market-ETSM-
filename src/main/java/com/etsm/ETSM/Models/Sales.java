@@ -13,11 +13,14 @@ public class Sales {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
+
     @Column(name = "`sum`")
     private int sum;
+
     @ManyToOne()
     @JoinColumn(name = "userInfo_id", referencedColumnName = "id")
     private UserInfo userInfo_id;
+
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "sales_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Sales_has_product> salesHasProducts;
 

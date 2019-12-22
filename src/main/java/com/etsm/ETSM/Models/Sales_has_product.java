@@ -79,4 +79,5 @@ public class Sales_has_product {
     public void setId(long id) {
         this.id = id;
     }
+
 }
