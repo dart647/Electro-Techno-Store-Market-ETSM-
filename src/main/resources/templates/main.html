@@ -42,6 +42,9 @@
                                 <br>
                                 <label th:text="${'Цена ' + product.price}"></label>
                             </a>
+                            <div>
+                                <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить в корзину</a>
+                            </div>
                         </div>
                         <br>
                     </div>

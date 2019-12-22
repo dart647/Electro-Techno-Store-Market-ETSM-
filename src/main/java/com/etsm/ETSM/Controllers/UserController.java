@@ -51,7 +51,7 @@ public class UserController {
     public String editAuth(@ModelAttribute User user, Principal principal) {
         User oldUser = (User) userService.loadUserByUsername(principal.getName());
         if (userInformationService.editUserAuth(oldUser,user))
-            return "redirect:/";
+            return "/logout";
         else
             return "/auth/editAuth";
     }

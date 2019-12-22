@@ -51,29 +51,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @ConfigurationProperties("google.client")
-    public AuthorizationCodeResourceDetails google()
-    {
+    public AuthorizationCodeResourceDetails google() {
         return new AuthorizationCodeResourceDetails();
     }
 
     @Bean
     @ConfigurationProperties("google.resource")
-    public ResourceServerProperties googleResource()
-    {
+    public ResourceServerProperties googleResource() {
         return new ResourceServerProperties();
     }
 
     @Bean
-    public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter)
-    {
+    public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter) {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(oAuth2ClientContextFilter);
         registration.setOrder(-100);
         return registration;
     }
 
-    private Filter ssoFilter()
-    {
+    private Filter ssoFilter() {
         OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google");
         OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oAuth2ClientContext);
         googleFilter.setRestTemplate(googleTemplate);
@@ -94,35 +90,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/",
+                .antMatchers("/",
                         "/main",
                         "/catalog/**",
                         "/registration",
                         "/about").permitAll()//разрешенные сайты для входа без авторизации
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/auth/userCabinet",
-                        "/auth/basket").hasAnyAuthority("USER","MANAGER","ADMIN")
+                .antMatchers("/auth/userCabinet",
+                        "/auth/basket").hasAnyAuthority("USER", "MANAGER", "ADMIN")
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/auth/admin",
-                        "/admin/addProduct").hasAnyAuthority("MANAGER","ADMIN")
+                .antMatchers("/auth/admin",
+                        "/admin/addProduct").hasAnyAuthority("MANAGER", "ADMIN")
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/admin/all").hasAuthority("ADMIN")
+                .antMatchers("/admin/all").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/login")
-                    .loginProcessingUrl("/login")
-                    .defaultSuccessUrl("/auth/userCabinet").failureUrl("/login").permitAll()
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/user").failureUrl("/login").permitAll()
                 .and()
                 .logout()
 //                    .clearAuthentication(true)
- //                   .invalidateHttpSession(true)
- //                   .deleteCookies("JSESSIONID")
-                    .logoutSuccessUrl("/")
-                    .permitAll();
+                //                   .invalidateHttpSession(true)
+                //                   .deleteCookies("JSESSIONID")
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .permitAll();
         http.
                 addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class);
     }

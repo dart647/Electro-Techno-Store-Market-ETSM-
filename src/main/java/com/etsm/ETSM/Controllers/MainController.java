@@ -44,6 +44,7 @@ public class MainController {
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
+
     @Autowired
     public void setShoppingCartService(ShoppingCartService shoppingCartService) {
         this.shoppingCartService = shoppingCartService;
@@ -61,7 +62,7 @@ public class MainController {
         String search = "";
         List<Product> products = service.GetSearchProducts("");
         return new ModelAndView("/main",
-                Map.of( "categories", service.GetAllCategories(),
+                Map.of("categories", service.GetAllCategories(),
                         "searchProducts", products,
                         "search", search,
                         "role", headerService.getHeaderRole(),
@@ -144,8 +145,12 @@ public class MainController {
     public String addToCart(@RequestParam(value = "code") String code) {
         Long id = Long.parseLong(code);
         Product product = productService.findProductById(id).get();
-        shoppingCartService.addItemToCart(product);
-        return "redirect:/orderSuggestion";
+        if (shoppingCartService.addItemToCart(product)) {
+            return "redirect:/orderSuggestion";
+        }
+        else {
+            return "/";
+        }
     }
 
     @GetMapping("/orderSuggestion")

@@ -23,23 +23,23 @@
 
             <table class="table table-stripped">
                 <thead>
-                <th scope="col">Название</th>
+                <th scope="col">Изображение</th>
+                <th scope="col">Наименование</th>
                 <th scope="col">Цена</th>
-                <th scope="col">Подкатегория</th>
-                <th scope="col">Атрибуты</th>
-                <th scope="col"></th>
+                <th scope="col">Удалить/уменьшить/увеличить кол-во</th>
+                <th scope="col">Кол-во</th>
                 </thead>
                 <tbody>
-                <tr>
-                    <div th:each="productEntry: ${items}">
-                        <p th:text="${productEntry.key.name}"></p>
-                        <p th:text="${productEntry.key.price}"></p>
-                        <p th:text="${productEntry.key.img}"></p>
+                <tr th:each="productEntry: ${items}">
+                    <td><img th:src="${productEntry.key.img}"></td>
+                    <td><p th:text="${productEntry.key.name}"></p></td>
+                    <td><p th:text="${productEntry.key.price}"></p></td>
+                    <td>
                         <a th:href="@{/basket/delete?code={id}(id=${productEntry.key.id})}">Удалить товар</a>
                         <a th:href="@{/basket/change?code={id}&type=minus(id=${productEntry.key.id})}">-</a>
-                        <p th:text="${productEntry.value}"></p>
                         <a th:href="@{/basket/change?code={id}&type=plus(id=${productEntry.key.id})}">+</a>
-                    </div>
+                    </td>
+                    <td><p th:text="${productEntry.value}"></p></td>
                 </tr>
                 </tbody>
             </table>

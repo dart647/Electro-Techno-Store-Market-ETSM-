@@ -18,7 +18,7 @@ import java.util.Map;
 public interface ShoppingCartService {
     static Map<Product,Integer> productMap = new HashMap<>();
     public Map<Product,Integer> getItems();
-    public void addItemToCart(Product product);
+    public boolean addItemToCart(Product product);
     public void deleteItemFromCart(String code);
     public void changeQuantity(String code, String type);
     public Map<Product,Integer> setOrder(UserInfo user);
@@ -39,8 +39,14 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void addItemToCart(Product product) {
-        productMap.put(product,1);
+    public boolean addItemToCart(Product product) {
+        if(!productMap.containsKey(product)){
+            productMap.put(product,1);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override
