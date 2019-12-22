@@ -7,10 +7,7 @@ package com.etsm.ETSM.Controllers;
 import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
-import com.etsm.ETSM.Services.MainService;
-import com.etsm.ETSM.Services.ProductService;
-import com.etsm.ETSM.Services.ShoppingCartService;
-import com.etsm.ETSM.Services.UserService;
+import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -30,22 +27,18 @@ public class ShoppingCartController {
 
     private ShoppingCartService shoppingCartService;
 
-    private UserService userService;
+    private HeaderService headerService;
 
     private MainService mainService;
 
     //Basket Page
     @GetMapping("")
     public ModelAndView Basket(Principal principal) {
-        User user = new User();
-        user.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            user = (User) userService.loadUserByUsername(principal.getName());
-        }
+        headerService.setHeader(principal);
         Map<Product,Integer> cartItems = shoppingCartService.getItems();
         return new ModelAndView("/auth/basket",
                 Map.of("categories", mainService.GetAllCategories(),
-                        "role", user.getRoles().toArray()[0].toString(),
+                        "role", headerService.getHeaderRole(),
                         "items",cartItems),
                 HttpStatus.OK);
     }
@@ -69,7 +62,10 @@ public class ShoppingCartController {
         return "redirect:/";
     }
 
-
+    @GetMapping("/createOrder")
+    public ModelAndView createOrder() {
+        return null;
+    }
 
     @Autowired
     public void setProductService(ProductService productService) {
@@ -82,12 +78,12 @@ public class ShoppingCartController {
     }
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setMainService(MainService mainService) {
+        this.mainService = mainService;
     }
 
     @Autowired
-    public void setMainService(MainService mainService) {
-        this.mainService = mainService;
+    public void setHeaderService(HeaderService headerService) {
+        this.headerService = headerService;
     }
 }
