@@ -98,7 +98,7 @@ public class ProductsController {
     }
 
     //Product Page
-    @GetMapping("category/subCategory/minorCategory/{productName}")
+    @GetMapping("details/{productName}")
     public ModelAndView GetProduct(@PathVariable String productName) {
         return productService.findProductByName(productName)
                 .map(product -> new ModelAndView("catalog/category/subCategory/minorCategory/product",
