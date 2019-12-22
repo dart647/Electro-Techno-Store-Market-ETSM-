@@ -75,7 +75,11 @@ public class MainController {
 
     @PostMapping("/")
     public ModelAndView MainPageWithSearch(@ModelAttribute("searching") String searching, Principal principal) {
-        User user = (User) userService.loadUserByUsername(principal.getName());
+        User user = new User();
+        user.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
+        if (principal != null) {
+            user = (User) userService.loadUserByUsername(principal.getName());
+        }
         List<Product> products = service.GetSearchProducts(searching);
         return new ModelAndView("/main",
                 Map.of("products", service.SetRecommendations(),

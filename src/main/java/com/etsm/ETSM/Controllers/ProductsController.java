@@ -37,19 +37,19 @@ public class ProductsController {
     }
 
     //Products List Page
-    @GetMapping("/list")
-    ModelAndView GetAllProducts(Principal principal) {
-        User userForRole = new User();
-        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            userForRole = (User) userService.loadUserByUsername(principal.getName());
-        }
-        return new ModelAndView("catalog/list",
-                Map.of("products", productService.findAllProducts(),
-                        "categories", mainService.GetAllCategories(),
-                        "role", userForRole.getRoles().toArray()[0].toString()),
-                HttpStatus.OK);
-    }
+//    @GetMapping("/list")
+//    ModelAndView GetAllProducts(Principal principal) {
+//        User userForRole = new User();
+//        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
+//        if (principal != null) {
+//            userForRole = (User) userService.loadUserByUsername(principal.getName());
+//        }
+//        return new ModelAndView("catalog/list",
+//                Map.of("products", productService.findAllProducts(),
+//                        "categories", mainService.GetAllCategories(),
+//                        "role", userForRole.getRoles().toArray()[0].toString()),
+//                HttpStatus.OK);
+//    }
 
     //Product Page
     @GetMapping("category/subCategory/{productName}")
