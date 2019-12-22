@@ -4,15 +4,14 @@ import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Services.MainService;
+import com.etsm.ETSM.Services.ProductService;
+import com.etsm.ETSM.Services.ShoppingCartService;
 import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
@@ -31,6 +30,8 @@ public class MainController {
 
     private MainService service;
     private UserService userService;
+    private ProductService productService;
+    private ShoppingCartService shoppingCartService;
 
     @Autowired
     public MainService getService() {
@@ -48,6 +49,14 @@ public class MainController {
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
+    @Autowired
+    public void setShoppingCartService(ShoppingCartService shoppingCartService) {
+        this.shoppingCartService = shoppingCartService;
     }
 
     public MainController(MainService service, UserService userService) {
@@ -101,20 +110,6 @@ public class MainController {
                 HttpStatus.OK);
     }
 
-    //Basket Page
-    @GetMapping("/basket")
-    public ModelAndView Basket(Principal principal) {
-        User user = new User();
-        user.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            user = (User) userService.loadUserByUsername(principal.getName());
-        }
-        return new ModelAndView("/auth/basket",
-                Map.of("categories", service.GetAllCategories(),
-                        "role", user.getRoles().toArray()[0].toString()),
-                HttpStatus.OK);
-    }
-
     //Admin panel page
     @GetMapping("/admin")
     public ModelAndView Admin(Principal principal) {
@@ -145,5 +140,19 @@ public class MainController {
         model.addAttribute("view","login");
         model.addAttribute("title","Вход");
         return "login";
+    }
+
+    @GetMapping("/buyProduct")
+    public String addToCart(@RequestParam(value = "code") String code) {
+        Long id = Long.parseLong(code);
+        Product product = productService.findProductById(id).get();
+        shoppingCartService.addItemToCart(product);
+        return "redirect:/orderSuggestion";
+    }
+
+    @GetMapping("/orderSuggestion")
+    public ModelAndView getCartPage() {
+        return new ModelAndView("/catalog/orderSuggestion",
+                HttpStatus.OK);
     }
 }

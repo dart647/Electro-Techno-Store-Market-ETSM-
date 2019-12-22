@@ -27,6 +27,7 @@
                                 <label th:text="${'Название ' + product.name}"></label>
                                 <br>
                                 <label th:text="${'Цена ' + product.price}"></label>
+                                <a th:href="@{/buyProduct?code={id}(id=${product.id})}">Add to cart</a>
                             </a>
                         </div>
                         <br>
