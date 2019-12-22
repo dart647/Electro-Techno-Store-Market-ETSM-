@@ -34,15 +34,16 @@ class MainServiceImpl implements MainService {
     private UserRepository userRepository;
 
     public List<Product> SetRecommendations() {
-        List<Product> products = new ArrayList<>();
+        List<Product> products = productRepository.findAll();
+        List<Product> recommendations = new ArrayList<>();
         if(productRepository.count()!=0) {
             for (int i = 0; i < 3; i++) {
-                long rand = (long) new Random().nextInt((int) productRepository.count());
-                Product product = productRepository.findById(rand + 1).get();
-                products.add(product);
+                int rand = new Random().nextInt(products.size());
+                Product product = products.get(rand);
+                recommendations.add(product);
             }
         }
-        return products;
+        return recommendations;
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.etsm.ETSM.Models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 // Описание продукта

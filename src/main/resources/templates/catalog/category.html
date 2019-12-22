@@ -19,12 +19,27 @@
         <!--Заменяемая часть-->
         <div class="col">
             <h1>Первый уровень</h1>
+            <div>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <a href="/">Главная</a>
+                        <a th:text=" ' > '"></a>
+                        <a th:text="${currCategory}"></a>
+                    </div>
+                </form>
+            </div>
 
-            <div data-th-each="subCategory : ${subCategories}" class="subCategory">
-                <a class="btn btn-outline-secondary btn-block"
-                   th:href="@{/catalog/category/{subCategoryName}(subCategoryName=${subCategory.name})}">
-                    <label th:text="'Название - '+ ${subCategory.name}"></label>
-                </a>
+            <div class="row">
+                <div th:each="subCategory : ${subCategories}" class="col-4">
+                    <br>
+                    <div>
+                        <a class="btn btn-outline-secondary"
+                           th:href="@{/catalog/category/{subCategoryName}(subCategoryName=${subCategory.name})}">
+                            <label th:text="'Название - '+ ${subCategory.name}"></label>
+                        </a>
+                    </div>
+                    <br>
+                </div>
             </div>
         </div>
     </div>

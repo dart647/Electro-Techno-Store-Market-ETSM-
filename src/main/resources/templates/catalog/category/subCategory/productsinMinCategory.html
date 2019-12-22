@@ -23,14 +23,34 @@
         <!--Заменяемая часть-->
         <div class="col">
             <h1>Третий уровень</h1>
+            <div>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <a href="/">Главная</a>
+                        <a th:text=" ' > '"></a>
+                        <a th:href="@{/catalog/{categoryName}(categoryName=${currMinorCategory.subcategory_id.category_id.name})}"
+                           th:text="${currMinorCategory.subcategory_id.category_id.name}"></a>
+                        <a th:text=" ' > '"></a>
+                        <a th:href="@{/catalog/category/{subCategoryName}(subCategoryName=${currMinorCategory.subcategory_id.name})}"
+                           th:text="${currMinorCategory.subcategory_id.name}"></a>
+                        <a th:text=" ' > '"></a>
+                        <a th:text="${currMinorCategory.name}"></a>
+                    </div>
+                </form>
+            </div>
 
-            <div th:each="product : ${products}">
+            <div class="row">
+                <div th:each="product : ${products}" class="col-4">
+                    <br>
+                    <div>
                 <a class="btn btn-outline-secondary btn-block"
                    th:href="@{/catalog/details/{productName}(productName=${product.name})}">
                     <img class="img-thumbnail" th:src="${product.img}">
                     <label th:text="'Название - '+ ${product.name}"></label>
                 </a>
-                <br>
+                    </div>
+                    <br>
+                </div>
             </div>
         </div>
     </div>

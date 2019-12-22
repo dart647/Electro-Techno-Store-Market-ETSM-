@@ -13,6 +13,17 @@
                     <li class="nav-item"><a class="nav-link">Адреса магазинов</a></li>
                     <li class="nav-item"><a class="nav-link">Обратная связь</a></li>
                     <li class="nav-item"><a href="/about" class="nav-link">О нас</a></li>
+                    <li class="nav-item">
+                        <form th:switch="${role}" class="form-inline">
+                            <div th:case="GUEST" class="form-group">
+                                <a class="nav-link" href="/user">Вход</a>
+                                <a class="nav-link" href="/registration">Регистрация</a>
+                            </div>
+                            <div th:case="*" class="form-group">
+                                <a class="nav-link" href="/user">Личный Кабинет</a>
+                            </div>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -27,23 +38,23 @@
                                 class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li th:each="cat: ${categories}">
-                                <a th:text="${cat.name}" th:href="@{/catalog/{categoryName}(categoryName=${cat.name})}"
+                                <a th:text="${cat.name}"
+                                   th:href="@{/catalog/{categoryName}(categoryName=${cat.name})}"
                                    class="dropdown-item"></a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="/catalog/list">Все товары</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/user">Личный Кабинет</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/registration">Регистрация</a></li>
+                    <!--                    <li class="nav-item"><a class="nav-link" href="/catalog/list">Все товары</a></li>-->
                     <li class="nav-item"><a class="nav-link" href="/basket">Корзина</a></li>
 
                     <div th:switch="${role}">
-                        <li th:case="ADMIN" class="nav-item"><a class="nav-link" href="/admin">Панель администратора</a>
+                        <li th:case="ADMIN" class="nav-item"><a class="nav-link" href="/admin">Панель
+                            администратора</a>
                         </li>
-                        <li th:case="MANAGER" class="nav-item"><a class="nav-link" href="/admin">Панель менеджера</a>
+                        <li th:case="MANAGER" class="nav-item"><a class="nav-link" href="/admin">Панель
+                            менеджера</a>
                         </li>
                     </div>
-
                 </ul>
             </div>
         </div>
