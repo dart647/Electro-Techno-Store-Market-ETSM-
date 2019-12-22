@@ -1,14 +1,16 @@
+<!--
+  ~ Copyright (c) 2019. Smalkov Nikita.
+  -->
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>[[${product.name}]] &#8211; ETSM</title>
+    <title>Добавить продукт</title>
 </head>
-
 <body>
 <!--Header-->
 <header th:replace="header :: head"/>
@@ -16,30 +18,18 @@
 <!--Main-->
 <div class="container-fluid">
     <div class="row">
-        <div th:replace="header :: leftBar"/>
         <!--Заменяемая часть-->
         <div class="col">
-            <h1 th:text="${product.name}"></h1>
-            <img width="600" height="300" th:src="${product.img}">
-            <h3 th:text="${product.description}"></h3>
-
-            <table class="table">
-                <thead>
-                <th scope="col">Название</th>
-                <th scope="col">Цена</th>
-                <th scope="col">Подкатегория</th>
-                <th scope="col">Атрибуты</th>
-                </thead>
-                <tbody>
-                <tr>
-                    <td th:text="${product.name}"
-                    </td>
-                    <td th:text="${product.price}"></td>
-                    <td th:text="${product.subCategory_id.name}"></td>
-                    <td> В разработке</td>
-                </tr>
-                </tbody>
-            </table>
+            <h1>Добавить 3 категорию</h1>
+            <form th:action="@{/admin/addMinorCategory}" method="post">
+                <div class="form-group">
+                    <label for="name"> Название 3 категории:</label>
+                    <input type="text" name="name" id="name"/>
+                    <label for="subCategoryName"> Название 2 категории:</label>
+                    <input type="text" name="subCategoryName" id="subCategoryName"/>
+                    <input type="submit" value="Добавить" class="btn btn-success"/>
+                </div>
+            </form>
         </div>
     </div>
 </div>

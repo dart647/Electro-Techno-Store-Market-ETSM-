@@ -14,36 +14,35 @@ public interface AdminService{
     Optional<User> findUserById(Long id);
     boolean addNewCategory(Category category);
     boolean addNewSubCategory(String CategoryName, SubCategory subCategory);
+    boolean addNewMinorCategory(String subCategoryName, MinorCategory minorCategory);
     boolean addNewAttribute(Attribute attribute);
 }
 
 @Service
 class AdminServiceImpl implements AdminService{
-    @Autowired
+
     private UserRepository userRepository;
 
-    @Autowired
     SubCategoryRepository subCategoryRepository;
 
-    @Autowired
     ProductRepository productRepository;
 
-    @Autowired
     CategoryRepository categoryRepository;
 
-    @Autowired
     AttributeRepository attributeRepository;
 
-    public boolean addNewProduct(Product product, String subCategoryName){
+    MinorCategoryRepository minorCategoryRepository;
+
+    public boolean addNewProduct(Product product, String minorCategoryName){
         if (productRepository.findByName(product.getName()).isPresent()) {
             return false;
         }
-        SubCategory subCategory = subCategoryRepository.findByName(subCategoryName).get();
+        MinorCategory minorCategory = minorCategoryRepository.findByName(minorCategoryName).get();
         Product newProduct = new Product();
         newProduct.setDescription(product.getDescription());
         newProduct.setName(product.getName());
         newProduct.setPrice(product.getPrice());
-        newProduct.setSubCategory_id(subCategory);
+        newProduct.setMinorCategory_id(minorCategory);
         productRepository.saveAndFlush(newProduct);
         return true;
     }
@@ -83,6 +82,19 @@ class AdminServiceImpl implements AdminService{
     }
 
     @Override
+    public boolean addNewMinorCategory(String subCategoryName, MinorCategory minorCategory) {
+        if (minorCategoryRepository.findByName(minorCategory.getName()).isPresent()) {
+            return false;
+        }
+        SubCategory subCategory = subCategoryRepository.findByName(subCategoryName).get();
+        MinorCategory newMinorCategory = new MinorCategory();
+        newMinorCategory.setSubcategory_id(subCategory);
+        newMinorCategory.setName(minorCategory.getName());
+        minorCategoryRepository.saveAndFlush(newMinorCategory);
+        return true;
+    }
+
+    @Override
     public boolean addNewAttribute(Attribute attribute) {
         if (attributeRepository.findByName(attribute.getName()).isPresent()) {
             return false;
@@ -91,5 +103,30 @@ class AdminServiceImpl implements AdminService{
         newAttribute.setName(attribute.getName());
         attributeRepository.saveAndFlush(newAttribute);
         return false;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    @Autowired
+    public void setSubCategoryRepository(SubCategoryRepository subCategoryRepository) {
+        this.subCategoryRepository = subCategoryRepository;
+    }
+    @Autowired
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+    @Autowired
+    public void setCategoryRepository(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+    @Autowired
+    public void setAttributeRepository(AttributeRepository attributeRepository) {
+        this.attributeRepository = attributeRepository;
+    }
+    @Autowired
+    public void setMinorCategoryRepository(MinorCategoryRepository minorCategoryRepository) {
+        this.minorCategoryRepository = minorCategoryRepository;
     }
 }

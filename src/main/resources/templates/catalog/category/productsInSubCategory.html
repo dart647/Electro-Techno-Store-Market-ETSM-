@@ -18,15 +18,31 @@
         <div th:replace="header :: leftBar"/>
         <!--Заменяемая часть-->
         <div class="col">
-            <h1>Страница подкатегорий</h1>
+            <h1>Второй уровень</h1>
+            <div>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <a href="/">Главная</a>
+                        <a th:text=" ' > '"></a>
+                        <a th:href="@{/catalog/{categoryName}(categoryName=${currSubCategory.category_id.name})}"
+                           th:text="${currSubCategory.category_id.name}"></a>
+                        <a th:text=" ' > '"></a>
+                        <a th:text="${currSubCategory.name}"></a>
+                    </div>
+                </form>
+            </div>
 
-            <div th:each="product : ${products}">
-                <a class="btn btn-outline-secondary btn-block"
-                   th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}">
-                    <img class="img-thumbnail" th:src="${product.img}">
-                    <label th:text="'Название - '+ ${product.name}"></label>
-                </a>
-                <br>
+            <div class="row">
+                <div data-th-each="minorCategory : ${minorCategories}" class="col-4">
+                    <br>
+                    <div>
+                        <a class="btn btn-outline-secondary btn-block"
+                           th:href="@{/catalog/category/subCategory/{minorCategoryName}(minorCategoryName=${minorCategory.name})}">
+                            <label th:text="'Название - '+ ${minorCategory.name}"></label>
+                        </a>
+                    </div>
+                    <br>
+                </div>
             </div>
         </div>
     </div>

@@ -13,20 +13,23 @@ public class SubCategory {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
+
     @Column(name = "`name`")
     private String name;
+
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category_id;
-    @OneToMany(targetEntity = Product.class, mappedBy = "subCategory_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Product> productList;
 
-    public List<Product> getProductList() {
-        return productList;
+    @OneToMany(targetEntity = MinorCategory.class, mappedBy = "subcategory_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<MinorCategory> minorCategoryList;
+
+    public List<MinorCategory> getMinorCategoryList() {
+        return minorCategoryList;
     }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
+    public void setMinorCategoryList(List<MinorCategory> minorCategoryList) {
+        this.minorCategoryList = minorCategoryList;
     }
 
     public long getId() {

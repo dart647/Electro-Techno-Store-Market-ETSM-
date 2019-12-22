@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (c) 2019. Smalkov Nikita.
+  -->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -18,25 +22,32 @@
         <div th:replace="header :: leftBar"/>
         <!--Заменяемая часть-->
         <div class="col">
-            <h1>Первый уровень</h1>
+            <h1>Третий уровень</h1>
             <div>
                 <form class="form-inline">
                     <div class="form-group">
                         <a href="/">Главная</a>
                         <a th:text=" ' > '"></a>
-                        <a th:text="${currCategory}"></a>
+                        <a th:href="@{/catalog/{categoryName}(categoryName=${currMinorCategory.subcategory_id.category_id.name})}"
+                           th:text="${currMinorCategory.subcategory_id.category_id.name}"></a>
+                        <a th:text=" ' > '"></a>
+                        <a th:href="@{/catalog/category/{subCategoryName}(subCategoryName=${currMinorCategory.subcategory_id.name})}"
+                           th:text="${currMinorCategory.subcategory_id.name}"></a>
+                        <a th:text=" ' > '"></a>
+                        <a th:text="${currMinorCategory.name}"></a>
                     </div>
                 </form>
             </div>
 
             <div class="row">
-                <div th:each="subCategory : ${subCategories}" class="col-4">
+                <div th:each="product : ${products}" class="col-4">
                     <br>
                     <div>
-                        <a class="btn btn-outline-secondary"
-                           th:href="@{/catalog/category/{subCategoryName}(subCategoryName=${subCategory.name})}">
-                            <label th:text="'Название - '+ ${subCategory.name}"></label>
-                        </a>
+                <a class="btn btn-outline-secondary btn-block"
+                   th:href="@{/catalog/details/{productName}(productName=${product.name})}">
+                    <img class="img-thumbnail" th:src="${product.img}">
+                    <label th:text="'Название - '+ ${product.name}"></label>
+                </a>
                     </div>
                     <br>
                 </div>

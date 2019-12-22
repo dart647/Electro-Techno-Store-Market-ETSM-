@@ -2,6 +2,7 @@ package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.*;
 import com.etsm.ETSM.Repositories.CategoryRepository;
+import com.etsm.ETSM.Repositories.MinorCategoryRepository;
 import com.etsm.ETSM.Repositories.SubCategoryRepository;
 import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,13 @@ public class AdminController {
     private CategoryRepository categoryRepository;
     private SubCategoryRepository subCategoryRepository;
     private ProductService productService;
+    private MinorCategoryRepository minorCategoryRepository;
+    private HeaderService headerService;
 
-    public AdminController(AdminService adminService, UserService userService, MainService mainService, UserInformationService userInformationService, CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository, ProductService productService) {
+    public AdminController(AdminService adminService, UserService userService,
+                           MainService mainService, UserInformationService userInformationService,
+                           CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository,
+                           ProductService productService, MinorCategoryRepository minorCategoryRepository) {
         this.adminService = adminService;
         this.userService = userService;
         this.mainService = mainService;
@@ -32,6 +38,12 @@ public class AdminController {
         this.categoryRepository = categoryRepository;
         this.subCategoryRepository = subCategoryRepository;
         this.productService = productService;
+        this.minorCategoryRepository = minorCategoryRepository;
+    }
+
+    @Autowired
+    public void setHeaderService(HeaderService headerService) {
+        this.headerService = headerService;
     }
 
     @Autowired
@@ -64,35 +76,38 @@ public class AdminController {
         this.productService = productService;
     }
 
+    @Autowired
+    public void setMinorCategoryRepository(MinorCategoryRepository minorCategoryRepository) {
+        this.minorCategoryRepository = minorCategoryRepository;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/all")
     public ModelAndView getAllUsers(Principal principal) {
-        User userForRole = new User();
-        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            userForRole = (User) userService.loadUserByUsername(principal.getName());
-        }
+        headerService.setHeader(principal);
         return new ModelAndView("admin/all",
                 Map.of("users", adminService.findUsers(),
-                        "role", userForRole.getRoles().toArray()[0].toString()),
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);
     }
 
     @GetMapping("{userId}")
     public ModelAndView user(@PathVariable long userId, Principal principal) {
-        User userForRole = new User();
-        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            userForRole = (User) userService.loadUserByUsername(principal.getName());
-        }
-
-        User finalUserForRole = userForRole;
+        headerService.setHeader(principal);
 
         return adminService.findUserById(userId)
                 .map(user -> new ModelAndView("admin/user",
-                        Map.of("user",user,
-                                "role", finalUserForRole.getRoles().toArray()[0].toString()), HttpStatus.OK))
+                        Map.of("user", user,
+                                "role", headerService.getHeaderRole(),
+                                "categories", headerService.getHeaderCategories()),
+                        HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
-                        Map.of("error","Couldn't find a user"), HttpStatus.NOT_FOUND));
+                        Map.of("error", "Couldn't find a user"), HttpStatus.NOT_FOUND));
 
     }
 
@@ -104,38 +119,43 @@ public class AdminController {
     }
 
     @GetMapping("/addProduct")
-    public ModelAndView AddProduct(Principal principal){
-        User userForRole = new User();
-        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            userForRole = (User) userService.loadUserByUsername(principal.getName());
-        }
+    public ModelAndView AddProduct(Principal principal) {
+        headerService.setHeader(principal);
         Product product = new Product();
-        String subCategoryName = "";
+        String minorCategoryName = "";
+        List<Category> categoryList = categoryRepository.findAll();
         List<SubCategory> subCategoryList = subCategoryRepository.findAll();
+        List<MinorCategory> minorCategoryList = minorCategoryRepository.findAll();
         return new ModelAndView("admin/addProduct",
                 Map.of("product", product,
-                        "role", userForRole.getRoles().toArray()[0].toString(),
-                        "subCategoryName",subCategoryName,
-                        "subCategoryList",subCategoryList),
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories(),
+                        "minorCategoryName", minorCategoryName,
+                        "categoryList", categoryList,
+                        "subCategoryList", subCategoryList,
+                        "minorCategoryList", minorCategoryList
+                ),
                 HttpStatus.OK);
     }
 
 
     @PostMapping("/addProduct")
     public String AddProduct(@ModelAttribute Product product,
-                             @ModelAttribute("subCategoryName") String subCategoryName){
-        adminService.addNewProduct(product,subCategoryName);
+                             @ModelAttribute("minorCategoryName") String minorCategoryName) {
+        adminService.addNewProduct(product, minorCategoryName);
         return "redirect:/catalog/list";
     }
 
     @GetMapping("/addCategory")
-    public ModelAndView addCategory() {
+    public ModelAndView addCategory(Principal principal) {
+        headerService.setHeader(principal);
         Category category = new Category();
         List<Category> categoryList = categoryRepository.findAll();
         return new ModelAndView("admin/addCategory",
                 Map.of("category", category,
-                        "categoryList",categoryList),
+                        "categoryList", categoryList,
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);
     }
 
@@ -146,31 +166,58 @@ public class AdminController {
     }
 
     @GetMapping("/addSubCategory")
-    public ModelAndView addSubCategory() {
+    public ModelAndView addSubCategory(Principal principal) {
+        headerService.setHeader(principal);
         SubCategory subCategory = new SubCategory();
         String categoryName = "";
         List<Category> categoryList = categoryRepository.findAll();
         return new ModelAndView("admin/addSubCategory",
                 Map.of("subCategory", subCategory,
-                        "categoryName",categoryName,
-                        "categoryList",categoryList
-                        ),
+                        "categoryName", categoryName,
+                        "categoryList", categoryList,
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);
     }
 
     @PostMapping("/addSubCategory")
     public String addSubCategory(@ModelAttribute SubCategory subCategory,
                                  @ModelAttribute("categoryName") String categoryName
-                                 ) {
-        adminService.addNewSubCategory(categoryName,subCategory);
+    ) {
+        adminService.addNewSubCategory(categoryName, subCategory);
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/addMinorCategory")
+    public ModelAndView addMinorCategory(Principal principal) {
+        headerService.setHeader(principal);
+        MinorCategory minorCategory = new MinorCategory();
+        String subCategoryName = "";
+        List<SubCategory> subCategoryList = subCategoryRepository.findAll();
+        return new ModelAndView("admin/addMinorCategory",
+                Map.of("minorCategory", minorCategory,
+                        "subCategoryName", subCategoryName,
+                        "subCategoryList", subCategoryList,
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/addMinorCategory")
+    public String addMinorCategory(@ModelAttribute MinorCategory minorCategory,
+                                   @ModelAttribute("subCategoryName") String subCategoryName) {
+        adminService.addNewMinorCategory(subCategoryName, minorCategory);
         return "redirect:/admin";
     }
 
     @GetMapping("/addAttribute")
-    public ModelAndView addAttribute() {
+    public ModelAndView addAttribute(Principal principal) {
+        headerService.setHeader(principal);
         Attribute attribute = new Attribute();
         return new ModelAndView("admin/addAttribute",
-                Map.of("attribute",attribute),
+                Map.of("attribute", attribute,
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);
     }
 
@@ -179,8 +226,5 @@ public class AdminController {
         adminService.addNewAttribute(attribute);
         return "redirect:/admin";
     }
-@Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+
 }

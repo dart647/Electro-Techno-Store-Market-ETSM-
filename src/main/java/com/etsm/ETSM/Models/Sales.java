@@ -13,12 +13,6 @@ public class Sales {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
-    @Column(name = "`price`")
-    private int price;
-    @Column(name = "`discount`")
-    private int discount;
-    @Column(name = "`nds`")
-    private int nds;
     @Column(name = "`sum`")
     private int sum;
     @ManyToOne()
@@ -41,30 +35,6 @@ public class Sales {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
-
-    public int getNds() {
-        return nds;
-    }
-
-    public void setNds(int nds) {
-        this.nds = nds;
     }
 
     public int getSum() {

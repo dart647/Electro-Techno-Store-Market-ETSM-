@@ -14,19 +14,44 @@ public class Product {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id; //ID продукта
+
     @Column(name = "`name`", nullable = false)
     private String name; //Название
+
     @Column(name = "`price`", nullable = false)
     private int price; //Цена
+
     @ManyToOne()
-    @JoinColumn(name = "subCategory_id", referencedColumnName = "id")
-    private SubCategory subCategory_id; //Подкатегория
+    @JoinColumn(name = "minorcategory_id", referencedColumnName = "id")
+    private MinorCategory minorcategory_id; //Подкатегория
+
     @Column(name = "`desc`")
     private String description; //Описание
+
     @Column(name = "`img`")
     private String img;
+
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private transient List<Sales_has_product> salesHasProducts;
+
+    @OneToMany(targetEntity = Attribute_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private transient List<Attribute_has_product> attributeHasProducts;
+
+    public MinorCategory getMinorcategory_id() {
+        return minorcategory_id;
+    }
+
+    public void setMinorcategory_id(MinorCategory minorcategory_id) {
+        this.minorcategory_id = minorcategory_id;
+    }
+
+    public List<Attribute_has_product> getAttributeHasProducts() {
+        return attributeHasProducts;
+    }
+
+    public void setAttributeHasProducts(List<Attribute_has_product> attributeHasProducts) {
+        this.attributeHasProducts = attributeHasProducts;
+    }
 
     public List<Sales_has_product> getSalesHasProducts() {
         return salesHasProducts;
@@ -76,12 +101,12 @@ public class Product {
         this.img = img;
     }
 
-    public SubCategory getSubCategory_id() {
-        return subCategory_id;
+    public MinorCategory getSubCategory_id() {
+        return minorcategory_id;
     }
 
-    public void setSubCategory_id(SubCategory subCategory_id) {
-        subCategory_id.getProductList().add(this);
-        this.subCategory_id = subCategory_id;
+    public void setMinorCategory_id(MinorCategory minorCategory_id) {
+        minorCategory_id.getProductList().add(this);
+        this.minorcategory_id = minorCategory_id;
     }
 }

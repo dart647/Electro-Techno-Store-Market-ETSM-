@@ -28,18 +28,23 @@
                 </div>
             </form>
 
-            <div class="row">
-                <div class="col-4" th:each="product: ${searchProducts}">
-                    <br>
-                    <div>
-                        <a class="btn btn-outline-dark" th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}">
-                            <img class="img-thumbnail" th:src="${product.img}">
-                            <label th:text="${'Название ' + product.name}"></label>
-                            <br>
-                            <label th:text="${'Цена ' + product.price}"></label>
-                        </a>
+            <div th:switch="${searchProducts.size()}">
+                <div th:case="0">
+                    <h4>Совпадений не найдено</h4>
+                </div>
+                <div th:case="*" class="row">
+                    <div class="col-4" th:each="product: ${searchProducts}">
+                        <br>
+                        <div>
+                            <a class="btn btn-outline-dark" th:href="@{/catalog/details/{productName}(productName=${product.name})}">
+                                <img class="img-thumbnail" th:src="${product.img}">
+                                <label th:text="${'Название ' + product.name}"></label>
+                                <br>
+                                <label th:text="${'Цена ' + product.price}"></label>
+                            </a>
+                        </div>
+                        <br>
                     </div>
-                    <br>
                 </div>
             </div>
 <!--            <div class="container mt-100">-->
@@ -55,14 +60,14 @@
 
         <div class="col-3">
             <h3>Рекомендации</h3>
-            <ul class="nav flex-column" th:each="product:${products}">
+            <ul class="nav flex-column" th:each="product:${recommendations}">
                 <li class="nav-item">
                     <a class="btn btn-outline-secondary btn-block"
-                       th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}">
+                       th:href="@{/catalog/details/{productName}(productName=${product.name})}">
                         <img class="img-thumbnail" th:src="${product.img}">
                         <label th:text="'Название - '+ ${product.name}"></label>
                         <br>
-                        <label th:href="@{/catalog/category/subCategory/{productName}(productName=${product.name})}"
+                        <label th:href="@{/catalog/details/{productName}(productName=${product.name})}"
                                th:text="'Цена - '+ ${product.price}">
                         </label>
                     </a>

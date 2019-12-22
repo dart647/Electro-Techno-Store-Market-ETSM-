@@ -17,10 +17,17 @@ public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
 
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User userFoundByUsername = userRepository.findByUsername(username);
         User userFoundByLogin = userRepository.findByLogin(username);
+        User userFindByGoogleUsername = userRepository.findByGoogleUsername(username);
+        User userFindByGoogleName = userRepository.findByGoogleName(username);
 
         if (userFoundByUsername != null) {
             return userFoundByUsername;
@@ -30,12 +37,16 @@ public class UserService implements UserDetailsService {
             return userFoundByLogin;
         }
 
+        if(userFindByGoogleUsername != null)
+        {
+            return userFindByGoogleUsername;
+        }
+
+        if(userFindByGoogleName != null)
+        {
+            return userFindByGoogleName;
+        }
+
         return null;
-    }
-
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
     }
 }

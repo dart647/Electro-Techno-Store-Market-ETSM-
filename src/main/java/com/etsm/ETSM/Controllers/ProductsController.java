@@ -1,7 +1,6 @@
 package com.etsm.ETSM.Controllers;
 
-import com.etsm.ETSM.Models.Role;
-import com.etsm.ETSM.Models.User;
+import com.etsm.ETSM.Services.HeaderService;
 import com.etsm.ETSM.Services.MainService;
 import com.etsm.ETSM.Services.ProductService;
 import com.etsm.ETSM.Services.UserService;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 
 // Контроллер отвечающий за вывод страницы списка товаров
@@ -29,6 +26,8 @@ public class ProductsController {
     private MainService mainService;
 
     private UserService userService;
+
+    private HeaderService headerService;
 
     public ProductsController(ProductService productService, MainService mainService, UserService userService) {
         this.productService = productService;
@@ -51,68 +50,79 @@ public class ProductsController {
 //                HttpStatus.OK);
 //    }
 
-    //Product Page
-    @GetMapping("category/subCategory/{productName}")
-    public ModelAndView GetProduct(@PathVariable String productName, Principal principal) {
-        User userForRole = new User();
-        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            userForRole = (User) userService.loadUserByUsername(principal.getName());
-        }
-        User finalUserForRole = userForRole;
-        return productService.findProductByName(productName)
-                .map(product -> new ModelAndView("catalog/category/subCategory/product",
-                        Map.of("product", product,
-                                "categories", mainService.GetAllCategories(),
-                                "role", finalUserForRole.getRoles().toArray()[0].toString()), HttpStatus.OK))
-                .orElseGet(() -> new ModelAndView("errors/404",
-                        Map.of("error", "Couldn't find a product"), HttpStatus.NOT_FOUND));
-    }
-
     @GetMapping("{categoryName}")
     public ModelAndView GetCategory(@PathVariable String categoryName, Principal principal) {
-        User userForRole = new User();
-        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            userForRole = (User) userService.loadUserByUsername(principal.getName());
-        }
-        User finalUserForRole = userForRole;
+        headerService.setHeader(principal);
         return productService.findCategoryByName(categoryName)
                 .map(product -> new ModelAndView("catalog/category",
                         Map.of("subCategories", productService.findSubCategoriesFromCategory(categoryName),
                                 "categories", mainService.GetAllCategories(),
-                                "role", finalUserForRole.getRoles().toArray()[0].toString()), HttpStatus.OK))
+                                "currCategory", categoryName,
+                                "role", headerService.getHeaderRole()),
+                        HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find a product"), HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("category/{subCategoryName}")
     public ModelAndView GetSubCategory(@PathVariable String subCategoryName, Principal principal) {
-        User userForRole = new User();
-        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-        if (principal != null) {
-            userForRole = (User) userService.loadUserByUsername(principal.getName());
-        }
-        User finalUserForRole = userForRole;
+        headerService.setHeader(principal);
         return productService.findSubCategoryByName(subCategoryName)
                 .map(product -> new ModelAndView("/catalog/category/productsInSubCategory",
-                        Map.of("products", productService.findProductsFromSubCategory(subCategoryName),
+                        Map.of("minorCategories", productService.findMinorCategoriesFromSubCategory(subCategoryName),
                                 "categories", mainService.GetAllCategories(),
-                                "role", finalUserForRole.getRoles().toArray()[0].toString()),
+                                "currSubCategory", productService.findSubCategoryByName(subCategoryName).get(),
+                                "role", headerService.getHeaderRole()),
                         HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find a sub Category"), HttpStatus.NOT_FOUND));
     }
-@Autowired
+
+    @GetMapping("category/subCategory/{minorCategoryName}")
+    public ModelAndView GetMinorCategory(@PathVariable String minorCategoryName, Principal principal) {
+        headerService.setHeader(principal);
+        return productService.findMinorCategoryByName(minorCategoryName)
+                .map(product -> new ModelAndView("/catalog/category/subCategory/productsinMinCategory",
+                        Map.of("products", productService.findProductsFromMinorCategory(minorCategoryName),
+                                "currMinorCategory", productService.findMinorCategoryByName(minorCategoryName).get(),
+                                "categories", mainService.GetAllCategories(),
+                                "role", headerService.getHeaderRole()),
+                        HttpStatus.OK))
+                .orElseGet(() -> new ModelAndView("errors/404",
+                        Map.of("error", "Couldn't find third layer category"), HttpStatus.NOT_FOUND));
+    }
+
+    //Product Page
+    @GetMapping("details/{productName}")
+    public ModelAndView GetProduct(@PathVariable String productName, Principal principal) {
+        headerService.setHeader(principal);
+        return productService.findProductByName(productName)
+                .map(product -> new ModelAndView("catalog/category/subCategory/minorCategory/product",
+                        Map.of("product", product,
+                                "categories", mainService.GetAllCategories(),
+                                "role", headerService.getHeaderRole()),
+                        HttpStatus.OK))
+                .orElseGet(() -> new ModelAndView("errors/404",
+                        Map.of("error", "Couldn't find a product"), HttpStatus.NOT_FOUND));
+    }
+
+    @Autowired
     public void setMainService(MainService mainService) {
         this.mainService = mainService;
     }
-@Autowired
+
+    @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
-@Autowired
+
+    @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setHeaderService(HeaderService headerService) {
+        this.headerService = headerService;
     }
 }
