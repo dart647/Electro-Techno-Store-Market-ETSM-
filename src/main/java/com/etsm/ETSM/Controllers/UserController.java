@@ -50,7 +50,7 @@ public class UserController {
     @PostMapping("/auth/editAuth")
     public String editAuth(@ModelAttribute User user) {
         if (userInformationService.editUserAuth(user))
-            return "redirect:/";
+            return "redirect:/user";
         else
             return "/auth/editAuth";
     }
@@ -71,7 +71,7 @@ public class UserController {
     public String addUserInfo(@ModelAttribute UserInfo userInfo, Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
         if (userInformationService.addUserInfo(user, userInfo))
-            return "redirect:/";
+            return "redirect:/user";
         else
             return "/auth/addUserInfo";
     }

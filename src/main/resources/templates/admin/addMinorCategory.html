@@ -23,11 +23,25 @@
             <h1>Добавить 3 категорию</h1>
             <form th:action="@{/admin/addMinorCategory}" method="post">
                 <div class="form-group">
-                    <label for="name"> Название 3 категории:</label>
-                    <input type="text" name="name" id="name"/>
-                    <label for="subCategoryName"> Название 2 категории:</label>
-                    <input type="text" name="subCategoryName" id="subCategoryName"/>
+                    <div class="form-group">
+                        <label for="name"> Название категории третьего уровня:</label>
+                        <input type="text" name="name" id="name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="subCategoryName"> Название категории второго уровня:</label>
+                        <select class="combobox" name="subCategoryName" id="subCategoryName">
+                            <option value="" selected="selected"></option>
+                            <option th:each="subCategory: ${subCategoryList}" th:value="${subCategory.name}" th:text="${subCategory.name}"></option>
+                        </select>
+                    </div>
                     <input type="submit" value="Добавить" class="btn btn-success"/>
+                </div>
+                <div>
+                    <h1>Существующие категории - 3</h1>
+                    <div data-th-each="minorCategory : ${minorCategoryList}">
+                        <label th:text="'ID - '+ ${minorCategory.id}"></label>
+                        <label th:text="'Название - '+ ${minorCategory.name}"></label>
+                    </div>
                 </div>
             </form>
         </div>

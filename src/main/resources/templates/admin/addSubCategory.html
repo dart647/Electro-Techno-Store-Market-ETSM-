@@ -23,13 +23,27 @@
             <h1>Добавить 2 категорию</h1>
             <form th:action="@{/admin/addSubCategory}" method="post">
                 <div class="form-group">
-                    <label for="name"> Название 2 подкатегории:</label>
-                    <input type="text" name="name" id="name"/>
-                    <label for="categoryName"> Название 1 категории:</label>
-                    <input type="text" name="categoryName" id="categoryName"/>
+                    <div class="form-group">
+                        <label for="name"> Название категории второго уровня:</label>
+                        <input type="text" name="name" id="name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryName"> Название категории первого уровня:</label>
+                        <select class="combobox" name="categoryName" id="categoryName">
+                            <option value="" selected="selected"></option>
+                            <option th:each="category: ${categoryList}" th:value="${category.name}" th:text="${category.name}"></option>
+                        </select>
+                    </div>
                     <input type="submit" value="Добавить" class="btn btn-success"/>
                 </div>
             </form>
+            <div>
+                <h1>Существующие категории - 2</h1>
+                <div data-th-each="subCategory : ${subCategoryList}">
+                    <label th:text="'ID - '+ ${subCategory.id}"></label>
+                    <label th:text="'Название - '+ ${subCategory.name}"></label>
+                </div>
+            </div>
         </div>
     </div>
 </div>

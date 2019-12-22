@@ -23,11 +23,20 @@
             <h1>Добавить аттрибут</h1>
             <form th:action="@{/admin/addAttribute}" method="post">
                 <div class="form-group">
-                    <label for="name"> Название аттрибута:</label>
-                    <input type="text" name="name" id="name"/>
+                    <div class="form-group">
+                        <label for="name"> Название аттрибута:</label>
+                        <input type="text" name="name" id="name"/>
+                    </div>
                     <input type="submit" value="Добавить" class="btn btn-success"/>
                 </div>
             </form>
+            <div>
+                <h1>Существующие атрибуты</h1>
+                <div data-th-each="attribute : ${attributesList}">
+                    <label th:text="'ID - '+ ${attribute.id}"></label>
+                    <label th:text="'Название - '+ ${attribute.name}"></label>
+                </div>
+            </div>
         </div>
     </div>
 </div>
