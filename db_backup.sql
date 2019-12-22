@@ -112,7 +112,7 @@ CREATE TABLE `minorcategory` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `minorCategory_fk_idx` (`subcategory_id`),
   CONSTRAINT `minorCategory_fk` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +121,7 @@ CREATE TABLE `minorcategory` (
 
 LOCK TABLES `minorcategory` WRITE;
 /*!40000 ALTER TABLE `minorcategory` DISABLE KEYS */;
-INSERT INTO `minorcategory` VALUES (5,'Apple iPhone',3),(8,'IP-телефоны',4),(6,'Samsung',3),(7,'Беспроводные телефоны',4),(3,'Для работы',2),(4,'Игровые',2),(1,'Моноблоки',1),(9,'Пылесосы',5),(2,'Системные блоки',1),(10,'Стиральные машины',5);
+INSERT INTO `minorcategory` VALUES (5,'Apple iPhone',3),(8,'IP-телефоны',4),(6,'Samsung',3),(7,'Беспроводные телефоны',4),(3,'Для работы',2),(4,'Игровые',2),(1,'Моноблоки',1),(11,'Плиты',5),(9,'Пылесосы',5),(2,'Системные блоки',1),(10,'Стиральные машины',5);
 /*!40000 ALTER TABLE `minorcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +146,7 @@ CREATE TABLE `product` (
   KEY `minorcategory_fk_idx` (`minorcategory_id`),
   KEY `product_fk_idx` (`minorcategory_id`),
   CONSTRAINT `product_fk` FOREIGN KEY (`minorcategory_id`) REFERENCES `minorcategory` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +155,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Flextron',56465,'New Generation of Pc gaming',NULL,2),(2,'iMac Pro',80013,'Just for work',NULL,1),(3,'Panasonic',1200,'Home using',NULL,7),(4,'Apple iPhone 11 Pro',86000,'Топ за свои деньги',NULL,5),(8,'Dyson Airblade',5500,'Хороший пылесос',NULL,9);
+INSERT INTO `product` VALUES (1,'Flextron',56465,'New Generation of Pc gaming',NULL,2),(2,'iMac Pro',80013,'Just for work',NULL,1),(3,'Panasonic',1200,'Home using',NULL,7),(4,'Apple iPhone 11 Pro',86000,'Топ за свои деньги',NULL,5),(8,'Dyson Airblade',5500,'Хороший пылесос',NULL,9),(9,'МЕЧТА 12-06-03 СБ',7850,'ыыы',NULL,11);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +276,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'test@yandex.ru','$2a$10$.FkITywKvhx5w5yCCkprzelLoMinY0OlKvOUqT/CoqlrLPfr/iAga','ADMIN',1,'test2',NULL,NULL),(2,'spivak@mail.ru','$2a$10$q7tevVPzrXtJ44n4mk9IkeXyc9QcFxWc9RKvitWDfoqhUKT9EXKf.','ADMIN',1,'dart647',NULL,NULL),(3,'test@mail.ru','$2a$10$bwKKlYuA95UQgH9awpTP1.lAFOQzSTURIg1f8BLg0NKW3jlxht.a.','USER',1,'qwe',NULL,NULL);
+INSERT INTO `user` VALUES (1,'test@yandex.ru','$2a$10$.FkITywKvhx5w5yCCkprzelLoMinY0OlKvOUqT/CoqlrLPfr/iAga','ADMIN',1,'test2',NULL,NULL),(2,'spivak@mail.ru','$2a$10$q7tevVPzrXtJ44n4mk9IkeXyc9QcFxWc9RKvitWDfoqhUKT9EXKf.','ADMIN',1,'dart647',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,7 +301,7 @@ CREATE TABLE `user_roles` (
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` VALUES (1,'ADMIN'),(2,'ADMIN'),(3,'USER');
+INSERT INTO `user_roles` VALUES (1,'ADMIN'),(2,'ADMIN');
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,7 +314,7 @@ DROP TABLE IF EXISTS `userinfo`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `userinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fio` varchar(255) NOT NULL DEFAULT 'new user',
+  `fio` varchar(255) DEFAULT 'new user',
   `birthDate` varchar(255) DEFAULT NULL,
   `address` longtext,
   `loyaltyCode` varchar(10) DEFAULT NULL,
@@ -323,7 +323,7 @@ CREATE TABLE `userinfo` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `loyaltyCode_UNIQUE` (`loyaltyCode`),
   KEY `fk_userinfo_user1` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -332,7 +332,7 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` VALUES (1,'Жмышенко Валерий Альбертович','1999-11-11','dfdfdf','11111',0),(2,'asd','2019-12-12','qwe','13215',0),(3,'Test',NULL,NULL,NULL,0);
+INSERT INTO `userinfo` VALUES (1,'Жмышенко Валерий Альбертович','1999-11-11','dfdfdf','11111',0),(2,'asd','2019-12-12','qwe','13215',0);
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-21 16:42:08
+-- Dump completed on 2019-12-22 13:40:16
