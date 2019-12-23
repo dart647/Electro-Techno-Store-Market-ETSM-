@@ -4,9 +4,9 @@
 
 package com.etsm.ETSM.Repositories;
 
-import com.etsm.ETSM.Models.Attribute_has_product;
+import com.etsm.ETSM.Models.Attribute_Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface Attribute_has_productRepository extends JpaRepository<Attribute_has_product,Long> {
+public interface Attribute_has_productRepository extends JpaRepository<Attribute_Group,Long> {
 
 }

@@ -34,8 +34,12 @@ public class Product {
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private transient List<Sales_has_product> salesHasProducts;
 
-    @OneToMany(targetEntity = Attribute_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private transient List<Attribute_has_product> attributeHasProducts;
+    @OneToMany(targetEntity = ProductAttrValue.class,mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ProductAttrValue> productAttrValue;
+
+    @ManyToOne()
+    @JoinColumn(name = "attribute_gr_id", referencedColumnName = "id")
+    private Attribute_Group attribute_groups;
 
     public MinorCategory getMinorcategory_id() {
         return minorcategory_id;
@@ -43,14 +47,6 @@ public class Product {
 
     public void setMinorcategory_id(MinorCategory minorcategory_id) {
         this.minorcategory_id = minorcategory_id;
-    }
-
-    public List<Attribute_has_product> getAttributeHasProducts() {
-        return attributeHasProducts;
-    }
-
-    public void setAttributeHasProducts(List<Attribute_has_product> attributeHasProducts) {
-        this.attributeHasProducts = attributeHasProducts;
     }
 
     public List<Sales_has_product> getSalesHasProducts() {
@@ -110,4 +106,20 @@ public class Product {
         this.minorcategory_id = minorCategory_id;
     }
 
+    public List<ProductAttrValue> getProductAttrValue() {
+        return productAttrValue;
+    }
+
+    public void setProductAttrValue(List<ProductAttrValue> productAttrValue) {
+        this.productAttrValue = productAttrValue;
+    }
+
+    public Attribute_Group getAttribute_groups() {
+        return attribute_groups;
+    }
+
+    public void setAttribute_groups(Attribute_Group attribute_groups) {
+        attribute_groups.getProduct_id().add(this);
+        this.attribute_groups = attribute_groups;
+    }
 }
