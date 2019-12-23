@@ -10,15 +10,17 @@ import com.etsm.ETSM.Repositories.SalesRepository;
 import com.etsm.ETSM.Repositories.Sales_has_productRepository;
 import com.etsm.ETSM.Repositories.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public interface ShoppingCartService {
     static Map<Product,Integer> productMap = new HashMap<>();
     public Map<Product,Integer> getItems();
-    public boolean addItemToCart(Product product);
+    public boolean addItemToCart(String code);
     public void deleteItemFromCart(String code);
     public void changeQuantity(String code, String type);
     public Map<Product,Integer> setOrder(UserInfo user);
@@ -39,13 +41,18 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public boolean addItemToCart(Product product) {
-        if(!productMap.containsKey(product)){
+    public boolean addItemToCart(String code) {
+        Long id = Long.parseLong(code);
+        Product product = productService.findProductById(id).get();
+        Object[] pair = findEntry(product);
+        Product target = (Product) pair[0];
+        if(target == null){
             productMap.put(product,1);
             return true;
         }
         else {
-            return false;
+            changeQuantity(code,"plus");
+            return true;
         }
     }
 
@@ -53,12 +60,8 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     public void deleteItemFromCart(String code) {
         Long id = Long.parseLong(code);
         Product product = productService.findProductById(id).get();
-        Product target = null;
-        for (Map.Entry<Product,Integer> pair: productMap.entrySet()) {
-            Product product1 = pair.getKey();
-            if (product1.getName().equals(product.getName()))
-                target = product1;
-        }
+        Object[] pair = findEntry(product);
+        Product target = (Product) pair[0];
         productMap.remove(target);
     }
 
@@ -66,15 +69,9 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     public void changeQuantity(String code, String type) {
         Long id = Long.parseLong(code);
         Product product = productService.findProductById(id).get();
-        Product target = null;
-        int targetVal = 0;
-        for (Map.Entry<Product,Integer> pair: productMap.entrySet()) {
-            Product product1 = pair.getKey();
-            if (product1.getName().equals(product.getName())) {
-                target = product1;
-                targetVal = pair.getValue();
-            }
-        }
+        Object[] pair = findEntry(product);
+        Product target = (Product) pair[0];
+        int targetVal = (Integer) pair[1];
         if (type.equals("plus")) {
             targetVal++;
         } else {
@@ -85,6 +82,19 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
         if (target != null) {
             productMap.replace(target, targetVal);
         }
+    }
+
+    public Object[] findEntry(Product product) {
+        Product target = null;
+        Integer value = 0;
+        for (Map.Entry<Product,Integer> pair: productMap.entrySet()) {
+            Product product1 = pair.getKey();
+            if (product1.getName().equals(product.getName())) {
+                target = product1;
+                value = pair.getValue();
+            }
+        }
+        return new Object[] {target,value};
     }
 
     @Override
