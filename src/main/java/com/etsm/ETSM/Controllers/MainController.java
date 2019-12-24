@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
@@ -136,8 +137,8 @@ public class MainController {
     }
 
     @GetMapping("/buyProduct")
-    public String addToCart(@RequestParam(value = "code") String code) {
-        shoppingCartService.addItemToCart(code);
+    public String addToCart(@RequestParam(value = "code") String code, HttpSession session) {
+        shoppingCartService.addItemToCart(code,session);
         return "redirect:/orderSuggestion";
     }
 
