@@ -13,12 +13,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface UserInformationService {
     boolean addUserInfo(User user, UserInfo userInfo);
+
     boolean editUserAuth(User oldUser, User newUser);
+
     void deleteUser(User user);
 }
+
 @Service
 class UserInformationServiceImpl implements UserInformationService {
     private UserRepository userRepository;
@@ -63,13 +67,18 @@ class UserInformationServiceImpl implements UserInformationService {
     @Override
     public boolean editUserAuth(User oldUser, User newUser) {
         try {
-            User foundUser = userRepository.findByLogin(newUser.getLogin());
-            User foundUser2 = userRepository.findByUsername(newUser.getUsername());
-            if (foundUser != null && foundUser2 != null) {
-                return false;
+            List<User> foundUsers = userRepository.findAll();
+            for (User user : foundUsers) {
+                if ((user.getLogin().equals(newUser.getLogin()) || user.getUsername().equals(newUser.getUsername()))
+                        && user.getId() != oldUser.getId()) {
+                    return false;
+                }
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
+        }
+        if(newUser.getPassword().equals("")){
+            return false;
         }
         oldUser.setLogin(newUser.getLogin());
         oldUser.setUsername(newUser.getUsername());
