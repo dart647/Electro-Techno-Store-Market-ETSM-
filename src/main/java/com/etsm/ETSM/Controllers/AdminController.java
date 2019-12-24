@@ -117,7 +117,7 @@ public class AdminController {
     public String deleteOneUser(@PathVariable long userId) {
         Optional<User> optionalUser = adminService.findUserById(userId);
         optionalUser.ifPresent(user -> userInformationService.deleteUser(user));
-        return "redirect:/admin";
+        return "redirect:/admin/all";
     }
 
     @GetMapping("/addProduct")

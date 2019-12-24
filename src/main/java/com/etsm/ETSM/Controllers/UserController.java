@@ -52,7 +52,7 @@ public class UserController {
         User oldUser = (User) userService.loadUserByUsername(principal.getName());
         if (userInformationService.editUserAuth(oldUser,user)) {
             session.invalidate();
-            return "/login";
+            return "redirect:/login";
         }
         else
             return "/auth/editAuth";

@@ -80,6 +80,7 @@ class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public void deleteUser(User user) {
+        userInfoRepository.delete(user.getUserInfo());
         userRepository.delete(user);
     }
 }
