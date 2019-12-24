@@ -10,21 +10,19 @@ import com.etsm.ETSM.Repositories.SalesRepository;
 import com.etsm.ETSM.Repositories.Sales_has_productRepository;
 import com.etsm.ETSM.Repositories.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public interface ShoppingCartService {
-    static Map<Product,Integer> productMap = new HashMap<>();
-    public Map<Product,Integer> getItems();
-    public boolean addItemToCart(String code);
-    public void deleteItemFromCart(String code);
-    public void changeQuantity(String code, String type);
-    public Map<Product,Integer> setOrder(UserInfo user);
-    public void clearCart();
+    Map<Product,Integer> productMap = new HashMap<>();
+    Map<Product,Integer> getItems();
+    boolean addItemToCart(String code);
+    void deleteItemFromCart(String code);
+    void changeQuantity(String code, String type);
+    Map<Product,Integer> setOrder(UserInfo user);
+    void clearCart();
 }
 
 @Service

@@ -3,7 +3,6 @@ package com.etsm.ETSM.Controllers;
 import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Services.HeaderService;
 import com.etsm.ETSM.Services.MainService;
-import com.etsm.ETSM.Services.ProductService;
 import com.etsm.ETSM.Services.ShoppingCartService;
 import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,8 +141,10 @@ public class MainController {
     }
 
     @GetMapping("/orderSuggestion")
-    public ModelAndView getCartPage() {
+    public ModelAndView getCartPage(Principal principal) {
+        headerService.setHeader(principal);
         return new ModelAndView("/catalog/orderSuggestion",
+                Map.of("role", headerService.getHeaderRole()),
                 HttpStatus.OK);
     }
 }
