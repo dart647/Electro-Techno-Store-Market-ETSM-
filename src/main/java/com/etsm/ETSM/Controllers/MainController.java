@@ -26,7 +26,6 @@ import java.util.Map;
 public class MainController {
 
     private MainService service;
-    private ProductService productService;
     private ShoppingCartService shoppingCartService;
     private HeaderService headerService;
 
@@ -38,11 +37,6 @@ public class MainController {
     @Autowired
     public void setService(MainService service) {
         this.service = service;
-    }
-
-    @Autowired
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
     }
 
     @Autowired
@@ -143,14 +137,8 @@ public class MainController {
 
     @GetMapping("/buyProduct")
     public String addToCart(@RequestParam(value = "code") String code) {
-        Long id = Long.parseLong(code);
-        Product product = productService.findProductById(id).get();
-        if (shoppingCartService.addItemToCart(product)) {
-            return "redirect:/orderSuggestion";
-        }
-        else {
-            return "/";
-        }
+        shoppingCartService.addItemToCart(code);
+        return "redirect:/orderSuggestion";
     }
 
     @GetMapping("/orderSuggestion")
