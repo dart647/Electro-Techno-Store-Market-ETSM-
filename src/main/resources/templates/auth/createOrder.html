@@ -22,63 +22,75 @@
     <div class="row">
         <div th:replace="header :: leftBar"/>
         <!--Заменяемая часть-->
-        <form th:switch="${stage}">
-        <div class="col">
-            <div th:case="begin">
-            <h1>Проверьте правильность товаров</h1>
-            <table class="table table-stripped">
-                <thead>
-                <th scope="col">Изображение</th>
-                <th scope="col">Наименование</th>
-                <th scope="col">Цена</th>
-                <th scope="col">Кол-во</th>
-                <th scope="col">Общая стоимость</th>
-                </thead>
-                <tbody>
-                <tr th:each="item: ${#session.getAttribute('cart')}">
-                    <td><img class="img" width="300" height="150" th:src="${item.product.img}"></td>
-                    <td><p th:text="${item.product.name}"></p></td>
-                    <td><p th:text="${item.product.price}"></p></td>
-                    <td><p th:text="${item.quantity}"></p></td>
-                    <td><p th:text="${item.totalPrice}"></p></td>
-                </tr>
-                </tbody>
-            </table>
-            <h1>Общая стоимость</h1>
-            <p th:text="${#session.getAttribute('totalOrderPrice')}"></p>
-            <a class="btn btn-outline-secondary" href="/basket/createOrder?stage=userInfo">Продолжить оформление заказа</a>
-            <a class="btn btn-outline-secondary" href="/basket/">Вернуться в корзину</a>
-            </div>
-            <div th:case="userInfo">
-                <h1>Подтвердите личные данные</h1>
-                <form th:action="@{/basket/createOrder?stage=payment}" method="post">
-                    <div class="form-group">
-                        <label for="fio">ФИО</label>
-                        <input class="form-control" id="fio" type="text" name="fio" th:value="${userInfo.fio}">
+        <div th:switch="${stage}">
+            <div class="col">
+                <div th:case="begin">
+                    <h1>Проверьте правильность товаров</h1>
+                    <table class="table table-stripped">
+                        <thead>
+                        <th scope="col">Изображение</th>
+                        <th scope="col">Наименование</th>
+                        <th scope="col">Цена</th>
+                        <th scope="col">Кол-во</th>
+                        <th scope="col">Общая стоимость</th>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item: ${#session.getAttribute('cart')}">
+                            <td><img class="img" width="300" height="150" th:src="${item.product.img}"></td>
+                            <td><p th:text="${item.product.name}"></p></td>
+                            <td><p th:text="${item.product.price}"></p></td>
+                            <td><p th:text="${item.quantity}"></p></td>
+                            <td><p th:text="${item.totalPrice}"></p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h1>Общая стоимость</h1>
+                    <p th:text="${#session.getAttribute('totalOrderPrice')}"></p>
+                    <a class="btn btn-outline-secondary" href="/basket/createOrder?stage=userInfo">Продолжить оформление
+                        заказа</a>
+                    <a class="btn btn-outline-secondary" href="/basket/">Вернуться в корзину</a>
+                </div>
+                <div th:case="userInfo">
+                    <div class="container">
+                        <h1>Подтвердите личные данные</h1>
+                        <div>
+                            <form th:action="@{/basket/createOrder}" method="post">
+                                <div class="form-group">
+                                    <label for="fio">ФИО</label>
+                                    <input class="form-control" id="fio" type="text" name="fio"
+                                           th:value="${userInfo.fio}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthdate">Дата рождения</label>
+                                    <input class="form-control" id="birthdate" type="date" name="birthDate"
+                                           th:value="${userInfo.birthDate}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Адрес</label>
+                                    <input class="form-control" id="address" type="text" name="address"
+                                           th:value="${userInfo.address}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="loyaltyCode">Код карты постоянного покупателя</label>
+                                    <input class="form-control" id="loyaltyCode" type="text" name="loyaltyCode"
+                                           th:value="${userInfo.loyaltyCode}">
+                                </div>
+                                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                                <input type="submit" value="Изменить" class="btn btn-success"/>
+                                <a class="btn btn-outline-secondary" href="/basket/createOrder?stage=payment">Продолжить
+                                    оформление
+                                    заказа</a>
+                            </form>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="birthdate">Дата рождения</label>
-                        <input class="form-control" id="birthdate" type="date" name="birthDate" th:value="${userInfo.birthDate}">
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Адрес</label>
-                        <input class="form-control" id="address" type="text" name="address" th:value="${userInfo.address}">
-                    </div>
-                    <div class="form-group">
-                        <label for="loyaltyCode">Код карты постоянного покупателя</label>
-                        <input class="form-control" id="loyaltyCode" type="text" name="loyaltyCode" th:value="${userInfo.loyaltyCode}">
-                    </div>
-                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-                    <input type="submit" value="Изменить" class="btn btn-success"/>
-                </form>
-            </div>
-            <div th:case="payment">
-                <h1>Выберите вид оплаты</h1>
-                <h3>Оплата картой на сайте</h3>
-                <h3>Наличными</h3>
+                </div>
+                <div th:case="payment">
+                    <h1>Выберите вид оплаты</h1>
+                    <h3>Оплата картой на сайте</h3>
+                    <h3>Наличными</h3>
+                </div>
             </div>
         </div>
-        </form>
     </div>
 </div>
 

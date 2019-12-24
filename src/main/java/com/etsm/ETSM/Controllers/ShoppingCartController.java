@@ -4,11 +4,8 @@
 
 package com.etsm.ETSM.Controllers;
 
-import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Models.UserInfo;
-import com.etsm.ETSM.Repositories.UserInfoRepository;
 import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 
 @Controller
@@ -69,8 +64,7 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/createOrder")
-    public ModelAndView createOrder(@RequestParam(value = "stage") String stage,
-                                    @ModelAttribute UserInfo userInfo) {
+    public ModelAndView createOrder(@RequestParam(name = "stage", defaultValue = "begin") String stage) {
         return new ModelAndView("/auth/createOrder",
                 Map.of("categories", mainService.GetAllCategories(),
                         "role", headerService.getHeaderRole(),
@@ -80,11 +74,10 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/createOrder")
-    public String createOrder(@ModelAttribute UserInfo userInfo,
-                              Principal principal) {
+    public ModelAndView createOrder(@ModelAttribute UserInfo userInfo) {
         User user = headerService.getUser();
         userInformationService.addUserInfo(user, userInfo);
-        return "/auth/createOrder?stage=payment";
+        return createOrder("payment");
     }
 
     @Autowired
