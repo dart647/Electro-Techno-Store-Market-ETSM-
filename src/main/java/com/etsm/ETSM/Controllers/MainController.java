@@ -51,10 +51,11 @@ public class MainController {
 
     //Main Page
     @GetMapping("/")
-    public ModelAndView MainPage(Principal principal) {
+    public ModelAndView MainPage(@RequestParam(name = "page", defaultValue = "0") String page, Principal principal) {
         headerService.setHeader(principal);
         String search = "";
-        List<Product> products = service.GetSearchProducts("");
+        List<Product> products = service.GetSearchProducts("", page);
+//        Page<Product> productPage = new PageImpl<>(products, PageRequest.of(0,1), (products.size()/1));
         return new ModelAndView("/main",
                 Map.of("categories", service.GetAllCategories(),
                         "searchProducts", products,
@@ -65,9 +66,10 @@ public class MainController {
     }
 
     @PostMapping("/")
-    public ModelAndView MainPageWithSearch(@ModelAttribute("searching") String searching, Principal principal) {
+    public ModelAndView MainPageWithSearch(@RequestParam(name = "page", defaultValue = "0") String page,
+                                           @ModelAttribute("searching") String searching, Principal principal) {
         headerService.setHeader(principal);
-        List<Product> products = service.GetSearchProducts(searching);
+        List<Product> products = service.GetSearchProducts(searching, page);
         return new ModelAndView("/main",
                 Map.of("categories", service.GetAllCategories(),
                         "searchProducts", products,

@@ -44,7 +44,7 @@
                                 <div>
                                     <label th:text="${'Цена ' + product.price}"></label>
                                 </div>
-                                <form class="form-inline">
+                                <form th:unless="${product.productAttrValue.isEmpty()}" class="form-inline">
                                     <p class="border" th:with="attribute=${product.productAttrValue[0]}" th:text="${attribute.value}"></p>
                                     <p class="border" th:with="attribute=${product.productAttrValue[1]}" th:text="${attribute.value}"></p>
                                 </form>
@@ -85,6 +85,13 @@
             </ul>
         </div>
     </div>
+<!--    <div class="row">-->
+<!--        <nav>-->
+<!--            <ul class="pagination justify-content-center">-->
+<!--                <li class="page-item"><a class="page-link" href="/?page=">1</a></li>-->
+<!--            </ul>-->
+<!--        </nav>-->
+<!--    </div>-->
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -96,5 +103,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+
 </body>
 </html>

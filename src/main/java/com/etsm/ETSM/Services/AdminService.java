@@ -5,6 +5,7 @@ import com.etsm.ETSM.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,7 @@ class AdminServiceImpl implements AdminService {
         newProduct.setDescription(product.getDescription());
         newProduct.setName(product.getName());
         newProduct.setPrice(product.getPrice());
+        newProduct.setAttribute_groups(new ArrayList<>());
         newProduct.setMinorCategory_id(minorCategory);
         productRepository.saveAndFlush(newProduct);
         return true;
@@ -135,13 +137,16 @@ class AdminServiceImpl implements AdminService {
             Product UpProduct = productRepository.findByName(product).get();
             Attribute attributeForProduct = attributeRepository.findByName(attribute).get();
 
-            UpProduct.getAttribute_groups().add(attributeForProduct.getAttribute_groups());
+            if(!UpProduct.getAttribute_groups().equals(attributeForProduct.getAttribute_groups())){
+                UpProduct.getAttribute_groups().add(attributeForProduct.getAttribute_groups());
+            }
             ProductAttrValue newProductAttrValue = new ProductAttrValue();
             newProductAttrValue.setAttribute(attributeForProduct);
             newProductAttrValue.setProduct(UpProduct);
             newProductAttrValue.setValue(oldProductAttrValue.getValue());
+            UpProduct.getProductAttrValue().add(newProductAttrValue);
 
-            productRepository.saveAndFlush(UpProduct);
+            productRepository.save(UpProduct);
         }
 
         return false;
