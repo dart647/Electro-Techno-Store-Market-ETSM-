@@ -96,11 +96,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/registration",
                         "/about",
                         "/feedback",
-                        "/ourAddresses").permitAll()//разрешенные сайты для входа без авторизации
+                        "/ourAddresses",
+                        "/auth/basket"
+                        ).permitAll()//разрешенные сайты для входа без авторизации
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/userCabinet",
-                        "/auth/basket").hasAnyAuthority("USER", "MANAGER", "ADMIN")
+                        "/auth/basket"
+                        ).hasAnyAuthority("USER", "MANAGER", "ADMIN")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/admin",

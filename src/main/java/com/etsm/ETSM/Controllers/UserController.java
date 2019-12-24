@@ -15,7 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -71,12 +73,15 @@ public class UserController {
 
     //Add additional user information
     @PostMapping("/auth/addUserInfo")
-    public String addUserInfo(@ModelAttribute UserInfo userInfo, Principal principal) {
+    public String addUserInfo(@ModelAttribute UserInfo userInfo,
+                              Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
-        if (userInformationService.addUserInfo(user, userInfo))
+        if (userInformationService.addUserInfo(user, userInfo)) {
             return "redirect:/user";
-        else
+        }
+        else {
             return "/auth/addUserInfo";
+        }
     }
 
     @GetMapping("/auth/deleteUser")
