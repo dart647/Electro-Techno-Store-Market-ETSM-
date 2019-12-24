@@ -28,20 +28,24 @@
                 <th scope="col">Цена</th>
                 <th scope="col">Удалить/уменьшить/увеличить кол-во</th>
                 <th scope="col">Кол-во</th>
+                <th scope="col">Общая стоимость</th>
                 </thead>
                 <tbody>
-                <tr th:each="productEntry: ${items}">
-                    <td><img class="img" width="300" height="150" th:src="${productEntry.key.img}"></td>
-                    <td><p th:text="${productEntry.key.name}"></p></td>
-                    <td><p th:text="${productEntry.key.price}"></p></td>
+                <tr th:each="item: ${#session.getAttribute('cart')}">
+                    <td><img class="img" width="300" height="150" th:src="${item.product.img}"></td>
+                    <td><p th:text="${item.product.name}"></p></td>
+                    <td><p th:text="${item.product.price}"></p></td>
                     <td>
-                        <a th:href="@{/basket/delete?code={id}(id=${productEntry.key.id})}">Удалить товар</a>
-                        <a th:href="@{/basket/change?code={id}&type=minus(id=${productEntry.key.id})}">-</a>
-                        <a th:href="@{/basket/change?code={id}&type=plus(id=${productEntry.key.id})}">+</a>
+                        <a th:href="@{/basket/delete?code={id}(id=${item.product.id})}">Удалить товар</a>
+                        <a th:href="@{/basket/change?code={id}&type=minus(id=${item.product.id})}">-</a>
+                        <a th:href="@{/basket/change?code={id}&type=plus(id=${item.product.id})}">+</a>
                     </td>
-                    <td><p th:text="${productEntry.value}"></p></td>
+                    <td><p th:text="${item.quantity}"></p></td>
+                    <td><p th:text="${item.totalPrice}"></p></td>
                 </tr>
                 </tbody>
+                <h1>Общая стоимость</h1>
+                <p th:text="${#session.getAttribute('totalOrderPrice')}"></p>
             </table>
 
         </div>

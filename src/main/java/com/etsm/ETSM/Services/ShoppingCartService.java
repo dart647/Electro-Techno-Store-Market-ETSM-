@@ -4,27 +4,25 @@
 
 package com.etsm.ETSM.Services;
 
+import com.etsm.ETSM.Models.CartItem;
 import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Models.UserInfo;
 import com.etsm.ETSM.Repositories.SalesRepository;
 import com.etsm.ETSM.Repositories.Sales_has_productRepository;
 import com.etsm.ETSM.Repositories.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 public interface ShoppingCartService {
-    static Map<Product,Integer> productMap = new HashMap<>();
-    public Map<Product,Integer> getItems();
-    public boolean addItemToCart(String code);
-    public void deleteItemFromCart(String code);
-    public void changeQuantity(String code, String type);
+    public boolean addItemToCart(String code, HttpSession session);
+    public boolean deleteItemFromCart(String code, HttpSession session);
+    public boolean changeQuantity(String code, String type,HttpSession session);
     public Map<Product,Integer> setOrder(UserInfo user);
-    public void clearCart();
+    public void clearCart(HttpSession session);
+    public boolean getTotalOrderPrice(HttpSession session);
 }
 
 @Service
@@ -36,65 +34,81 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     private ProductService productService;
 
     @Override
-    public Map<Product, Integer> getItems() {
-        return productMap;
-    }
-
-    @Override
-    public boolean addItemToCart(String code) {
+    public boolean addItemToCart(String code, HttpSession session) {
         Long id = Long.parseLong(code);
-        Product product = productService.findProductById(id).get();
-        Object[] pair = findEntry(product);
-        Product target = (Product) pair[0];
-        if(target == null){
-            productMap.put(product,1);
-            return true;
-        }
-        else {
-            changeQuantity(code,"plus");
-            return true;
-        }
-    }
-
-    @Override
-    public void deleteItemFromCart(String code) {
-        Long id = Long.parseLong(code);
-        Product product = productService.findProductById(id).get();
-        Object[] pair = findEntry(product);
-        Product target = (Product) pair[0];
-        productMap.remove(target);
-    }
-
-    @Override
-    public void changeQuantity(String code, String type) {
-        Long id = Long.parseLong(code);
-        Product product = productService.findProductById(id).get();
-        Object[] pair = findEntry(product);
-        Product target = (Product) pair[0];
-        int targetVal = (Integer) pair[1];
-        if (type.equals("plus")) {
-            targetVal++;
+        Product product = productService.findProductById(id).orElse(null);
+        if (product == null)
+            return false;
+        if (session.getAttribute("cart") == null) {
+            List<CartItem> cart = new ArrayList<>();
+            cart.add(new CartItem(product,1));
+            session.setAttribute("cart",cart);
         } else {
-            targetVal--;
+            List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+            int index = this.exists(id, cart);
+            if (index == -1) {
+                cart.add(new CartItem(product,1));
+            } else {
+                changeQuantity(code,"plus",session);
+            }
+            session.setAttribute("cart",cart);
         }
-        if (targetVal == 0)
-            productMap.remove(target);
-        if (target != null) {
-            productMap.replace(target, targetVal);
-        }
+        return true;
     }
 
-    public Object[] findEntry(Product product) {
-        Product target = null;
-        Integer value = 0;
-        for (Map.Entry<Product,Integer> pair: productMap.entrySet()) {
-            Product product1 = pair.getKey();
-            if (product1.getName().equals(product.getName())) {
-                target = product1;
-                value = pair.getValue();
-            }
+    @Override
+    public boolean deleteItemFromCart(String code, HttpSession session) {
+        Long id = Long.parseLong(code);
+        Product product = productService.findProductById(id).orElse(null);
+        if (product == null)
+            return false;
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        int index = this.exists(id,cart);
+        if (index == -1)
+            return false;
+        cart.remove(index);
+        session.setAttribute("cart",cart);
+        return true;
+    }
+
+    @Override
+    public boolean changeQuantity(String code, String type,HttpSession session) {
+        Long id = Long.parseLong(code);
+        Product product = productService.findProductById(id).orElse(null);
+        if (product == null)
+            return false;
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        int index = this.exists(id,cart);
+        if (index == -1)
+            return false;
+        int quantity = cart.get(index).getQuantity();
+        if (type.equals("plus")) {
+            quantity++;
+            cart.get(index).setQuantity(quantity);
+            cart.get(index).setTotalPrice();
+        } else if (type.equals("minus")) {
+            quantity--;
+            cart.get(index).setQuantity(quantity);
+            cart.get(index).setTotalPrice();
+        } else {
+            return false;
         }
-        return new Object[] {target,value};
+        return true;
+    }
+
+    @Override
+    public boolean getTotalOrderPrice(HttpSession session) {
+        if (session.getAttribute("cart") == null) {
+            return false;
+        } else {
+            List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+            int totalOrderPrice = 0;
+            for (CartItem cartItem : cart) {
+                totalOrderPrice+=cartItem.getTotalPrice();
+            }
+            session.setAttribute("totalOrderPrice",totalOrderPrice);
+            return true;
+        }
     }
 
     @Override
@@ -103,8 +117,19 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void clearCart() {
-        productMap.clear();
+    public void clearCart(HttpSession session) {
+        if (session.getAttribute("cart") != null) {
+            session.removeAttribute("cart");
+        }
+    }
+
+    private int exists(Long id, List<CartItem> cart) {
+        for (int i = 0; i < cart.size(); i++) {
+            if (cart.get(i).getProduct().getId() == id) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Autowired
