@@ -1,5 +1,7 @@
 package com.etsm.ETSM.Models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -37,9 +39,12 @@ public class Product {
     @OneToMany(targetEntity = ProductAttrValue.class,mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ProductAttrValue> productAttrValue;
 
-    @ManyToOne()
-    @JoinColumn(name = "attribute_gr_id", referencedColumnName = "id")
-    private Attribute_Group attribute_groups;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(name = "product_has_attribute_group",
+    joinColumns = @JoinColumn(name="product_id"),
+    inverseJoinColumns = @JoinColumn(name="attribute_group_id"))
+    private List<Attribute_Group> attribute_groups;
 
     public MinorCategory getMinorcategory_id() {
         return minorcategory_id;
@@ -114,12 +119,11 @@ public class Product {
         this.productAttrValue = productAttrValue;
     }
 
-    public Attribute_Group getAttribute_groups() {
+    public List<Attribute_Group> getAttribute_groups() {
         return attribute_groups;
     }
 
-    public void setAttribute_groups(Attribute_Group attribute_groups) {
-        attribute_groups.getProduct_id().add(this);
+    public void setAttribute_groups(List<Attribute_Group> attribute_groups) {
         this.attribute_groups = attribute_groups;
     }
 }

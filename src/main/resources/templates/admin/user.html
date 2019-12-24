@@ -22,10 +22,27 @@
     <div class="row">
         <!--Заменяемая часть-->
         <div class="col">
-            <h1 th:text="${user.login}"></h1>
-            <h2 th:text="${user.username}"></h2>
+            <h1 th:text="'Логин: ' + ${user.login}"></h1>
+            <h2 th:text="'Email: ' + ${user.username}"></h2>
+            <h2 th:text="'Роль: ' + ${user.roles}"></h2>
+            <h2 th:text="'Доступен: ' + ${user.active}"></h2>
+            <h2 th:text="'Имя в google: ' + ${user.googleName}"></h2>
+            <h2 th:text="'Email в google: ' + ${user.googleUsername}"></h2>
         </div>
-        <a class="nav-link" data-th-href="@{/admin/{userId}/deleteUser(userId=${user.id})}">Удалить аккаунт</a>
+        <div class="col">
+            <h1 th:text="'Фамилия: ' + ${user.userInfo.fio}"></h1>
+            <h2 th:text="'День рождения: ' + ${user.userInfo.birthDate}"></h2>
+            <h2 th:text="'Адрес: ' + ${user.userInfo.address}"></h2>
+            <h2 th:text="'Код лояльности: ' + ${user.userInfo.loyaltyCode}"></h2>
+            <h2 th:text="'Кошелек: ' + ${user.userInfo.wallet}"></h2>
+            <h2 th:if="${user.userInfo.sales}">История заказов:</h2>
+            <div th:each="sale:${user.userInfo.sales}">
+                <h2 th:text="${sale.id} + ' ' + ${sale.sum}"></h2>
+            </div>
+        </div>
+        <div class="col">
+            <a class="btn btn-danger" data-th-href="@{/admin/{userId}/deleteUser(userId=${user.id})}">Удалить аккаунт</a>
+        </div>
     </div>
 </div>
 

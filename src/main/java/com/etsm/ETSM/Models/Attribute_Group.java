@@ -27,8 +27,11 @@ public class Attribute_Group {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Attribute> attribute_id;
 
-    @OneToMany(targetEntity = Product.class,mappedBy = "attribute_groups", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(name = "product_has_attribute_group",
+            joinColumns = @JoinColumn(name="attribute_group_id"),
+            inverseJoinColumns = @JoinColumn(name="product_id"))
     private List<Product> product_id;
 
     public long getId() {

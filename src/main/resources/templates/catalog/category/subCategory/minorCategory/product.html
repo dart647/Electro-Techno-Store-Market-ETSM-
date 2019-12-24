@@ -39,31 +39,67 @@
             </div>
             <br>
 
-            <div class="row">
-                <form>
-                    <div class="form-group">
+            <div class="container-fluid">
+                <form class="row">
+                    <div class="col">
                         <h1 th:text="${product.name}"></h1>
-                        <img width="600" height="300" th:src="${product.img}">
-                        <h3 th:text="${product.description}"></h3>
+                        <img class="img" width="600" height="300" th:src="${product.img}">
+                    </div>
+                    <div class="form-group col">
+                        <h1 th:text="'Цена: ' + ${product.price}"></h1>
+                        <div>
+                            <a class="btn btn-primary btn-lg" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить в
+                                корзину</a>
+                        </div>
                     </div>
                 </form>
-
-                <table class="table">
-                    <thead>
-                    <th scope="col">Название</th>
-                    <th scope="col">Цена</th>
-                    <th scope="col">Подкатегория</th>
-                    <th scope="col">Атрибуты</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td th:text="${product.name}"></td>
-                        <td th:text="${product.price}"></td>
-                        <td th:text="${product.subCategory_id.name}"></td>
-                        <td> В разработке</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="container-fluid">
+                    <div class="row">
+                        <h3 class="text-left">Описание:</h3>
+                        <h3 class="text-left" th:text="${product.description}"></h3>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <div>
+                        <h3>Характеристики</h3>
+                    </div>
+                    <div>
+                        <form class="border">
+                            <table class="table table-stripped">
+                                <thead>
+                                <th scope="col">Группа атрибутов</th>
+                                <th scope="col">Атрибуты</th>
+                                </thead>
+                                <tbody>
+                                <tr th:each="attributeGR: ${product.attribute_groups}">
+                                    <td th:text="${attributeGR.name}"></td>
+                                    <td>
+                                        <table class="table">
+                                            <tbody>
+                                            <tr th:each="attribute: ${attributeGR.attribute_id}">
+                                                <td>
+                                                    <div>
+                                                        <a th:text="${attribute.name}"></a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div th:each="productAttr: ${attribute.productAttrValue}">
+                                                        <div th:if="${productAttr.product == product}">
+                                                            <a th:text="${productAttr.value} "></a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

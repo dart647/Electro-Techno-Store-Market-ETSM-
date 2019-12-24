@@ -15,7 +15,7 @@
 <!--    Главная часть-->
 <div class="container-fluid">
     <div class="row">
-        <div th:replace="header :: leftBar"/>
+<!--        <div th:replace="header :: leftBar"/>-->
 
 <!--        Заменяемая часть-->
         <div class="col">
@@ -33,14 +33,21 @@
                     <h4>Совпадений не найдено</h4>
                 </div>
                 <div th:case="*" class="row">
-                    <div class="col-4" th:each="product: ${searchProducts}">
+                    <div class="col-4 container" th:each="product: ${searchProducts}">
                         <br>
                         <div>
                             <a class="btn btn-outline-dark" th:href="@{/catalog/details/{productName}(productName=${product.name})}">
-                                <img class="img-thumbnail" th:src="${product.img}">
-                                <label th:text="${'Название ' + product.name}"></label>
-                                <br>
-                                <label th:text="${'Цена ' + product.price}"></label>
+                                <img height="150" width="300" class="img" th:src="${product.img}">
+                                <div>
+                                    <label th:text="${'Название ' + product.name}"></label>
+                                </div>
+                                <div>
+                                    <label th:text="${'Цена ' + product.price}"></label>
+                                </div>
+                                <form class="form-inline">
+                                    <p class="border" th:with="attribute=${product.productAttrValue[0]}" th:text="${attribute.value}"></p>
+                                    <p class="border" th:with="attribute=${product.productAttrValue[1]}" th:text="${attribute.value}"></p>
+                                </form>
                             </a>
                             <div>
                                 <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить в корзину</a>

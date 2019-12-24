@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -222,14 +224,37 @@ public class AdminController {
                 Map.of("attribute", attribute,
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories(),
-                        "attributesList", productService.findAttributes()),
+                        "attributesList", productService.findAttributes(),
+                        "productList", productService.findAllProducts(),
+                        "attributeGroupsList", adminService.findAllAtrubutesGroups()),
                 HttpStatus.OK);
     }
 
     @PostMapping("/addAttribute")
-    public String addAttribute(@ModelAttribute Attribute attribute) {
-        adminService.addNewAttribute(attribute);
+    public String addAttribute(@ModelAttribute Attribute attribute,
+                               @ModelAttribute("attribute_group") String attribute_group) {
+        adminService.addNewAttribute(attribute, attribute_group);
         return "redirect:/admin/addAttribute";
+    }
+
+    @GetMapping("/addAttributeToProduct")
+    public ModelAndView addAttributeToProduct(Principal principal) {
+        headerService.setHeader(principal);
+        return new ModelAndView("admin/addAttributeToProduct",
+                Map.of( "productAttrValue", new ProductAttrValue(),
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories(),
+                        "attributesList", productService.findAttributes(),
+                        "productList", productService.findAllProducts()),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/addAttributeToProduct")
+    public String addAttributeToProduct(@ModelAttribute ProductAttrValue productAttrValue,
+                                        @ModelAttribute("productN") String product,
+                                        @ModelAttribute("attributeN") String attribute) {
+        adminService.addNewAttributeToProduct(product, attribute, productAttrValue);
+        return "redirect:/admin/addAttributeToProduct";
     }
 
 }

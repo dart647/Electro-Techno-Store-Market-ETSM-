@@ -18,7 +18,7 @@
         <div th:replace="header :: leftBar"/>
         <!--Заменяемая часть-->
         <div class="col">
-            <h1>Первый уровень</h1>
+            <h1 th:text="${currCategory}"></h1>
             <div>
                 <form class="form-inline">
                     <div class="form-group">

@@ -13,6 +13,8 @@ public interface AdminService {
 
     List<User> findUsers();
 
+    List<Attribute_Group> findAllAtrubutesGroups();
+
     Optional<User> findUserById(Long id);
 
     boolean addNewCategory(Category category);
@@ -21,7 +23,9 @@ public interface AdminService {
 
     boolean addNewMinorCategory(String subCategoryName, MinorCategory minorCategory);
 
-    boolean addNewAttribute(Attribute attribute);
+    boolean addNewAttribute(Attribute attribute, String attribute_group);
+
+    boolean addNewAttributeToProduct(String product, String attribute, ProductAttrValue oldProductAttrValue);
 }
 
 @Service
@@ -38,6 +42,10 @@ class AdminServiceImpl implements AdminService {
     AttributeRepository attributeRepository;
 
     MinorCategoryRepository minorCategoryRepository;
+
+    AttributeGroupRepository attributeGroupRepository;
+
+    ProductAttrValueRepository productAttrValueRepository;
 
     public boolean addNewProduct(Product product, String minorCategoryName) {
         if (productRepository.findByName(product.getName()).isPresent()) {
@@ -59,6 +67,11 @@ class AdminServiceImpl implements AdminService {
     @Override
     public List<User> findUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<Attribute_Group> findAllAtrubutesGroups() {
+        return attributeGroupRepository.findAll();
     }
 
     @Override
@@ -104,13 +117,33 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean addNewAttribute(Attribute attribute) {
+    public boolean addNewAttribute(Attribute attribute, String attribute_group) {
         if (attributeRepository.findByName(attribute.getName()).isPresent()) {
             return false;
         }
         Attribute newAttribute = new Attribute();
         newAttribute.setName(attribute.getName());
+        newAttribute.setAttribute_groups(attributeGroupRepository.findByName(attribute_group).get());
         attributeRepository.saveAndFlush(newAttribute);
+
+        return false;
+    }
+
+    @Override
+    public boolean addNewAttributeToProduct(String product, String attribute, ProductAttrValue oldProductAttrValue) {
+        if(productAttrValueRepository.findByValue(oldProductAttrValue.getValue())!=null){
+            Product UpProduct = productRepository.findByName(product).get();
+            Attribute attributeForProduct = attributeRepository.findByName(attribute).get();
+
+            UpProduct.getAttribute_groups().add(attributeForProduct.getAttribute_groups());
+            ProductAttrValue newProductAttrValue = new ProductAttrValue();
+            newProductAttrValue.setAttribute(attributeForProduct);
+            newProductAttrValue.setProduct(UpProduct);
+            newProductAttrValue.setValue(oldProductAttrValue.getValue());
+
+            productRepository.saveAndFlush(UpProduct);
+        }
+
         return false;
     }
 
@@ -142,5 +175,15 @@ class AdminServiceImpl implements AdminService {
     @Autowired
     public void setMinorCategoryRepository(MinorCategoryRepository minorCategoryRepository) {
         this.minorCategoryRepository = minorCategoryRepository;
+    }
+
+    @Autowired
+    public void setAttributeGroupRepository(AttributeGroupRepository attributeGroupRepository) {
+        this.attributeGroupRepository = attributeGroupRepository;
+    }
+
+    @Autowired
+    public void setProductAttrValueRepository(ProductAttrValueRepository productAttrValueRepository) {
+        this.productAttrValueRepository = productAttrValueRepository;
     }
 }

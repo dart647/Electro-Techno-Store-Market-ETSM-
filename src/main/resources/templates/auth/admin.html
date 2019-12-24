@@ -20,14 +20,19 @@
         <div class="col">
             <h1>Панель администратора</h1>
             <div th:switch="${role}">
-                <a th:case="ADMIN" href="/admin/all" class="btn btn-warning">Все пользователи</a>
+                <a th:case="ADMIN" href="/admin/all" class="btn btn-warning btn-lg">Все пользователи</a>
             </div>
             <br>
-            <a href="/admin/addProduct" class="btn btn-warning">Добавить товар</a>
-            <a href="/admin/addCategory" class="btn btn-warning">Добавить 1 категорию</a>
-            <a href="/admin/addSubCategory" class="btn btn-warning">Добавить 2 категорию</a>
-            <a href="/admin/addMinorCategory" class="btn btn-warning">Добавить 3 категорию</a>
-            <a href="/admin/addAttribute" class="btn btn-warning">Добавить аттрибут</a>
+            <form>
+                <div class="form-group">
+                    <div class="form-group"><a href="/admin/addProduct" class="btn btn-info btn-lg">Добавить товар</a></div>
+                    <div class="form-group"><a href="/admin/addCategory" class="btn btn-info btn-lg">Добавить 1 категорию</a></div>
+                    <div class="form-group"><a href="/admin/addSubCategory" class="btn btn-info btn-lg">Добавить 2 категорию</a></div>
+                    <div class="form-group"><a href="/admin/addMinorCategory" class="btn btn-info btn-lg">Добавить 3 категорию</a></div>
+                    <div class="form-group"><a href="/admin/addAttribute" class="btn btn-info btn-lg">Добавить аттрибут</a></div>
+                    <div class="form-group"><a href="/admin/addAttributeToProduct" class="btn btn-info btn-lg">Добавить аттрибут товару</a></div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

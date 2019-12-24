@@ -21,27 +21,25 @@
         <!--Заменяемая часть-->
         <div class="col">
             <h1>Добавить аттрибут</h1>
-            <form th:action="@{/admin/addAttribute}" method="post">
+            <form th:action="@{/admin/addAttributeToProduct}" method="post">
                 <div class="form-group">
-                    <label for="name"> Название аттрибута:</label>
-                    <input type="text" name="name" id="name"/>
-
-                    <label for="group"> Группа атрибутов:</label>
-                    <select class="combobox" name="attribute_group" id="group">
+                    <label for="product"> Товар:</label>
+                    <select class="combobox" name="productN" id="product">
                         <option value="" selected="selected"></option>
-                        <option th:each="attributeGroup: ${attributeGroupsList}" th:value="${attributeGroup.name}"
-                                th:text="${attributeGroup.name}"></option>
+                        <option th:each="product: ${productList}" th:value="${product.name}"
+                                th:text="${product.name}"></option>
                     </select>
+                    <label for="group"> Атрибут:</label>
+                    <select class="combobox" name="attributeN" id="group">
+                        <option value="" selected="selected"></option>
+                        <option th:each="attribute: ${attributesList}" th:value="${attribute.name}"
+                                th:text="${attribute.name}"></option>
+                    </select>
+                    <label for="value"> Значение:</label>
+                    <input type="text" name="value" id="value"/>
                 </div>
                 <input type="submit" value="Добавить" class="btn btn-success"/>
             </form>
-            <div>
-                <h1>Существующие атрибуты</h1>
-                <div data-th-each="attribute : ${attributesList}">
-                    <label th:text="'ID - '+ ${attribute.id}"></label>
-                    <label th:text="'Название - '+ ${attribute.name}"></label>
-                </div>
-            </div>
         </div>
     </div>
 </div>

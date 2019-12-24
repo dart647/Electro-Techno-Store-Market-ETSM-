@@ -25,8 +25,11 @@ DROP TABLE IF EXISTS `attribute`;
 CREATE TABLE `attribute` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  `attribute_gr_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`attribute_gr_id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `attributes_fk_idx` (`attribute_gr_id`),
+  CONSTRAINT `attributes_gr_fk` FOREIGN KEY (`attribute_gr_id`) REFERENCES `attribute_group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,38 +39,33 @@ CREATE TABLE `attribute` (
 
 LOCK TABLES `attribute` WRITE;
 /*!40000 ALTER TABLE `attribute` DISABLE KEYS */;
-INSERT INTO `attribute` VALUES (1,'Black'),(2,'Red'),(3,'Silver'),(4,'FullHd'),(5,'Hd'),(6,'Intel'),(7,'AMD'),(8,'Android'),(9,'Apple'),(10,'Вес'),(11,'Размеры'),(12,'Цвет'),(13,'Оперативная память'),(14,'Диагональ экрана');
+INSERT INTO `attribute` VALUES (1,'Цвет',1),(2,'Разрешение',2),(3,'test',3),(4,'testtest',3),(5,'Материал',1),(6,'justTest',4),(7,'test#2',5),(8,'qwe',5);
 /*!40000 ALTER TABLE `attribute` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `attribute_has_product`
+-- Table structure for table `attribute_group`
 --
 
-DROP TABLE IF EXISTS `attribute_has_product`;
+DROP TABLE IF EXISTS `attribute_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `attribute_has_product` (
+CREATE TABLE `attribute_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `attribute_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`attribute_id`,`product_id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_attribute_has_product_product1_idx` (`product_id`),
-  KEY `fk_attribute_has_product_attribute1_idx` (`attribute_id`),
-  CONSTRAINT `fk_attribute_has_product_attribute1` FOREIGN KEY (`attribute_id`) REFERENCES `attribute` (`id`),
-  CONSTRAINT `fk_attribute_has_product_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `attribute_has_product`
+-- Dumping data for table `attribute_group`
 --
 
-LOCK TABLES `attribute_has_product` WRITE;
-/*!40000 ALTER TABLE `attribute_has_product` DISABLE KEYS */;
-INSERT INTO `attribute_has_product` VALUES (1,2,1),(2,1,3),(3,5,2),(4,7,4),(5,3,2);
-/*!40000 ALTER TABLE `attribute_has_product` ENABLE KEYS */;
+LOCK TABLES `attribute_group` WRITE;
+/*!40000 ALTER TABLE `attribute_group` DISABLE KEYS */;
+INSERT INTO `attribute_group` VALUES (1,'Корпус'),(2,'Экран'),(3,'TEST'),(4,'TestAdding'),(5,'Test#2');
+/*!40000 ALTER TABLE `attribute_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -83,7 +81,7 @@ CREATE TABLE `category` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +90,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (3,'Для дома'),(1,'Компьютеры'),(2,'Телефоны');
+INSERT INTO `category` VALUES (1,'category');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +110,7 @@ CREATE TABLE `minorcategory` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `minorCategory_fk_idx` (`subcategory_id`),
   CONSTRAINT `minorCategory_fk` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +119,7 @@ CREATE TABLE `minorcategory` (
 
 LOCK TABLES `minorcategory` WRITE;
 /*!40000 ALTER TABLE `minorcategory` DISABLE KEYS */;
-INSERT INTO `minorcategory` VALUES (5,'Apple iPhone',3),(8,'IP-телефоны',4),(6,'Samsung',3),(7,'Беспроводные телефоны',4),(3,'Для работы',2),(4,'Игровые',2),(1,'Моноблоки',1),(11,'Плиты',5),(9,'Пылесосы',5),(2,'Системные блоки',1),(10,'Стиральные машины',5);
+INSERT INTO `minorcategory` VALUES (1,'minor category',1);
 /*!40000 ALTER TABLE `minorcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -142,11 +140,10 @@ CREATE TABLE `product` (
   PRIMARY KEY (`id`,`minorcategory_id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
-  UNIQUE KEY `minorcategory_id_UNIQUE` (`minorcategory_id`),
   KEY `minorcategory_fk_idx` (`minorcategory_id`),
   KEY `product_fk_idx` (`minorcategory_id`),
-  CONSTRAINT `product_fk` FOREIGN KEY (`minorcategory_id`) REFERENCES `minorcategory` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `minor_fk` FOREIGN KEY (`minorcategory_id`) REFERENCES `minorcategory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,8 +152,69 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Flextron',56465,'New Generation of Pc gaming',NULL,2),(2,'iMac Pro',80013,'Just for work',NULL,1),(3,'Panasonic',1200,'Home using',NULL,7),(4,'Apple iPhone 11 Pro',86000,'Топ за свои деньги',NULL,5),(8,'Dyson Airblade',5500,'Хороший пылесос',NULL,9),(9,'МЕЧТА 12-06-03 СБ',7850,'ыыы',NULL,11);
+INSERT INTO `product` VALUES (1,'Flexotron',123,'aaaaaa aaaaaaaaa aaaaaaaa aaaaaaa aaaaaaaaaaaa aaaaa aaaaa aaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa','https://avatars.mds.yandex.net/get-zen_doc/27036/pub_5d2d6e1d14f98000ac62352a_5d2d6e7c4e057700ad3040c7/scale_1200',1),(2,'Roge',321,'qwe','https://5bucks.ru/wp-content/uploads/2019/05/1.png',1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product_has_attribute_group`
+--
+
+DROP TABLE IF EXISTS `product_has_attribute_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_has_attribute_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `attribute_group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`product_id`,`attribute_group_id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_product_has_attribute_group_attribute_group1_idx` (`attribute_group_id`),
+  KEY `fk_product_has_attribute_group_product1_idx` (`product_id`),
+  CONSTRAINT `fk_product_has_attribute_group_attribute_group1` FOREIGN KEY (`attribute_group_id`) REFERENCES `attribute_group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_product_has_attribute_group_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_has_attribute_group`
+--
+
+LOCK TABLES `product_has_attribute_group` WRITE;
+/*!40000 ALTER TABLE `product_has_attribute_group` DISABLE KEYS */;
+INSERT INTO `product_has_attribute_group` VALUES (1,1,1),(2,1,2),(5,1,3),(9,2,1),(10,2,2),(11,2,4),(12,2,5);
+/*!40000 ALTER TABLE `product_has_attribute_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `productattrvalue`
+--
+
+DROP TABLE IF EXISTS `productattrvalue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `productattrvalue` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL,
+  `value` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`,`product_id`,`attribute_id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `product_fk_idx` (`product_id`),
+  KEY `attribute_fk_idx` (`attribute_id`),
+  CONSTRAINT `attribute_fk` FOREIGN KEY (`attribute_id`) REFERENCES `attribute` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `product_fk` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `productattrvalue`
+--
+
+LOCK TABLES `productattrvalue` WRITE;
+/*!40000 ALTER TABLE `productattrvalue` DISABLE KEYS */;
+INSERT INTO `productattrvalue` VALUES (1,1,1,'Красный'),(2,1,2,'1980*1600'),(3,2,1,'Зеленый'),(4,2,2,'1600*900'),(5,1,1,'Серый'),(6,1,3,'test1'),(7,1,4,'test2'),(8,1,5,'Металл'),(9,2,5,'Пластик'),(10,2,6,'TestComplete'),(11,2,7,'testAddPass'),(12,2,8,'asd');
+/*!40000 ALTER TABLE `productattrvalue` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -234,7 +292,7 @@ CREATE TABLE `subcategory` (
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_subCategory_category1_idx` (`category_id`),
   CONSTRAINT `fk_subCategory_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,7 +301,7 @@ CREATE TABLE `subcategory` (
 
 LOCK TABLES `subcategory` WRITE;
 /*!40000 ALTER TABLE `subcategory` DISABLE KEYS */;
-INSERT INTO `subcategory` VALUES (5,'Бытовая техника',3),(2,'Ноутбуки',1),(1,'ПК',1),(3,'Смартфоны',2),(4,'Стационарные телефоны',2);
+INSERT INTO `subcategory` VALUES (1,'sub category',1);
 /*!40000 ALTER TABLE `subcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +334,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'test@yandex.ru','$2a$10$.FkITywKvhx5w5yCCkprzelLoMinY0OlKvOUqT/CoqlrLPfr/iAga','ADMIN',1,'test2',NULL,NULL),(2,'spivak@mail.ru','$2a$10$q7tevVPzrXtJ44n4mk9IkeXyc9QcFxWc9RKvitWDfoqhUKT9EXKf.','ADMIN',1,'dart647',NULL,NULL);
+INSERT INTO `user` VALUES (1,'spivak@yandex.ru','$2a$10$NcMe4vVenbCJvQ7VwHicBu/OvQh0Fev7i6Z.ZoU6ufK.9Z.a9Bpga','ADMIN',1,'dart647',NULL,NULL),(2,'test@mail.ru','$2a$10$FfaAufw9xBu6Ruy1rNEltu2gvE6Cy.f7uQmjCmXmq5mTs6X83QJY6','ADMIN',1,'test',NULL,NULL),(3,'testM@mail.com','$2a$10$FybbEfi0Z7EmKXbWDpRazuLgL6afzk/z5rVVB7xLsVAw7h3XdKgIS','MANAGER',1,'testM',NULL,NULL),(4,'testU@mail.com','$2a$10$C2IsBKkQ9dLi/QMj3ZTZne20UIwS94oSH1c2a4NgZhEy0o3XADueK','USER',1,'testU',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,7 +359,7 @@ CREATE TABLE `user_roles` (
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` VALUES (1,'ADMIN'),(2,'ADMIN');
+INSERT INTO `user_roles` VALUES (1,'ADMIN'),(2,'ADMIN'),(3,'MANAGER'),(4,'USER');
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -332,17 +390,9 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` VALUES (1,'Жмышенко Валерий Альбертович','1999-11-11','dfdfdf','11111',0),(2,'asd','2019-12-12','qwe','13215',0);
+INSERT INTO `userinfo` VALUES (1,'Спивак А.А.','1999-01-04','Шоссе Энтузиастов','1235',0),(2,'new user',NULL,NULL,NULL,0),(3,'new user',NULL,NULL,NULL,0),(4,'new user',NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'db_etsm'
---
-
---
--- Dumping routines for database 'db_etsm'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -353,4 +403,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-22 13:40:16
+-- Dump completed on 2019-12-24 12:20:36

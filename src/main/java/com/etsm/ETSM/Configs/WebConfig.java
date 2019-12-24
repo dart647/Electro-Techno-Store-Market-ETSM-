@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -21,7 +22,14 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-        registry.addResourceHandler("/img/**").addResourceLocations("classpath:/templates/img/");
+        registry.addResourceHandler("/css/**").addResourceLocations("/templates/css/");
+        registry.addResourceHandler("/img/**").addResourceLocations("/templates/img/");
+        registry.addResourceHandler("/js/**").addResourceLocations("/templates/js/");
+    }
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
     }
 
     @Bean
@@ -32,3 +40,4 @@ public class WebConfig implements WebMvcConfigurer {
         return viewResolver;
     }
 }
+
