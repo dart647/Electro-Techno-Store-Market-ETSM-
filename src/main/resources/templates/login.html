@@ -10,6 +10,30 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Вход</title>
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+        }
+
+        .alert.success {background-color: #4CAF50;}
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,11 +44,18 @@
 <div class="container-fluid">
     <!--Заменяемая часть-->
     <section class="container">
-        <div th:if="${param.error}">
-            Invalid username and password.
+
+        <div th:if="${param.error != null}">
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>Ошибка!</strong> Неправильные идентификационные данные.
+            </div>
         </div>
         <div th:if="${param.logout}">
-            You have been logged out.
+            <div class="alert success">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>Успешно!</strong> Вы вышли из аккаунта.
+            </div>
         </div>
         <div class="mx-auto border my-5 py-3 px-3 form">
             <form action="#" th:action="@{/login}" method="post">
@@ -54,5 +85,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+</div>
 </body>
 </html>
