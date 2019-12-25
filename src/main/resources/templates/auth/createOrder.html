@@ -24,6 +24,7 @@
         <!--Заменяемая часть-->
         <div th:switch="${stage}">
             <div class="col">
+                <a class="btn btn-outline-secondary" href="/basket/cancelOrder">Отменить заказ</a>
                 <div th:case="begin">
                     <h1>Проверьте правильность товаров</h1>
                     <table class="table table-stripped">

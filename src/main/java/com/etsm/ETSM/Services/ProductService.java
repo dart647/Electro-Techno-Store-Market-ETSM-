@@ -25,6 +25,7 @@ public interface ProductService {
     List<Attribute> findAttributes();
     List<Sales> findSalesByUser(UserInfo userInfo);
     Optional<Sales> findSalesById(Long id);
+    boolean reserveItem(Product product, int quantity, boolean isReserve);
 }
 
 @Service
@@ -141,5 +142,28 @@ class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Sales> findSalesById(Long id) {
         return salesRepository.findSalesById(id);
+    }
+    /*
+    Функция резервирования товаров. Если переменная isReserve равна true, происходит резервация товаров.
+    Если переменная равна false, отменяется бронирование товаров.
+     */
+    @Override
+    public boolean reserveItem(Product product, int quantity, boolean isReserve) {
+        Product targetProduct = productRepository.findById(product.getId()).orElse(null);
+        if (targetProduct == null) {
+            return false;
+        }
+        int currentQuantity = targetProduct.getCount();
+        if (isReserve) {
+            if (currentQuantity < quantity) {
+                return false;
+            }
+            currentQuantity -= quantity;
+        } else {
+            currentQuantity += quantity;
+        }
+        targetProduct.setCount(currentQuantity);
+        productRepository.saveAndFlush(targetProduct);
+        return true;
     }
 }

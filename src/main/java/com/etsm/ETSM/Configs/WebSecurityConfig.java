@@ -120,9 +120,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/user").failureUrl("/login").permitAll()
                 .and()
                 .logout()
-//                    .clearAuthentication(true)
-                //                   .invalidateHttpSession(true)
-                //                   .deleteCookies("JSESSIONID")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                 .permitAll();
