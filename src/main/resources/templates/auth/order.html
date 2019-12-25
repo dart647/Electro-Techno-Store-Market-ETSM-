@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (c) 2019. Smalkov Nikita.
+  -->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,36 +23,29 @@
         <div th:replace="header :: leftBar"/>
         <!--Заменяемая часть-->
         <div class="col">
-            <h1>Корзина товаров</h1>
+            <h1>Подробности заказа</h1>
 
             <table class="table table-stripped">
                 <thead>
                 <th scope="col">Изображение</th>
-                <th scope="col">Наименование</th>
+                <th scope="col">Название</th>
                 <th scope="col">Цена</th>
-                <th scope="col">Удалить/уменьшить/увеличить кол-во</th>
-                <th scope="col">Кол-во</th>
-                <th scope="col">Общая стоимость</th>
+                <th scope="col">Количество</th>
+                <th scope="col">Скидка</th>
+                <th scope="col">Сумма</th>
                 </thead>
                 <tbody>
-                <tr th:each="item: ${#session.getAttribute('cart')}">
-                    <td><img class="img" width="300" height="150" th:src="${item.product.img}"></td>
-                    <td><p th:text="${item.product.name}"></p></td>
-                    <td><p th:text="${item.product.price}"></p></td>
-                    <td>
-                        <a th:href="@{/basket/delete?code={id}(id=${item.product.id})}">Удалить товар</a>
-                        <a th:href="@{/basket/change?code={id}&type=minus(id=${item.product.id})}">-</a>
-                        <a th:href="@{/basket/change?code={id}&type=plus(id=${item.product.id})}">+</a>
-                    </td>
-                    <td><p th:text="${item.quantity}"></p></td>
-                    <td><p th:text="${item.totalPrice}"></p></td>
+                <tr th:each="orderItem: ${order.salesHasProducts}">
+                    <td><img class="img" width="300" height="150" th:src="${orderItem.product_id.img}"></td>
+                    <td><p th:text="${orderItem.product_id.name}"></p></td>
+                    <td><p th:text="${orderItem.product_id.price}"></p></td>
+                    <td><p th:text="${orderItem.count}"></p></td>
+                    <td><p th:text="${orderItem.discount}"></p></td>
+                    <td><p th:text="${orderItem.summ}"></p></td>
                 </tr>
                 </tbody>
             </table>
-            <h1>Общая стоимость</h1>
-            <p th:text="${#session.getAttribute('totalOrderPrice')}"></p>
-            <a class="btn btn-outline-secondary" href="/basket/createOrder?stage=begin">Оформить заказ</a>
-    </div>
+        </div>
     </div>
 </div>
 
