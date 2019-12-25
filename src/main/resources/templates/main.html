@@ -15,9 +15,9 @@
 <!--    Главная часть-->
 <div class="container-fluid">
     <div class="row">
-<!--        <div th:replace="header :: leftBar"/>-->
+        <!--        <div th:replace="header :: leftBar"/>-->
 
-<!--        Заменяемая часть-->
+        <!--        Заменяемая часть-->
         <div class="col">
             <br>
             <form class="input-group" th:action="@{/}" method="post">
@@ -36,7 +36,8 @@
                     <div class="col-4 container" th:each="product: ${searchProducts}">
                         <br>
                         <div>
-                            <a class="btn btn-outline-dark" th:href="@{/catalog/details/{productName}(productName=${product.name})}">
+                            <a class="btn btn-outline-dark"
+                               th:href="@{/catalog/details/{productName}(productName=${product.name})}">
                                 <img height="150" width="300" class="img" th:src="${product.img}">
                                 <div>
                                     <label th:text="${'Название ' + product.name}"></label>
@@ -45,27 +46,21 @@
                                     <label th:text="${'Цена ' + product.price}"></label>
                                 </div>
                                 <form th:unless="${product.productAttrValue.isEmpty()}" class="form-inline">
-                                    <p class="border" th:with="attribute=${product.productAttrValue[0]}" th:text="${attribute.value}"></p>
-                                    <p class="border" th:with="attribute=${product.productAttrValue[1]}" th:text="${attribute.value}"></p>
+                                    <p class="border" th:with="attribute=${product.productAttrValue[0]}"
+                                       th:text="${attribute.value}"></p>
+                                    <p class="border" th:with="attribute=${product.productAttrValue[1]}"
+                                       th:text="${attribute.value}"></p>
                                 </form>
                             </a>
                             <div>
-                                <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить в корзину</a>
+                                <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
+                                    в корзину</a>
                             </div>
                         </div>
                         <br>
                     </div>
                 </div>
             </div>
-<!--            <div class="container mt-100">-->
-<!--                <div class="row">-->
-<!--                    <form class="form-inline" th:each="page:${pages}">-->
-<!--                        <div th:action="@{page.url}" method="post">-->
-<!--                            <input class="btn btn-secondary" type="submit" th:value="${page.number}">-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
 
         <div class="col-3">
@@ -74,7 +69,8 @@
                 <li class="nav-item">
                     <a class="btn btn-outline-secondary btn-block"
                        th:href="@{/catalog/details/{productName}(productName=${product.name})}">
-                        <img class="img-thumbnail" th:src="${product.img}">
+                        <img width="300" height="150" th:src="${product.img}">
+                        <br>
                         <label th:text="'Название - '+ ${product.name}"></label>
                         <br>
                         <label th:href="@{/catalog/details/{productName}(productName=${product.name})}"
@@ -85,13 +81,19 @@
             </ul>
         </div>
     </div>
-<!--    <div class="row">-->
-<!--        <nav>-->
-<!--            <ul class="pagination justify-content-center">-->
-<!--                <li class="page-item"><a class="page-link" href="/?page=">1</a></li>-->
-<!--            </ul>-->
-<!--        </nav>-->
-<!--    </div>-->
+    <div th:if="${pages.size() > 1}" class="row">
+        <div class="container">
+            <h4 class="justify-content-center">Переход по главной странице</h4>
+            <nav class="form-inline justify-content-center">
+                <ul th:each="productPage, state: ${pages}" class="pagination pagination-lg">
+                    <li class="page-item">
+                        <a th:text="${state.index + 1}" class="page-link"
+                           th:href="@{/?page={pageNumber}(pageNumber = ${state.index})}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

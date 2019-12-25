@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 // Описание продукта
 @Entity
@@ -25,7 +26,7 @@ public class Product {
 
     @ManyToOne()
     @JoinColumn(name = "minorcategory_id", referencedColumnName = "id")
-    private MinorCategory minorcategory_id; //Подкатегория
+    private MinorCategory minorcategoryid; //Подкатегория
 
     @Column(name = "`desc`")
     private String description; //Описание
@@ -49,12 +50,13 @@ public class Product {
     inverseJoinColumns = @JoinColumn(name="attribute_group_id"))
     private List<Attribute_Group> attribute_groups;
 
-    public MinorCategory getMinorcategory_id() {
-        return minorcategory_id;
+    public MinorCategory getMinorcategoryid() {
+        return minorcategoryid;
     }
 
-    public void setMinorcategory_id(MinorCategory minorcategory_id) {
-        this.minorcategory_id = minorcategory_id;
+    public void setMinorcategoryid(MinorCategory minorcategoryid) {
+        minorcategoryid.getProductList().add(this);
+        this.minorcategoryid = minorcategoryid;
     }
 
     public List<Sales_has_product> getSalesHasProducts() {
@@ -106,7 +108,7 @@ public class Product {
     }
 
     public MinorCategory getSubCategory_id() {
-        return minorcategory_id;
+        return minorcategoryid;
     }
 
     public int getCount() {
@@ -119,7 +121,7 @@ public class Product {
 
     public void setMinorCategory_id(MinorCategory minorCategory_id) {
         minorCategory_id.getProductList().add(this);
-        this.minorcategory_id = minorCategory_id;
+        this.minorcategoryid = minorCategory_id;
     }
 
     public List<ProductAttrValue> getProductAttrValue() {
@@ -136,5 +138,19 @@ public class Product {
 
     public void setAttribute_groups(List<Attribute_Group> attribute_groups) {
         this.attribute_groups = attribute_groups;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id &&
+                name.equals(product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, minorcategoryid, description, img, salesHasProducts, productAttrValue, attribute_groups);
     }
 }

@@ -1,5 +1,6 @@
 package com.etsm.ETSM.Controllers;
 
+import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Services.HeaderService;
 import com.etsm.ETSM.Services.MainService;
 import com.etsm.ETSM.Services.ProductService;
@@ -9,9 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 // Контроллер отвечающий за вывод страницы списка товаров
@@ -76,14 +80,26 @@ public class ProductsController {
     }
 
     @GetMapping("category/subCategory/{minorCategoryName}")
-    public ModelAndView GetMinorCategory(@PathVariable String minorCategoryName, Principal principal) {
+    public ModelAndView GetMinorCategory(@PathVariable String minorCategoryName,
+                                         @RequestParam(name = "page", defaultValue = "0") String page,
+                                         Principal principal) {
         headerService.setHeader(principal);
+        List<Integer> pages = new ArrayList<>();
+        int maxProductsInPage = 20;
+
+        List<Product> products = productService.findProductsFromMinorCategory(minorCategoryName, page, maxProductsInPage);
+        if(products.size()!=0){
+            for (int i = 0; i < Math.ceil((float)productService.GetAllProductsCountInMinorCategory(minorCategoryName) / products.size()); i++) {
+                pages.add(i);
+            }
+        }
         return productService.findMinorCategoryByName(minorCategoryName)
                 .map(product -> new ModelAndView("/catalog/category/subCategory/productsinMinCategory",
-                        Map.of("products", productService.findProductsFromMinorCategory(minorCategoryName),
+                        Map.of("products", products,
                                 "currMinorCategory", productService.findMinorCategoryByName(minorCategoryName).get(),
                                 "categories", mainService.GetAllCategories(),
-                                "role", headerService.getHeaderRole()),
+                                "role", headerService.getHeaderRole(),
+                                "pages", pages),
                         HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find third layer category"), HttpStatus.NOT_FOUND));

@@ -3,6 +3,9 @@ package com.etsm.ETSM.Services;
 import com.etsm.ETSM.Models.*;
 import com.etsm.ETSM.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,21 +13,49 @@ import java.util.Optional;
 
 public interface ProductService {
     List<Product> findAllProducts();
+
     List<SubCategory> findSubCategories();
+
     List<SubCategory> findSubCategoriesFromCategory(String categoryName);
+
     List<MinorCategory> findMinorCategoriesFromSubCategory(String subCategoryName);
-    List<Product> findProductsFromMinorCategory(String minorCategoryName);
+
+    List<Product> findProductsFromMinorCategory(String minorCategoryName, String page, int maxProductsInPage);
+
     Optional<Product> findProductById(Long id);
+
     Optional<Product> findProductByName(String name);
+
     Optional<Category> findCategoryByName(String name);
+
     Optional<SubCategory> findSubCategoryByName(String name);
+
     Optional<MinorCategory> findMinorCategoryByName(String name);
+
     Optional<SubCategory> findSubCategoryById(Long id);
+
     List<Category> findCategories();
+
     List<MinorCategory> findMinorCategories();
+
     List<Attribute> findAttributes();
+
+    List<Attribute> findAttributesPages(String page, int maxInPage);
+
     List<Sales> findSalesByUser(UserInfo userInfo);
+
     Optional<Sales> findSalesById(Long id);
+
+    long GetAllProductsCountInMinorCategory(String minorCategoryName);
+
+    long findAttributesCount();
+
+    List<SubCategory> findAllSubCategories();
+
+    List<Product> findAllProductsPages(String page, int maxInPage);
+
+    long findAllProductsCount();
+
     boolean reserveItem(Product product, int quantity, boolean isReserve);
 }
 
@@ -51,14 +82,17 @@ class ProductServiceImpl implements ProductService {
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+
     @Autowired
     public void setSubCategoryRepository(SubCategoryRepository subCategoryRepository) {
         this.subCategoryRepository = subCategoryRepository;
     }
+
     @Autowired
     public void setCategoryRepository(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
     @Autowired
     public void setMinorCategoryRepository(MinorCategoryRepository minorCategoryRepository) {
         this.minorCategoryRepository = minorCategoryRepository;
@@ -85,8 +119,9 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findProductsFromMinorCategory(String minorCategoryName) {
-        return findMinorCategoryByName(minorCategoryName).get().getProductList();
+    public List<Product> findProductsFromMinorCategory(String minorCategoryName, String page, int maxProductsInPage) {
+        Pageable productPage = PageRequest.of(Integer.parseInt(page), maxProductsInPage, Sort.by("name"));
+        return productRepository.findByMinorcategoryid(findMinorCategoryByName(minorCategoryName), productPage);
     }
 
     @Override
@@ -135,6 +170,12 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Attribute> findAttributesPages(String page, int maxInPage) {
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), maxInPage, Sort.by("name"));
+        return attributeRepository.findAllByNameLike("%%", pageable);
+    }
+
+    @Override
     public List<Sales> findSalesByUser(UserInfo userInfo) {
         return salesRepository.findSalesByUserInfoId(userInfo);
     }
@@ -142,6 +183,32 @@ class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Sales> findSalesById(Long id) {
         return salesRepository.findSalesById(id);
+    }
+
+    @Override
+    public long GetAllProductsCountInMinorCategory(String minorCategoryName) {
+        return findMinorCategoryByName(minorCategoryName).get().getProductList().size();
+    }
+
+    @Override
+    public long findAttributesCount() {
+        return attributeRepository.count();
+    }
+
+    @Override
+    public List<SubCategory> findAllSubCategories() {
+        return subCategoryRepository.findAll();
+    }
+
+    @Override
+    public List<Product> findAllProductsPages(String page, int maxInPage) {
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), maxInPage, Sort.by("name"));
+        return productRepository.findAllByNameLike("%%", pageable);
+    }
+
+    @Override
+    public long findAllProductsCount() {
+        return productRepository.count();
     }
     /*
     Функция резервирования товаров. Если переменная isReserve равна true, происходит резервация товаров.

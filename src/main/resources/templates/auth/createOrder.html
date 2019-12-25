@@ -24,7 +24,10 @@
         <!--Заменяемая часть-->
         <div th:switch="${stage}">
             <div class="col">
-                <a class="btn btn-outline-secondary" href="/basket/cancelOrder">Отменить заказ</a>
+                <br>
+                <div>
+                    <a class="btn btn-outline-secondary" href="/basket/cancelOrder">Отменить заказ</a>
+                </div>
                 <div th:case="begin">
                     <h1>Проверьте правильность товаров</h1>
                     <table class="table table-stripped">
@@ -45,9 +48,10 @@
                         </tr>
                         </tbody>
                     </table>
-                    <h1>Общая стоимость</h1>
+                    <h3>Общая стоимость</h3>
                     <p th:text="${#session.getAttribute('totalOrderPrice')}"></p>
-                    <a class="btn btn-outline-secondary" href="/basket/createOrder?stage=userInfo">Продолжить оформление
+                    <a class="btn btn-outline-secondary" href="/basket/createOrder?stage=userInfo">Продолжить
+                        оформление
                         заказа</a>
                     <a class="btn btn-outline-secondary" href="/basket/">Вернуться в корзину</a>
                 </div>

@@ -1,9 +1,6 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.*;
-import com.etsm.ETSM.Repositories.CategoryRepository;
-import com.etsm.ETSM.Repositories.MinorCategoryRepository;
-import com.etsm.ETSM.Repositories.SubCategoryRepository;
 import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,27 +18,19 @@ import java.util.Optional;
 @RequestMapping("/admin")
 public class AdminController {
     private AdminService adminService;
-    private UserService userService;
     MainService mainService;
     UserInformationService userInformationService;
-    private CategoryRepository categoryRepository;
-    private SubCategoryRepository subCategoryRepository;
     private ProductService productService;
-    private MinorCategoryRepository minorCategoryRepository;
     private HeaderService headerService;
 
-    public AdminController(AdminService adminService, UserService userService,
-                           MainService mainService, UserInformationService userInformationService,
-                           CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository,
-                           ProductService productService, MinorCategoryRepository minorCategoryRepository) {
+    public AdminController(AdminService adminService,
+                           MainService mainService,
+                           UserInformationService userInformationService,
+                           ProductService productService) {
         this.adminService = adminService;
-        this.userService = userService;
         this.mainService = mainService;
         this.userInformationService = userInformationService;
-        this.categoryRepository = categoryRepository;
-        this.subCategoryRepository = subCategoryRepository;
         this.productService = productService;
-        this.minorCategoryRepository = minorCategoryRepository;
     }
 
     @Autowired
@@ -63,38 +53,20 @@ public class AdminController {
         this.userInformationService = userInformationService;
     }
 
-    @Autowired
-    public void setCategoryRepository(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
-
-    @Autowired
-    public void setSubCategoryRepository(SubCategoryRepository subCategoryRepository) {
-        this.subCategoryRepository = subCategoryRepository;
-    }
-
-    @Autowired
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
-
-    @Autowired
-    public void setMinorCategoryRepository(MinorCategoryRepository minorCategoryRepository) {
-        this.minorCategoryRepository = minorCategoryRepository;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping("/all")
-    public ModelAndView getAllUsers(Principal principal) {
+    public ModelAndView getAllUsers(@RequestParam(name = "page", defaultValue = "0")String page, Principal principal) {
         headerService.setHeader(principal);
+        List<Integer> pages = new ArrayList<>();
+        int maxInPage = 20;
+        List<User> adminServiceUsers = adminService.findUsersPages(page, maxInPage);
+        for (int i = 0; i < Math.ceil((float)adminService.findUsersCount() / maxInPage); i++) {
+            pages.add(i);
+        }
         return new ModelAndView("admin/all",
-                Map.of("users", adminService.findUsers(),
+                Map.of("users", adminServiceUsers,
                         "role", headerService.getHeaderRole(),
-                        "categories", headerService.getHeaderCategories()),
+                        "categories", headerService.getHeaderCategories(),
+                        "pages", pages),
                 HttpStatus.OK);
     }
 
@@ -121,23 +93,28 @@ public class AdminController {
     }
 
     @GetMapping("/addProduct")
-    public ModelAndView AddProduct(Principal principal) {
+    public ModelAndView AddProduct(@RequestParam(name = "page", defaultValue = "0")String page, Principal principal) {
         headerService.setHeader(principal);
         Product product = new Product();
         String minorCategoryName = "";
-        List<Category> categoryList = categoryRepository.findAll();
-        List<SubCategory> subCategoryList = subCategoryRepository.findAll();
-        List<MinorCategory> minorCategoryList = minorCategoryRepository.findAll();
+
+        List<Integer> pages = new ArrayList<>();
+        int maxInPage = 20;
+        List<Product> allProductsPages = productService.findAllProductsPages(page, maxInPage) ;
+        for (int i = 0; i < Math.ceil((float)productService.findAllProductsCount() / maxInPage); i++) {
+            pages.add(i);
+        }
+
         return new ModelAndView("admin/addProduct",
                 Map.of("product", product,
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories(),
                         "minorCategoryName", minorCategoryName,
-                        "categoryList", categoryList,
-                        "subCategoryList", subCategoryList,
-                        "minorCategoryList", minorCategoryList,
-                        "productList", productService.findAllProducts()
-                ),
+                        "categoryList", productService.findCategories(),
+                        "subCategoryList", productService.findSubCategories(),
+                        "minorCategoryList", productService.findMinorCategories(),
+                        "productList", allProductsPages,
+                        "pages", pages),
                 HttpStatus.OK);
     }
 
@@ -153,10 +130,9 @@ public class AdminController {
     public ModelAndView addCategory(Principal principal) {
         headerService.setHeader(principal);
         Category category = new Category();
-        List<Category> categoryList = categoryRepository.findAll();
         return new ModelAndView("admin/addCategory",
                 Map.of("category", category,
-                        "categoryList", categoryList,
+                        "categoryList", productService.findCategories(),
                         "productList", productService.findAllProducts(),
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories()),
@@ -174,11 +150,10 @@ public class AdminController {
         headerService.setHeader(principal);
         SubCategory subCategory = new SubCategory();
         String categoryName = "";
-        List<Category> categoryList = categoryRepository.findAll();
         return new ModelAndView("admin/addSubCategory",
                 Map.of("subCategory", subCategory,
                         "categoryName", categoryName,
-                        "categoryList", categoryList,
+                        "categoryList", productService.findCategories(),
                         "subCategoryList", productService.findSubCategories(),
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories()),
@@ -198,11 +173,11 @@ public class AdminController {
         headerService.setHeader(principal);
         MinorCategory minorCategory = new MinorCategory();
         String subCategoryName = "";
-        List<SubCategory> subCategoryList = subCategoryRepository.findAll();
+
         return new ModelAndView("admin/addMinorCategory",
                 Map.of("minorCategory", minorCategory,
                         "subCategoryName", subCategoryName,
-                        "subCategoryList", subCategoryList,
+                        "subCategoryList", productService.findAllSubCategories(),
                         "minorCategoryList", productService.findMinorCategories(),
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories()),
@@ -217,16 +192,23 @@ public class AdminController {
     }
 
     @GetMapping("/addAttribute")
-    public ModelAndView addAttribute(Principal principal) {
+    public ModelAndView addAttribute(@RequestParam(name = "page", defaultValue = "0")String page, Principal principal) {
         headerService.setHeader(principal);
         Attribute attribute = new Attribute();
+        List<Integer> pages = new ArrayList<>();
+        int maxInPage = 20;
+        List<Attribute> attributes = productService.findAttributesPages(page, maxInPage);
+        for (int i = 0; i < Math.ceil((float)productService.findAttributesCount() / maxInPage); i++) {
+            pages.add(i);
+        }
         return new ModelAndView("admin/addAttribute",
                 Map.of("attribute", attribute,
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories(),
-                        "attributesList", productService.findAttributes(),
+                        "attributesList", attributes,
                         "productList", productService.findAllProducts(),
-                        "attributeGroupsList", adminService.findAllAtrubutesGroups()),
+                        "attributeGroupsList", adminService.findAllAtrubutesGroups(),
+                        "pages", pages),
                 HttpStatus.OK);
     }
 
@@ -253,8 +235,12 @@ public class AdminController {
     public String addAttributeToProduct(@ModelAttribute ProductAttrValue productAttrValue,
                                         @ModelAttribute("productN") String product,
                                         @ModelAttribute("attributeN") String attribute) {
-        adminService.addNewAttributeToProduct(product, attribute, productAttrValue);
-        return "redirect:/admin/addAttributeToProduct";
+        if(adminService.addNewAttributeToProduct(product, attribute, productAttrValue)){
+            return "redirect:/admin/";
+        }
+        else {
+            return "redirect:/admin/addAttributeToProduct";
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "sales")
@@ -55,5 +56,18 @@ public class Sales {
     public void setUserInfoId(UserInfo userInfo_id) {
         userInfo_id.getSales().add(this);
         this.userInfoId = userInfo_id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sales sales = (Sales) o;
+        return id == sales.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, sum, userInfoId, salesHasProducts);
     }
 }

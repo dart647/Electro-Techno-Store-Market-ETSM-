@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "attribute")
@@ -56,4 +57,17 @@ public class Attribute {
         this.productAttrValue = productAttrValue;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Attribute attribute = (Attribute) o;
+        return id == attribute.id &&
+                name.equals(attribute.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, attribute_groups, productAttrValue);
+    }
 }

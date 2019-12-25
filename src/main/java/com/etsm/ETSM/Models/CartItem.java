@@ -3,6 +3,9 @@
  */
 
 package com.etsm.ETSM.Models;
+
+import java.util.Objects;
+
 /*
 Класс для хранения сущности продукта с указанием количества и общей цены.
 Список объектов хранится в Http-сессии и используется для обращения к корзине.
@@ -44,5 +47,20 @@ public class CartItem {
         this.product = product;
         this.quantity = quantity;
         this.setTotalPrice();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return quantity == cartItem.quantity &&
+                totalPrice == cartItem.totalPrice &&
+                product.equals(cartItem.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product, quantity, totalPrice);
     }
 }
