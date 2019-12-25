@@ -1,10 +1,13 @@
 package com.etsm.ETSM.Models;
 
+import com.etsm.ETSM.Annotations.UniqueUser;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -19,9 +22,14 @@ public class User implements UserDetails {
     private long id;
 
     @Column(name = "username")
+    @NotNull
+    @Size(min = 2, max = 255)
+    @UniqueUser
     private String username;
 
     @Column(name = "password")
+    @Size(min = 6, max = 255)
+    @NotNull
     private String password;
 
     @Column(name = "roles")
@@ -34,6 +42,9 @@ public class User implements UserDetails {
     private Boolean active;
 
     @Column(name = "login")
+    @NotNull
+    @Size(min = 6, max = 255)
+    @UniqueUser
     private String login;
 
     @Column(name = "googleName")

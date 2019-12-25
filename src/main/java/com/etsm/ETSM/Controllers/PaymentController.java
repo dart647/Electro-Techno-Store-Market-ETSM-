@@ -52,7 +52,7 @@ public class PaymentController {
         stripeService.chargeNewCard(token, amount);
         UserInfo userInfo = headerService.getUser().getUserInfo();
         shoppingCartService.performOrder(session, userInfo);
-        return "redirect:/orders";
+        return "redirect:/orders?orderDone=true";
     }
 
     @Autowired

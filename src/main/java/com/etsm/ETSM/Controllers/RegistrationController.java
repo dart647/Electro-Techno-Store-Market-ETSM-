@@ -42,23 +42,37 @@ public class RegistrationController {
     }
 
 
+
     @GetMapping("/registration")
     public ModelAndView registration(Principal principal) {
         headerService.setHeader(principal);
+        User user = new User();
         return new ModelAndView("/registration",
-                Map.of("user", headerService.getUser(),
+                Map.of("user", user,
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories()),
                 HttpStatus.OK);
     }
-
+/*
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute User user) {
+    public String addUser(@ModelAttribute @Valid User user,
+                          BindingResult result) {
         if (registrationService.AddNewUser(user))
             return "redirect:/";
         else
             return "/registration";
     }
+*/
+@PostMapping("/registration")
+public String addUser(@ModelAttribute("user") @Valid User user,
+                      BindingResult result) {
+    if (result.hasErrors()) {
+        return "/registration";
+    } else {
+        registrationService.AddNewUser(user);
+        return "redirect:/";
+    }
+}
 
     @Autowired
     public void setRegistrationService(RegistrationService registrationService) {
