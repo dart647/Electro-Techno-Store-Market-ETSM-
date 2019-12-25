@@ -99,14 +99,16 @@ public class UserController {
     }
 
     @GetMapping("/orders")
-    public ModelAndView showOrders(HttpSession session, Principal principal) {
+    public ModelAndView showOrders(@RequestParam(name = "orderDone", defaultValue = "false") String orderDone,
+                                   HttpSession session, Principal principal) {
         UserInfo userInfo = headerService.getUser().getUserInfo();
         return new ModelAndView("/auth/orders",
                 Map.of("user", headerService.getUser(),
                         "userInfo", headerService.getUser().getUserInfo(),
                         "role", headerService.getHeaderRole(),
                         "categories", headerService.getHeaderCategories(),
-                        "orders", productService.findSalesByUser(userInfo)),
+                        "orders", productService.findSalesByUser(userInfo),
+                        "orderDone", orderDone),
                 HttpStatus.OK);
     }
 

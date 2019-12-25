@@ -20,18 +20,28 @@
 <div class="container">
     <div class="row">
         <!--Заменяемая часть-->
-        <form th:action="@{/registration}" method="post">
+        <form th:action="@{/registration}" method="post" th:object="${user}">
             <div class="form-group">
                 <label for="login">Имя</label>
-                <input class="form-control" id="login" type="text" name="login">
+                <input class="form-control" id="login" type="text" name="login" th:field="*{login}">
+                <ul class="error-list">
+                    <li th:each="err : ${#fields.errors('login')}" th:text="${err}"/>
+                </ul>
             </div>
             <div class="form-group">
                 <label for="username">Email</label>
-                <input class="form-control" id="username" type="text" name="username">
+                <input class="form-control" id="username" type="email" name="username" th:field="*{username}"
+                       placeholder="name@example.com" required>
+                <ul class="error-list">
+                    <li th:each="err : ${#fields.errors('username')}" th:text="${err}"/>
+                </ul>
             </div>
             <div class="form-group">
                 <label for="password">Пароль</label>
-                <input class="form-control" id="password" type="password" name="password">
+                <input class="form-control" id="password" type="password" name="password" th:field="*{password}">
+                <ul class="error-list">
+                    <li th:each="err : ${#fields.errors('password')}" th:text="${err}"/>
+                </ul>
             </div>
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <input type="submit" value="Регистрация" class="btn btn-success"/>
