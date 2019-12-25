@@ -117,14 +117,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/user").failureUrl("/login").permitAll()
+                .defaultSuccessUrl("/user").permitAll()
                 .and()
                 .logout()
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
+                .logoutSuccessUrl("/login?logout=true")
                 .permitAll();
         http.
                 addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class);
