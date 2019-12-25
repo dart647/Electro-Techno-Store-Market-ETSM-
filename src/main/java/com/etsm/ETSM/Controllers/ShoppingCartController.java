@@ -4,18 +4,13 @@
 
 package com.etsm.ETSM.Controllers;
 
-import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Models.UserInfo;
-import com.etsm.ETSM.Repositories.UserInfoRepository;
 import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -65,11 +60,14 @@ public class ShoppingCartController {
     @GetMapping("/clearCart")
     public String clearCart(HttpSession session) {
         shoppingCartService.clearCart(session);
-        return "redirect:/";
+        return "redirect:/basket";
     }
 
     @GetMapping("/createOrder")
-    public ModelAndView createOrder(@RequestParam(name = "stage", defaultValue = "begin") String stage) {
+    public ModelAndView createOrder(@RequestParam(name = "stage", defaultValue = "begin") String stage, HttpSession session) {
+        if (stage.equals("userInfo")) {
+            shoppingCartService.reserve(session);
+        }
         return new ModelAndView("/auth/createOrder",
                 Map.of("categories", mainService.GetAllCategories(),
                         "role", headerService.getHeaderRole(),
@@ -79,11 +77,18 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/createOrder")
-    public ModelAndView createOrder(@ModelAttribute UserInfo userInfo) {
+    public ModelAndView createOrder(@ModelAttribute UserInfo userInfo, HttpSession session) {
         User user = headerService.getUser();
         userInformationService.addUserInfo(user, userInfo);
-        return createOrder("payment");
+        return createOrder("payment",session);
     }
+
+    @GetMapping("/cancelOrder")
+    public ModelAndView cancelOrder(Principal principal, HttpSession session) {
+        shoppingCartService.clearCart(session);
+        return Basket(principal, session);
+    }
+
 
     @Autowired
     public void setProductService(ProductService productService) {

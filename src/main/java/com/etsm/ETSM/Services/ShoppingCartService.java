@@ -13,9 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 public interface ShoppingCartService {
@@ -26,6 +23,7 @@ public interface ShoppingCartService {
     public boolean getTotalOrderPrice(HttpSession session);
     public boolean performOrder(HttpSession session, UserInfo userInfo);
     public boolean addFundsOnLoyalty(int amount, UserInfo userInfo);
+    public void reserve(HttpSession session);
 }
 
 @Service
@@ -92,9 +90,13 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
             cart.get(index).setQuantity(quantity);
             cart.get(index).setTotalPrice();
         } else if (type.equals("minus")) {
-            quantity--;
-            cart.get(index).setQuantity(quantity);
-            cart.get(index).setTotalPrice();
+            if (quantity != 1) {
+                quantity--;
+                cart.get(index).setQuantity(quantity);
+                cart.get(index).setTotalPrice();
+            } else {
+                deleteItemFromCart(code,session);
+            }
         } else {
             return false;
         }
@@ -119,7 +121,13 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void clearCart(HttpSession session) {
         if (session.getAttribute("cart") != null) {
+            List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cart");
+            for (CartItem cartItem : cartItems) {
+                int quantity = cartItem.getQuantity();
+                Product product = cartItem.getProduct();
+            }
             session.removeAttribute("cart");
+            session.setAttribute("totalOrderPrice",0);
         }
     }
 
@@ -171,6 +179,17 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
         loyalty.setBalance(addedFunds);
         loyaltyRepository.saveAndFlush(loyalty);
         return true;
+    }
+
+    public void reserve(HttpSession session) {
+        if (session.getAttribute("cart") != null) {
+            List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cart");
+            for (CartItem cartItem : cartItems) {
+                int quantity = cartItem.getQuantity();
+                Product product = cartItem.getProduct();
+                productService.reserveItem(product,quantity,true);
+            }
+        }
     }
 
     @Autowired

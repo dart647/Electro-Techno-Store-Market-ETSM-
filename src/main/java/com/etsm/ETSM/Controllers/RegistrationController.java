@@ -9,13 +9,18 @@ import com.etsm.ETSM.Services.HeaderService;
 import com.etsm.ETSM.Services.RegistrationService;
 import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 
@@ -35,6 +40,7 @@ public class RegistrationController {
         this.registrationService = registrationService;
         this.userService = userService;
     }
+
 
     @GetMapping("/registration")
     public ModelAndView registration(Principal principal) {
