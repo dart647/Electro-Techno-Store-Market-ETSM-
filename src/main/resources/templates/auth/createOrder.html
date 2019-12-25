@@ -75,6 +75,11 @@
                                     <input class="form-control" id="address" type="text" name="address"
                                            th:value="${userInfo.address}">
                                 </div>
+                                <div class="form-group">
+                                    <label for="address">Номер телефона</label>
+                                    <input class="form-control" id="phoneNumber" type="text" name="phoneNumber"
+                                           th:value="${userInfo.phoneNumber}">
+                                </div>
                                 <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
                                 <input type="submit" value="Изменить" class="btn btn-success"/>
                                 <a class="btn btn-outline-secondary" href="/basket/createOrder?stage=payment">Продолжить
@@ -84,11 +89,9 @@
                         </div>
                     </div>
                 </div>
-                <div th:case="payment">
-                    <h1>Выберите вид оплаты</h1>
-                    <a class="btn btn-outline-secondary" href="/payment/">Оплата картой</a>
-                    <button class="btn btn-outline-secondary" href="/payment/" disabled>Наличными</button>
-                </div>
+            <div th:case="payment">
+                <h1>Выберите вид оплаты</h1>
+                <a class="btn btn-outline-secondary" href="/payment/">Оплата картой</a>
             </div>
         </div>
     </div>

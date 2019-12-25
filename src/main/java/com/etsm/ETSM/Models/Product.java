@@ -25,7 +25,7 @@ public class Product {
     private int price; //Цена
 
     @ManyToOne()
-    @JoinColumn(name = "minorcategoryid", referencedColumnName = "id")
+    @JoinColumn(name = "minorcategory_id", referencedColumnName = "id")
     private MinorCategory minorcategoryid; //Подкатегория
 
     @Column(name = "`desc`")

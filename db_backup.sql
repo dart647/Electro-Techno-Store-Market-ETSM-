@@ -181,7 +181,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Flexotron',123,'aaaaaa aaaaaaaaa aaaaaaaa aaaaaaa aaaaaaaaaaaa aaaaa aaaaa aaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa','https://avatars.mds.yandex.net/get-zen_doc/27036/pub_5d2d6e1d14f98000ac62352a_5d2d6e7c4e057700ad3040c7/scale_1200',1,100),(2,'Roge',321,'qwe','https://5bucks.ru/wp-content/uploads/2019/05/1.png',1,100);
+INSERT INTO `product` VALUES (1,'Flexotron',123,'aaaaaa aaaaaaaaa aaaaaaaa aaaaaaa aaaaaaaaaaaa aaaaa aaaaa aaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa','https://avatars.mds.yandex.net/get-zen_doc/27036/pub_5d2d6e1d14f98000ac62352a_5d2d6e7c4e057700ad3040c7/scale_1200',1,87),(2,'Roge',321,'qwe','https://5bucks.ru/wp-content/uploads/2019/05/1.png',1,96);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,6 +407,7 @@ CREATE TABLE `userinfo` (
   `birthDate` varchar(255) DEFAULT NULL,
   `address` longtext,
   `wallet` int(11) NOT NULL DEFAULT '0',
+  `phonenumber` varchar(45) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_userinfo_user1` (`id`)
@@ -419,7 +420,7 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` VALUES (1,'Спивак А.А.','1999-01-04','Шоссе Энтузиастов',0),(2,'Жмышенко Валерий Альбертович','1999-11-10','Самара, ул. Ленина, д.14',0),(3,'new user',NULL,NULL,0),(4,'new user',NULL,NULL,0);
+INSERT INTO `userinfo` VALUES (1,'Спивак А.А.','1999-01-04','Шоссе Энтузиастов',0,'0'),(2,'Жмышенко Валерий Альбертович','2040-11-10','Самара, ул. Ленина, д.14',0,'0'),(3,'new user',NULL,NULL,0,'0'),(4,'new user',NULL,NULL,0,'0');
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -440,4 +441,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-25  3:21:04
+-- Dump completed on 2019-12-25 22:37:26
