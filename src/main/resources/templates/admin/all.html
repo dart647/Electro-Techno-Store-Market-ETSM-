@@ -45,6 +45,18 @@
             </table>
         </div>
     </div>
+    <div th:if="${pages.size() > 1}" class="row">
+        <div class="container">
+            <nav class="form-inline justify-content-center">
+                <ul th:each="userPage, state: ${pages}" class="pagination pagination-lg">
+                    <li class="page-item">
+                        <a th:text="${state.index + 1}" class="page-link"
+                           th:href="@{/admin/all?page={pageNumber}(pageNumber = ${state.index})}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

@@ -40,11 +40,21 @@ public interface ProductService {
 
     List<Attribute> findAttributes();
 
+    List<Attribute> findAttributesPages(String page, int maxInPage);
+
     List<Sales> findSalesByUser(UserInfo userInfo);
 
     Optional<Sales> findSalesById(Long id);
 
     long GetAllProductsCountInMinorCategory(String minorCategoryName);
+
+    long findAttributesCount();
+
+    List<SubCategory> findAllSubCategories();
+
+    List<Product> findAllProductsPages(String page, int maxInPage);
+
+    long findAllProductsCount();
 }
 
 @Service
@@ -158,6 +168,12 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Attribute> findAttributesPages(String page, int maxInPage) {
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), maxInPage, Sort.by("name"));
+        return attributeRepository.findAllByNameLike("%%", pageable);
+    }
+
+    @Override
     public List<Sales> findSalesByUser(UserInfo userInfo) {
         return salesRepository.findSalesByUserInfoId(userInfo);
     }
@@ -170,5 +186,26 @@ class ProductServiceImpl implements ProductService {
     @Override
     public long GetAllProductsCountInMinorCategory(String minorCategoryName) {
         return findMinorCategoryByName(minorCategoryName).get().getProductList().size();
+    }
+
+    @Override
+    public long findAttributesCount() {
+        return attributeRepository.count();
+    }
+
+    @Override
+    public List<SubCategory> findAllSubCategories() {
+        return subCategoryRepository.findAll();
+    }
+
+    @Override
+    public List<Product> findAllProductsPages(String page, int maxInPage) {
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), maxInPage, Sort.by("name"));
+        return productRepository.findAllByNameLike("%%", pageable);
+    }
+
+    @Override
+    public long findAllProductsCount() {
+        return productRepository.count();
     }
 }

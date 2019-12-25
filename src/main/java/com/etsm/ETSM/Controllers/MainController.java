@@ -56,7 +56,7 @@ public class MainController {
         headerService.setHeader(principal);
         String search = "";
         List<Integer> pages = new ArrayList<>();
-        int maxProductsInPage = 2;
+        int maxProductsInPage = 20;
 
         List<Product> products = service.GetSearchProducts("", page, maxProductsInPage);
         for (int i = 0; i < Math.ceil((float)service.GetAllProductsCount() / maxProductsInPage); i++) {
@@ -77,7 +77,7 @@ public class MainController {
                                            @ModelAttribute("searching") String searching, Principal principal) {
         headerService.setHeader(principal);
         List<Integer> pages = new ArrayList<>();
-        int maxProductsInPage = 2;
+        int maxProductsInPage = 20;
         List<Product> products = service.GetSearchProducts(searching, page, maxProductsInPage);
         for (int i = 0; i < Math.ceil((float)service.GetAllProductsCount() / maxProductsInPage); i++) {
             pages.add(i);

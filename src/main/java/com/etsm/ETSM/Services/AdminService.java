@@ -3,6 +3,9 @@ package com.etsm.ETSM.Services;
 import com.etsm.ETSM.Models.*;
 import com.etsm.ETSM.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +30,10 @@ public interface AdminService {
     boolean addNewAttribute(Attribute attribute, String attribute_group);
 
     boolean addNewAttributeToProduct(String product, String attribute, ProductAttrValue oldProductAttrValue);
+
+    List<User> findUsersPages(String page, int maxInPage);
+
+    long findUsersCount();
 }
 
 @Service
@@ -157,6 +164,17 @@ class AdminServiceImpl implements AdminService {
         }
 
         return true;
+    }
+
+    @Override
+    public List<User> findUsersPages(String page, int maxInPage) {
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), maxInPage, Sort.by("login"));
+        return userRepository.findAllByLoginLike("%%",pageable);
+    }
+
+    @Override
+    public long findUsersCount() {
+        return userRepository.count();
     }
 
     @Autowired

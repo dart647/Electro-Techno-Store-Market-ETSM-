@@ -15,4 +15,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByNameLike(String name, Pageable page);
 
     List<Product> findByMinorcategoryid(Optional<MinorCategory> minorCategory_id, Pageable pageable);
+
+    List<Product> findAllByNameLike(String s, Pageable pageable);
 }

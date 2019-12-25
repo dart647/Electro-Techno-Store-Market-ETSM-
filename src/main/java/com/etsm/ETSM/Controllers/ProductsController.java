@@ -85,7 +85,7 @@ public class ProductsController {
                                          Principal principal) {
         headerService.setHeader(principal);
         List<Integer> pages = new ArrayList<>();
-        int maxProductsInPage = 1;
+        int maxProductsInPage = 20;
 
         List<Product> products = productService.findProductsFromMinorCategory(minorCategoryName, page, maxProductsInPage);
         if(products.size()!=0){
