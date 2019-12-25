@@ -23,6 +23,8 @@ public interface ProductService {
     List<Category> findCategories();
     List<MinorCategory> findMinorCategories();
     List<Attribute> findAttributes();
+    List<Sales> findSalesByUser(UserInfo userInfo);
+    Optional<Sales> findSalesById(Long id);
 }
 
 @Service
@@ -32,6 +34,12 @@ class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
     private MinorCategoryRepository minorCategoryRepository;
     private AttributeRepository attributeRepository;
+    private SalesRepository salesRepository;
+
+    @Autowired
+    public void setSalesRepository(SalesRepository salesRepository) {
+        this.salesRepository = salesRepository;
+    }
 
     @Autowired
     public void setAttributeRepository(AttributeRepository attributeRepository) {
@@ -123,5 +131,15 @@ class ProductServiceImpl implements ProductService {
     @Override
     public List<Attribute> findAttributes() {
         return attributeRepository.findAll();
+    }
+
+    @Override
+    public List<Sales> findSalesByUser(UserInfo userInfo) {
+        return salesRepository.findSalesByUserInfoId(userInfo);
+    }
+
+    @Override
+    public Optional<Sales> findSalesById(Long id) {
+        return salesRepository.findSalesById(id);
     }
 }

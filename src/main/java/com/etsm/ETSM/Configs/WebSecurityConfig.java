@@ -97,7 +97,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/about",
                         "/feedback",
                         "/ourAddresses",
-                        "/auth/basket"
+                        "/auth/basket",
+                        "/charge"
                         ).permitAll()//разрешенные сайты для входа без авторизации
                 .and()
                 .authorizeRequests()

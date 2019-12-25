@@ -54,7 +54,6 @@ class UserInformationServiceImpl implements UserInformationService {
     public boolean addUserInfo(User user, UserInfo userInfo) {
         UserInfo newInfo = user.getUserInfo();
         newInfo.setUser_id(user);
-        newInfo.setLoyaltyCode(userInfo.getLoyaltyCode());
         newInfo.setAddress(userInfo.getAddress());
         newInfo.setBirthDate(userInfo.getBirthDate());
         newInfo.setWallet(0);

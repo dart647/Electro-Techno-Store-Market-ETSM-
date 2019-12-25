@@ -3,13 +3,14 @@
   -->
 
 <!DOCTYPE html>
-<html xmlns:th=http://www.w3.org/1999/xhtml>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Вход</title>
+
+    <title>Корзина</title>
 </head>
 
 <body>
@@ -17,28 +18,29 @@
 <header th:replace="header :: head"/>
 
 <!--Main-->
-<div class="container">
+<div class="container-fluid">
     <div class="row">
+        <div th:replace="header :: leftBar"/>
         <!--Заменяемая часть-->
+        <div class="col">
+            <h1>История заказов</h1>
 
-        <form th:action="@{/auth/addUserInfo}" method="post">
-            <div class="form-group">
-                <label for="fio">ФИО</label>
-                <input class="form-control" id="fio" type="text" name="fio" th:value="${userInfo.fio}">
-            </div>
-            <div class="form-group">
-                <label for="birthdate">Дата рождения</label>
-                <input class="form-control" id="birthdate" type="date" name="birthDate" th:value="${userInfo.birthDate}">
-            </div>
-            <div class="form-group">
-                <label for="address">Адрес</label>
-                <input class="form-control" id="address" type="text" name="address" th:value="${userInfo.address}">
-            </div>
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <input type="submit" value="Изменить" class="btn btn-success"/>
-        </form>
+            <table class="table table-stripped">
+                <thead>
+                <th scope="col">Номер заказа</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Подробности</th>
+                </thead>
+                <tbody>
+                <tr th:each="order: ${orders}">
+                    <td><p th:text="${order.id}"></p></td>
+                    <td><p th:text="${order.sum}"></p></td>
+                    <td><a class="btn btn-outline-secondary" th:href="@{/orders/order?code={id}(id=${order.id})}">Подробнее</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

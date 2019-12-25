@@ -4,9 +4,11 @@
 
 package com.etsm.ETSM.Controllers;
 
+import com.etsm.ETSM.Models.Sales;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Models.UserInfo;
 import com.etsm.ETSM.Services.HeaderService;
+import com.etsm.ETSM.Services.ProductService;
 import com.etsm.ETSM.Services.UserInformationService;
 import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 /*
@@ -31,11 +34,14 @@ public class UserController {
     private UserService userService;
     private UserInformationService userInformationService;
     private HeaderService headerService;
+    private ProductService productService;
 
-    public UserController(UserService userService, UserInformationService userInformationService, HeaderService headerService) {
+    public UserController(UserService userService, UserInformationService userInformationService,
+                          HeaderService headerService, ProductService productService) {
         this.userService = userService;
         this.userInformationService = userInformationService;
         this.headerService = headerService;
+        this.productService = productService;
     }
 
     @GetMapping("/auth/editAuth")
@@ -92,6 +98,34 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/orders")
+    public ModelAndView showOrders(HttpSession session, Principal principal) {
+        UserInfo userInfo = headerService.getUser().getUserInfo();
+        return new ModelAndView("/auth/orders",
+                Map.of("user", headerService.getUser(),
+                        "userInfo", headerService.getUser().getUserInfo(),
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories(),
+                        "orders", productService.findSalesByUser(userInfo)),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/orders/order")
+    public ModelAndView showOrder(@RequestParam(value = "code") String code, Principal principal) {
+        Sales sales1 = productService.findSalesById(Long.parseLong(code)).get();
+        List<Sales> salesList = headerService.getUser().getUserInfo().getSales();
+        return productService.findSalesById(Long.parseLong(code))
+                .map(sales -> new ModelAndView("auth/order",
+                        Map.of("user", headerService.getUser(),
+                                "userInfo", headerService.getUser().getUserInfo(),
+                                "role", headerService.getHeaderRole(),
+                                "categories", headerService.getHeaderCategories(),
+                                "order", sales),
+                        HttpStatus.OK))
+                .orElseGet(() -> new ModelAndView("errors/404",
+                        Map.of("error","Couldn't find an order"), HttpStatus.NOT_FOUND));
+    }
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -105,5 +139,10 @@ public class UserController {
     @Autowired
     public void setHeaderService(HeaderService headerService) {
         this.headerService = headerService;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 }

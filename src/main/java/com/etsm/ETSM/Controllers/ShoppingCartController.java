@@ -69,8 +69,7 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/createOrder")
-    public ModelAndView createOrder(@RequestParam(value = "stage") String stage,
-                                    @ModelAttribute UserInfo userInfo) {
+    public ModelAndView createOrder(@RequestParam(name = "stage", defaultValue = "begin") String stage) {
         return new ModelAndView("/auth/createOrder",
                 Map.of("categories", mainService.GetAllCategories(),
                         "role", headerService.getHeaderRole(),
@@ -80,11 +79,10 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/createOrder")
-    public String createOrder(@ModelAttribute UserInfo userInfo,
-                              Principal principal) {
+    public ModelAndView createOrder(@ModelAttribute UserInfo userInfo) {
         User user = headerService.getUser();
         userInformationService.addUserInfo(user, userInfo);
-        return "/auth/createOrder?stage=payment";
+        return createOrder("payment");
     }
 
     @Autowired

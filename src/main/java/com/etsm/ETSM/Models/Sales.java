@@ -19,7 +19,7 @@ public class Sales {
 
     @ManyToOne()
     @JoinColumn(name = "userInfo_id", referencedColumnName = "id")
-    private UserInfo userInfo_id;
+    private UserInfo userInfoId;
 
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "sales_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Sales_has_product> salesHasProducts;
@@ -48,12 +48,12 @@ public class Sales {
         this.sum = sum;
     }
 
-    public UserInfo getUserInfo_id() {
-        return userInfo_id;
+    public UserInfo getUserInfoId() {
+        return userInfoId;
     }
 
-    public void setUserInfo_id(UserInfo userInfo_id) {
+    public void setUserInfoId(UserInfo userInfo_id) {
         userInfo_id.getSales().add(this);
-        this.userInfo_id = userInfo_id;
+        this.userInfoId = userInfo_id;
     }
 }
