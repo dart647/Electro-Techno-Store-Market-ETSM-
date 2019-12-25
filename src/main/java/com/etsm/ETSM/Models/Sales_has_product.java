@@ -3,6 +3,7 @@ package com.etsm.ETSM.Models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "sales_has_product")
@@ -80,4 +81,16 @@ public class Sales_has_product {
         this.id = id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sales_has_product that = (Sales_has_product) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, count, discount, summ, sales_id, product_id);
+    }
 }

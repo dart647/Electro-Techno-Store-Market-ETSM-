@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -92,5 +93,23 @@ public class UserInfo {
 
     public void setWallet(int wallet) {
         this.wallet = wallet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserInfo userInfo = (UserInfo) o;
+        return id == userInfo.id &&
+                wallet == userInfo.wallet &&
+                fio.equals(userInfo.fio) &&
+                Objects.equals(birthDate, userInfo.birthDate) &&
+                Objects.equals(address, userInfo.address) &&
+                Objects.equals(loyaltyCode, userInfo.loyaltyCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fio, birthDate, address, loyaltyCode, wallet, user_id, sales);
     }
 }

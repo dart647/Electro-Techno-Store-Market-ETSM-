@@ -3,6 +3,7 @@ package com.etsm.ETSM.Models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "productattrvalue")
@@ -56,5 +57,19 @@ public class ProductAttrValue {
     public void setAttribute(Attribute attribute) {
         attribute.getProductAttrValue().add(this);
         this.attribute = attribute;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductAttrValue that = (ProductAttrValue) o;
+        return id == that.id &&
+                value.equals(that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, value, product, attribute);
     }
 }

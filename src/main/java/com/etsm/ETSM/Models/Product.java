@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 // Описание продукта
 @Entity
@@ -125,5 +126,19 @@ public class Product {
 
     public void setAttribute_groups(List<Attribute_Group> attribute_groups) {
         this.attribute_groups = attribute_groups;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id &&
+                name.equals(product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, minorcategory_id, description, img, salesHasProducts, productAttrValue, attribute_groups);
     }
 }

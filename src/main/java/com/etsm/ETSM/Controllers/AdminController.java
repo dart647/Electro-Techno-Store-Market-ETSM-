@@ -253,8 +253,12 @@ public class AdminController {
     public String addAttributeToProduct(@ModelAttribute ProductAttrValue productAttrValue,
                                         @ModelAttribute("productN") String product,
                                         @ModelAttribute("attributeN") String attribute) {
-        adminService.addNewAttributeToProduct(product, attribute, productAttrValue);
-        return "redirect:/admin/addAttributeToProduct";
+        if(adminService.addNewAttributeToProduct(product, attribute, productAttrValue)){
+            return "redirect:/admin/";
+        }
+        else {
+            return "redirect:/admin/addAttributeToProduct";
+        }
     }
 
 }

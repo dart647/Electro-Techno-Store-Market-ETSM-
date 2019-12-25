@@ -136,8 +136,15 @@ class AdminServiceImpl implements AdminService {
         if(productAttrValueRepository.findByValue(oldProductAttrValue.getValue())!=null){
             Product UpProduct = productRepository.findByName(product).get();
             Attribute attributeForProduct = attributeRepository.findByName(attribute).get();
+            Boolean isProductHasAttrGr = false;
 
-            if(!UpProduct.getAttribute_groups().equals(attributeForProduct.getAttribute_groups())){
+            for (Attribute_Group attribute_group: UpProduct.getAttribute_groups()) {
+                if(attribute_group.equals(attributeForProduct.getAttribute_groups())){
+                    isProductHasAttrGr = true;
+                    break;
+                }
+            }
+            if(!isProductHasAttrGr){
                 UpProduct.getAttribute_groups().add(attributeForProduct.getAttribute_groups());
             }
             ProductAttrValue newProductAttrValue = new ProductAttrValue();
@@ -149,7 +156,7 @@ class AdminServiceImpl implements AdminService {
             productRepository.save(UpProduct);
         }
 
-        return false;
+        return true;
     }
 
     @Autowired
