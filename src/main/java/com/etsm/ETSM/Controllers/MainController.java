@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,14 +55,20 @@ public class MainController {
     public ModelAndView MainPage(@RequestParam(name = "page", defaultValue = "0") String page, Principal principal) {
         headerService.setHeader(principal);
         String search = "";
-        List<Product> products = service.GetSearchProducts("", page);
-//        Page<Product> productPage = new PageImpl<>(products, PageRequest.of(0,1), (products.size()/1));
+        List<Integer> pages = new ArrayList<>();
+        int maxProductsInPage = 2;
+
+        List<Product> products = service.GetSearchProducts("", page, maxProductsInPage);
+        for (int i = 0; i < Math.ceil((float)service.GetAllProductsCount() / maxProductsInPage); i++) {
+            pages.add(i);
+        }
         return new ModelAndView("/main",
                 Map.of("categories", service.GetAllCategories(),
                         "searchProducts", products,
                         "search", search,
                         "role", headerService.getHeaderRole(),
-                        "recommendations", service.SetRecommendations()),
+                        "recommendations", service.SetRecommendations(),
+                        "pages", pages),
                 HttpStatus.OK);
     }
 
@@ -69,13 +76,19 @@ public class MainController {
     public ModelAndView MainPageWithSearch(@RequestParam(name = "page", defaultValue = "0") String page,
                                            @ModelAttribute("searching") String searching, Principal principal) {
         headerService.setHeader(principal);
-        List<Product> products = service.GetSearchProducts(searching, page);
+        List<Integer> pages = new ArrayList<>();
+        int maxProductsInPage = 2;
+        List<Product> products = service.GetSearchProducts(searching, page, maxProductsInPage);
+        for (int i = 0; i < Math.ceil((float)service.GetAllProductsCount() / maxProductsInPage); i++) {
+            pages.add(i);
+        }
         return new ModelAndView("/main",
                 Map.of("categories", service.GetAllCategories(),
                         "searchProducts", products,
                         "search", searching,
                         "role", headerService.getHeaderRole(),
-                        "recommendations", service.SetRecommendations()),
+                        "recommendations", service.SetRecommendations(),
+                        "pages", new ArrayList<>()),
                 HttpStatus.OK);
     }
 
@@ -139,7 +152,7 @@ public class MainController {
 
     @GetMapping("/buyProduct")
     public String addToCart(@RequestParam(value = "code") String code, HttpSession session) {
-        shoppingCartService.addItemToCart(code,session);
+        shoppingCartService.addItemToCart(code, session);
         return "redirect:/orderSuggestion";
     }
 

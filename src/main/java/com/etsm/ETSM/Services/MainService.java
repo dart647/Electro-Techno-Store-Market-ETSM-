@@ -7,8 +7,7 @@ import com.etsm.ETSM.Repositories.CategoryRepository;
 import com.etsm.ETSM.Repositories.ProductRepository;
 import com.etsm.ETSM.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +21,9 @@ public interface MainService {
 
     User GetUser(String login);
 
-    List<Product> GetSearchProducts(String searchingProduct, String page);
+    List<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage);
+
+    long GetAllProductsCount();
 
 }
 
@@ -59,8 +60,14 @@ class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<Product> GetSearchProducts(String searchingProduct, String page) {
-        return productRepository.findByNameLike("%" + searchingProduct + "%", PageRequest.of(Integer.parseInt(page), 20, Sort.by("name")));
+    public List<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage) {
+        Pageable productPage =  PageRequest.of(Integer.parseInt(page), maxProductsInPage, Sort.by("name"));
+        return productRepository.findByNameLike(String.format("%%%s%%",searchingProduct), productPage);
+    }
+
+    @Override
+    public long GetAllProductsCount() {
+        return productRepository.count();
     }
 
 }

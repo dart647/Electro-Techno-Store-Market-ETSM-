@@ -26,7 +26,7 @@ public class MinorCategory {
     @JoinColumn(name = "subcategory_id", referencedColumnName = "id")
     private SubCategory subcategory_id;
 
-    @OneToMany(targetEntity = Product.class, mappedBy = "minorcategory_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Product.class, mappedBy = "minorcategoryid", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> productList;
 
     public long getId() {

@@ -105,11 +105,11 @@ public class UserInfo {
                 fio.equals(userInfo.fio) &&
                 Objects.equals(birthDate, userInfo.birthDate) &&
                 Objects.equals(address, userInfo.address) &&
-                Objects.equals(loyaltyCode, userInfo.loyaltyCode);
+                Objects.equals(loyaltyCode_id, userInfo.loyaltyCode_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fio, birthDate, address, loyaltyCode, wallet, user_id, sales);
+        return Objects.hash(id, fio, birthDate, address, loyaltyCode_id, wallet, user_id, sales);
     }
 }
