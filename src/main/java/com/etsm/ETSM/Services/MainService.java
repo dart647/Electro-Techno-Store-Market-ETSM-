@@ -41,7 +41,7 @@ class MainServiceImpl implements MainService {
         List<Product> products = productRepository.findAll();
         List<Product> recommendations = new ArrayList<>();
         if(productRepository.count()!=0) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 10; i++) {
                 int rand = new Random().nextInt(products.size());
                 Product product = products.get(rand);
                 recommendations.add(product);
