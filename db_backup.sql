@@ -95,6 +95,34 @@ INSERT INTO `category` VALUES (1,'category');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `loyalty`
+--
+
+DROP TABLE IF EXISTS `loyalty`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `loyalty` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userinfo_id` int(11) NOT NULL,
+  `balance` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`,`userinfo_id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `userinfo_id_UNIQUE` (`userinfo_id`),
+  CONSTRAINT `loyalty_fk` FOREIGN KEY (`userinfo_id`) REFERENCES `userinfo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `loyalty`
+--
+
+LOCK TABLES `loyalty` WRITE;
+/*!40000 ALTER TABLE `loyalty` DISABLE KEYS */;
+INSERT INTO `loyalty` VALUES (1,1,0),(2,2,32),(3,3,0),(4,4,0);
+/*!40000 ALTER TABLE `loyalty` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `minorcategory`
 --
 
@@ -137,6 +165,7 @@ CREATE TABLE `product` (
   `desc` longtext,
   `img` varchar(255) DEFAULT NULL,
   `minorcategory_id` int(11) NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '100',
   PRIMARY KEY (`id`,`minorcategory_id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
@@ -152,7 +181,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Flexotron',123,'aaaaaa aaaaaaaaa aaaaaaaa aaaaaaa aaaaaaaaaaaa aaaaa aaaaa aaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa','https://avatars.mds.yandex.net/get-zen_doc/27036/pub_5d2d6e1d14f98000ac62352a_5d2d6e7c4e057700ad3040c7/scale_1200',1),(2,'Roge',321,'qwe','https://5bucks.ru/wp-content/uploads/2019/05/1.png',1);
+INSERT INTO `product` VALUES (1,'Flexotron',123,'aaaaaa aaaaaaaaa aaaaaaaa aaaaaaa aaaaaaaaaaaa aaaaa aaaaa aaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa','https://avatars.mds.yandex.net/get-zen_doc/27036/pub_5d2d6e1d14f98000ac62352a_5d2d6e7c4e057700ad3040c7/scale_1200',1,100),(2,'Roge',321,'qwe','https://5bucks.ru/wp-content/uploads/2019/05/1.png',1,100);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,7 +261,7 @@ CREATE TABLE `sales` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_sales_userInfo1_idx` (`userInfo_id`),
   CONSTRAINT `fk_sales_userInfo1` FOREIGN KEY (`userInfo_id`) REFERENCES `userinfo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -241,6 +270,7 @@ CREATE TABLE `sales` (
 
 LOCK TABLES `sales` WRITE;
 /*!40000 ALTER TABLE `sales` DISABLE KEYS */;
+INSERT INTO `sales` VALUES (1,2,888),(2,2,888),(3,2,123),(4,2,321);
 /*!40000 ALTER TABLE `sales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,7 +294,7 @@ CREATE TABLE `sales_has_product` (
   KEY `fk_sales_has_product_sales1_idx` (`sales_id`),
   CONSTRAINT `fk_sales_has_product_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_sales_has_product_sales1` FOREIGN KEY (`sales_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,6 +303,7 @@ CREATE TABLE `sales_has_product` (
 
 LOCK TABLES `sales_has_product` WRITE;
 /*!40000 ALTER TABLE `sales_has_product` DISABLE KEYS */;
+INSERT INTO `sales_has_product` VALUES (1,2,1,2,0,246),(2,2,2,2,0,642),(3,3,1,1,0,123),(4,4,2,1,0,321);
 /*!40000 ALTER TABLE `sales_has_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -375,11 +406,9 @@ CREATE TABLE `userinfo` (
   `fio` varchar(255) DEFAULT 'new user',
   `birthDate` varchar(255) DEFAULT NULL,
   `address` longtext,
-  `loyaltyCode` varchar(10) DEFAULT NULL,
   `wallet` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `loyaltyCode_UNIQUE` (`loyaltyCode`),
   KEY `fk_userinfo_user1` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -390,9 +419,17 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` VALUES (1,'Спивак А.А.','1999-01-04','Шоссе Энтузиастов','1235',0),(2,'new user',NULL,NULL,NULL,0),(3,'new user',NULL,NULL,NULL,0),(4,'new user',NULL,NULL,NULL,0);
+INSERT INTO `userinfo` VALUES (1,'Спивак А.А.','1999-01-04','Шоссе Энтузиастов',0),(2,'Жмышенко Валерий Альбертович','1999-11-10','Самара, ул. Ленина, д.14',0),(3,'new user',NULL,NULL,0),(4,'new user',NULL,NULL,0);
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'db_etsm'
+--
+
+--
+-- Dumping routines for database 'db_etsm'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -403,4 +440,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-24 12:20:36
+-- Dump completed on 2019-12-25  3:21:04

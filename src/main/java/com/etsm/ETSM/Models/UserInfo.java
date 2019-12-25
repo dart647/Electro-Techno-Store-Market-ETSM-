@@ -21,15 +21,23 @@ public class UserInfo {
     private String birthDate;
     @Column(name = "`address`")
     private String address;
-    @Column(name = "`loyaltyCode`")
-    private String loyaltyCode;
     @Column(name = "`wallet`")
     private int wallet;
     @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private User user_id;
-    @OneToMany(targetEntity = Sales.class, mappedBy = "userInfo_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Sales.class, mappedBy = "userInfoId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private transient List<Sales> sales;
+    @OneToOne(targetEntity = Loyalty.class, mappedBy = "userInfo_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Loyalty loyaltyCode_id;
+
+    public Loyalty getLoyaltyCode_id() {
+        return loyaltyCode_id;
+    }
+
+    public void setLoyaltyCode_id(Loyalty loyaltyCode_id) {
+        this.loyaltyCode_id = loyaltyCode_id;
+    }
 
     public List<Sales> getSales() {
         return sales;
@@ -69,14 +77,6 @@ public class UserInfo {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getLoyaltyCode() {
-        return loyaltyCode;
-    }
-
-    public void setLoyaltyCode(String loyaltyCode) {
-        this.loyaltyCode = loyaltyCode;
     }
 
     public User getUser_id() {

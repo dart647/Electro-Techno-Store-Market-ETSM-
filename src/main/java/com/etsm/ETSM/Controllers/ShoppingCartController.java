@@ -4,10 +4,12 @@
 
 package com.etsm.ETSM.Controllers;
 
-import com.etsm.ETSM.Services.HeaderService;
-import com.etsm.ETSM.Services.MainService;
-import com.etsm.ETSM.Services.ProductService;
-import com.etsm.ETSM.Services.ShoppingCartService;
+import com.etsm.ETSM.Models.Product;
+import com.etsm.ETSM.Models.Role;
+import com.etsm.ETSM.Models.User;
+import com.etsm.ETSM.Models.UserInfo;
+import com.etsm.ETSM.Repositories.UserInfoRepository;
+import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,8 @@ public class ShoppingCartController {
     private HeaderService headerService;
 
     private MainService mainService;
+
+    private UserInformationService userInformationService;
 
     //Basket Page
     @GetMapping("")
@@ -65,8 +69,20 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/createOrder")
-    public ModelAndView createOrder() {
-        return null;
+    public ModelAndView createOrder(@RequestParam(name = "stage", defaultValue = "begin") String stage) {
+        return new ModelAndView("/auth/createOrder",
+                Map.of("categories", mainService.GetAllCategories(),
+                        "role", headerService.getHeaderRole(),
+                        "stage", stage,
+                        "userInfo",headerService.getUser().getUserInfo()),
+                        HttpStatus.OK);
+    }
+
+    @PostMapping("/createOrder")
+    public ModelAndView createOrder(@ModelAttribute UserInfo userInfo) {
+        User user = headerService.getUser();
+        userInformationService.addUserInfo(user, userInfo);
+        return createOrder("payment");
     }
 
     @Autowired
@@ -87,5 +103,10 @@ public class ShoppingCartController {
     @Autowired
     public void setHeaderService(HeaderService headerService) {
         this.headerService = headerService;
+    }
+
+    @Autowired
+    public void setUserInformationService(UserInformationService userInformationService) {
+        this.userInformationService = userInformationService;
     }
 }

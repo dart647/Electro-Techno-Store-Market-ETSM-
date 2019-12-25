@@ -33,7 +33,6 @@
             <h1 th:text="'Фамилия: ' + ${user.userInfo.fio}"></h1>
             <h2 th:text="'День рождения: ' + ${user.userInfo.birthDate}"></h2>
             <h2 th:text="'Адрес: ' + ${user.userInfo.address}"></h2>
-            <h2 th:text="'Код лояльности: ' + ${user.userInfo.loyaltyCode}"></h2>
             <h2 th:text="'Кошелек: ' + ${user.userInfo.wallet}"></h2>
             <h2 th:if="${user.userInfo.sales}">История заказов:</h2>
             <div th:each="sale:${user.userInfo.sales}">

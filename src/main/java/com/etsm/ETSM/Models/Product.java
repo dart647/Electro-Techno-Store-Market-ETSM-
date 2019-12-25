@@ -34,6 +34,9 @@ public class Product {
     @Column(name = "`img`")
     private String img;
 
+    @Column(name = "`count`")
+    private int count;
+
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private transient List<Sales_has_product> salesHasProducts;
 
@@ -105,6 +108,14 @@ public class Product {
 
     public MinorCategory getSubCategory_id() {
         return minorcategory_id;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public void setMinorCategory_id(MinorCategory minorCategory_id) {

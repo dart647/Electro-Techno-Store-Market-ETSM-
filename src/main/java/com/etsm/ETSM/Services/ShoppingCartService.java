@@ -4,9 +4,8 @@
 
 package com.etsm.ETSM.Services;
 
-import com.etsm.ETSM.Models.CartItem;
-import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Models.UserInfo;
+import com.etsm.ETSM.Models.*;
+import com.etsm.ETSM.Repositories.LoyaltyRepository;
 import com.etsm.ETSM.Repositories.SalesRepository;
 import com.etsm.ETSM.Repositories.Sales_has_productRepository;
 import com.etsm.ETSM.Repositories.UserInfoRepository;
@@ -23,9 +22,10 @@ public interface ShoppingCartService {
     public boolean addItemToCart(String code, HttpSession session);
     public boolean deleteItemFromCart(String code, HttpSession session);
     public boolean changeQuantity(String code, String type,HttpSession session);
-    public Map<Product,Integer> setOrder(UserInfo user);
     public void clearCart(HttpSession session);
     public boolean getTotalOrderPrice(HttpSession session);
+    public boolean performOrder(HttpSession session, UserInfo userInfo);
+    public boolean addFundsOnLoyalty(int amount, UserInfo userInfo);
 }
 
 @Service
@@ -35,6 +35,8 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     private Sales_has_productRepository sales_has_productRepository;
     private SalesRepository salesRepository;
     private ProductService productService;
+    private UserService userService;
+    private LoyaltyRepository loyaltyRepository;
 
     @Override
     public boolean addItemToCart(String code, HttpSession session) {
@@ -115,11 +117,6 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public Map<Product, Integer> setOrder(UserInfo user) {
-        return null;
-    }
-
-    @Override
     public void clearCart(HttpSession session) {
         if (session.getAttribute("cart") != null) {
             session.removeAttribute("cart");
@@ -133,6 +130,47 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
             }
         }
         return -1;
+    }
+
+    @Override
+    public boolean performOrder(HttpSession session, UserInfo userInfo) {
+        Sales newSale = new Sales();
+        int sum = (int)session.getAttribute("totalOrderPrice");
+        List<Sales_has_product> salesHasProducts = new ArrayList<>();
+        if (userInfo.getSales() == null) {
+            userInfo.setSales(new ArrayList<>());
+        }
+        addFundsOnLoyalty(sum,userInfo);
+        newSale.setSum(sum);
+        newSale.setUserInfoId(userInfo);
+        salesRepository.saveAndFlush(newSale);
+        newSale.setSalesHasProducts(salesHasProducts);
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        for (CartItem cartItem : cart) {
+            Sales_has_product hasProduct = new Sales_has_product();
+            if (cartItem.getProduct().getSalesHasProducts() == null) {
+                cartItem.getProduct().setSalesHasProducts(new ArrayList<>());
+            }
+            hasProduct.setCount(cartItem.getQuantity());
+            hasProduct.setSumm(cartItem.getTotalPrice());
+            hasProduct.setDiscount(0);
+            hasProduct.setSales_id(newSale);
+            hasProduct.setProduct_id(cartItem.getProduct());
+            sales_has_productRepository.saveAndFlush(hasProduct);
+        }
+        salesRepository.saveAndFlush(newSale);
+        clearCart(session);
+        return true;
+    }
+
+    @Override
+    public boolean addFundsOnLoyalty(int amount, UserInfo userInfo) {
+        Loyalty loyalty = loyaltyRepository.findById(userInfo.getLoyaltyCode_id().getId()).get();
+        int addedFunds = amount / 10;
+        int newFunds = loyalty.getBalance() + addedFunds;
+        loyalty.setBalance(addedFunds);
+        loyaltyRepository.saveAndFlush(loyalty);
+        return true;
     }
 
     @Autowired
@@ -150,5 +188,13 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
+    }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+    @Autowired
+    public void setLoyaltyRepository(LoyaltyRepository loyaltyRepository) {
+        this.loyaltyRepository = loyaltyRepository;
     }
 }
