@@ -25,6 +25,7 @@ public interface MainService {
 
     long GetAllProductsCount();
 
+    long GetSearchProductsCount(String name);
 }
 
 @Service
@@ -68,6 +69,11 @@ class MainServiceImpl implements MainService {
     @Override
     public long GetAllProductsCount() {
         return productRepository.count();
+    }
+
+    @Override
+    public long GetSearchProductsCount(String name) {
+        return productRepository.findByNameLike(String.format("%%%s%%", name)).size();
     }
 
 }
