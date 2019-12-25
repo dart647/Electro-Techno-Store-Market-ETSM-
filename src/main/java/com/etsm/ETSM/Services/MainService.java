@@ -7,6 +7,8 @@ import com.etsm.ETSM.Repositories.CategoryRepository;
 import com.etsm.ETSM.Repositories.ProductRepository;
 import com.etsm.ETSM.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public interface MainService {
 
     User GetUser(String login);
 
-    List<Product> GetSearchProducts(String searchingProduct);
+    List<Product> GetSearchProducts(String searchingProduct, String page);
 
 }
 
@@ -57,8 +59,8 @@ class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<Product> GetSearchProducts(String searchingProduct) {
-        return productRepository.findByNameLike("%" + searchingProduct + "%");
+    public List<Product> GetSearchProducts(String searchingProduct, String page) {
+        return productRepository.findByNameLike("%" + searchingProduct + "%", PageRequest.of(Integer.parseInt(page), 20, Sort.by("name")));
     }
 
 }

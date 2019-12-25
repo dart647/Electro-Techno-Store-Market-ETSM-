@@ -18,20 +18,19 @@
         <div th:replace="header :: leftBar"/>
         <!--Заменяемая часть-->
         <div class="col">
-            <h1 th:text="${currSubCategory.name}"></h1>
-            <div>
-                <form class="form-inline">
-                    <div class="form-group">
-                        <a href="/">Главная</a>
-                        <a th:text=" ' > '"></a>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" aria-current="page"><a href="/">Главная</a></li>
+                    <li class="breadcrumb-item" aria-current="page">
                         <a th:href="@{/catalog/{categoryName}(categoryName=${currSubCategory.category_id.name})}"
-                           th:text="${currSubCategory.category_id.name}"></a>
-                        <a th:text=" ' > '"></a>
-                        <a th:text="${currSubCategory.name}"></a>
-                    </div>
-                </form>
-            </div>
+                           th:text="${currSubCategory.category_id.name}">
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${currSubCategory.name}">
+                </ol>
+            </nav>
 
+            <h1 th:text="${currSubCategory.name}"></h1>
             <div class="row">
                 <div data-th-each="minorCategory : ${minorCategories}" class="col-4">
                     <br>

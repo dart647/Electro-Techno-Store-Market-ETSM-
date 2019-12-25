@@ -3,7 +3,6 @@ package com.etsm.ETSM.Controllers;
 import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Services.HeaderService;
 import com.etsm.ETSM.Services.MainService;
-import com.etsm.ETSM.Services.ProductService;
 import com.etsm.ETSM.Services.ShoppingCartService;
 import com.etsm.ETSM.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +51,11 @@ public class MainController {
 
     //Main Page
     @GetMapping("/")
-    public ModelAndView MainPage(Principal principal) {
+    public ModelAndView MainPage(@RequestParam(name = "page", defaultValue = "0") String page, Principal principal) {
         headerService.setHeader(principal);
         String search = "";
-        List<Product> products = service.GetSearchProducts("");
+        List<Product> products = service.GetSearchProducts("", page);
+//        Page<Product> productPage = new PageImpl<>(products, PageRequest.of(0,1), (products.size()/1));
         return new ModelAndView("/main",
                 Map.of("categories", service.GetAllCategories(),
                         "searchProducts", products,
@@ -66,9 +66,10 @@ public class MainController {
     }
 
     @PostMapping("/")
-    public ModelAndView MainPageWithSearch(@ModelAttribute("searching") String searching, Principal principal) {
+    public ModelAndView MainPageWithSearch(@RequestParam(name = "page", defaultValue = "0") String page,
+                                           @ModelAttribute("searching") String searching, Principal principal) {
         headerService.setHeader(principal);
-        List<Product> products = service.GetSearchProducts(searching);
+        List<Product> products = service.GetSearchProducts(searching, page);
         return new ModelAndView("/main",
                 Map.of("categories", service.GetAllCategories(),
                         "searchProducts", products,
@@ -143,8 +144,10 @@ public class MainController {
     }
 
     @GetMapping("/orderSuggestion")
-    public ModelAndView getCartPage() {
+    public ModelAndView getCartPage(Principal principal) {
+        headerService.setHeader(principal);
         return new ModelAndView("/catalog/orderSuggestion",
+                Map.of("role", headerService.getHeaderRole()),
                 HttpStatus.OK);
     }
 }
