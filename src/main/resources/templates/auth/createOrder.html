@@ -24,6 +24,10 @@
         <!--Заменяемая часть-->
         <div th:switch="${stage}">
             <div class="col">
+                <br>
+                <div>
+                    <a class="btn btn-outline-secondary" href="/basket/cancelOrder">Отменить заказ</a>
+                </div>
                 <div th:case="begin">
                     <h1>Проверьте правильность товаров</h1>
                     <table class="table table-stripped">
@@ -44,9 +48,10 @@
                         </tr>
                         </tbody>
                     </table>
-                    <h1>Общая стоимость</h1>
+                    <h3>Общая стоимость</h3>
                     <p th:text="${#session.getAttribute('totalOrderPrice')}"></p>
-                    <a class="btn btn-outline-secondary" href="/basket/createOrder?stage=userInfo">Продолжить оформление
+                    <a class="btn btn-outline-secondary" href="/basket/createOrder?stage=userInfo">Продолжить
+                        оформление
                         заказа</a>
                     <a class="btn btn-outline-secondary" href="/basket/">Вернуться в корзину</a>
                 </div>
@@ -79,16 +84,15 @@
                         </div>
                     </div>
                 </div>
-            <div th:case="payment">
-                <h1>Выберите вид оплаты</h1>
-                <a class="btn btn-outline-secondary" href="/payment/">Оплата картой</a>
-                <h3>Наличными</h3>
+                <div th:case="payment">
+                    <h1>Выберите вид оплаты</h1>
+                    <a class="btn btn-outline-secondary" href="/payment/">Оплата картой</a>
+                    <button class="btn btn-outline-secondary" href="/payment/" disabled>Наличными</button>
+                </div>
             </div>
         </div>
-        </form>
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

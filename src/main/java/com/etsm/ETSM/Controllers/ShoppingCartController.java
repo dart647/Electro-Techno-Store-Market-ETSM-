@@ -60,11 +60,14 @@ public class ShoppingCartController {
     @GetMapping("/clearCart")
     public String clearCart(HttpSession session) {
         shoppingCartService.clearCart(session);
-        return "redirect:/";
+        return "redirect:/basket";
     }
 
     @GetMapping("/createOrder")
-    public ModelAndView createOrder(@RequestParam(name = "stage", defaultValue = "begin") String stage) {
+    public ModelAndView createOrder(@RequestParam(name = "stage", defaultValue = "begin") String stage, HttpSession session) {
+        if (stage.equals("userInfo")) {
+            shoppingCartService.reserve(session);
+        }
         return new ModelAndView("/auth/createOrder",
                 Map.of("categories", mainService.GetAllCategories(),
                         "role", headerService.getHeaderRole(),
@@ -74,11 +77,18 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/createOrder")
-    public ModelAndView createOrder(@ModelAttribute UserInfo userInfo) {
+    public ModelAndView createOrder(@ModelAttribute UserInfo userInfo, HttpSession session) {
         User user = headerService.getUser();
         userInformationService.addUserInfo(user, userInfo);
-        return createOrder("payment");
+        return createOrder("payment",session);
     }
+
+    @GetMapping("/cancelOrder")
+    public ModelAndView cancelOrder(Principal principal, HttpSession session) {
+        shoppingCartService.clearCart(session);
+        return Basket(principal, session);
+    }
+
 
     @Autowired
     public void setProductService(ProductService productService) {
