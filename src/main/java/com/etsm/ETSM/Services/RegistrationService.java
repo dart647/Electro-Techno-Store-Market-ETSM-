@@ -1,5 +1,6 @@
 package com.etsm.ETSM.Services;
 
+import com.etsm.ETSM.Models.Loyalty;
 import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Models.UserInfo;
@@ -39,6 +40,9 @@ class RegistrationServiceImpl implements RegistrationService {
         if (userService.loadUserByUsername(user.getUsername()) == null) {
             User newUser = new User();
             UserInfo userInfo = new UserInfo();
+            Loyalty loyalty = new Loyalty();
+            loyalty.setUserInfo_id(userInfo);
+            loyalty.setBalance(0);
             userInfo.setFio("new user");
             userInfo.setWallet(0);
             newUser.setUsername(user.getUsername());
