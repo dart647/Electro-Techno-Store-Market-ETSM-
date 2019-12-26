@@ -111,7 +111,7 @@ public class MainControllerTest {
     Assert.assertEquals(m1.getViewName(),"/search");
 
 }
-
+/*
 @Test
     public void MainPageWithSearchTest(){
 
@@ -162,7 +162,7 @@ public class MainControllerTest {
     Assert.assertEquals(m1.getViewName(),"/main");
 
 }
-
+*/
 @Test
     public void UserCabinetTest(){
     MainService mainServiceMock = mock(MainService.class);
