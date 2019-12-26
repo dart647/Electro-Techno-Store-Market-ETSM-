@@ -25,15 +25,15 @@ public interface MainService {
 
     long GetAllProductsCount();
 
+    long GetSearchProductsCount(String name);
 }
 
 @Service
 class MainServiceImpl implements MainService {
-    @Autowired
     private ProductRepository productRepository;
-    @Autowired
+
     private CategoryRepository categoryRepository;
-    @Autowired
+
     private UserRepository userRepository;
 
     public List<Product> SetRecommendations() {
@@ -69,5 +69,21 @@ class MainServiceImpl implements MainService {
     public long GetAllProductsCount() {
         return productRepository.count();
     }
+    @Override
+    public long GetSearchProductsCount(String name) {
+        return productRepository.findByNameLike(String.format("%%%s%%", name)).size();
+    }
 
+    @Autowired
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+    @Autowired
+    public void setCategoryRepository(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 }
