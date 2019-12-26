@@ -28,9 +28,12 @@
                 </div>
             </form>
 
-            <div>
-                <div class="row">
-                    <div class="col-4 container" th:each="product:${recommendations}">
+            <div th:switch="${searchProducts.size()}">
+                <div class="container" th:case="0">
+                    <h4>Совпадений не найдено</h4>
+                </div>
+                <div th:case="*" class="row">
+                    <div class="col-4 container" th:each="product: ${searchProducts}">
                         <br>
                         <div>
                             <a class="btn btn-outline-dark"
@@ -58,6 +61,21 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div th:if="${pages.size() > 1}" class="row">
+        <div class="container">
+            <nav class="form-inline justify-content-center">
+                <ul th:each="productPage, state: ${pages}" class="pagination pagination-lg">
+                    <li class="page-item">
+
+                        <!--                            <input class="page-link" type="submit" th:value="${state.index + 1}">-->
+
+                        <a th:text="${state.index + 1}" class="page-link"
+                           th:href="@{/search?searchProduct={Search}&page={pageNumber}(Search=${search}, pageNumber=${state.index})}"></a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
