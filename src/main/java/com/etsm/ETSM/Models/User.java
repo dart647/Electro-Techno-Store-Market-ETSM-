@@ -1,6 +1,5 @@
 package com.etsm.ETSM.Models;
 
-import com.etsm.ETSM.Annotations.UniqueUser;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +23,6 @@ public class User implements UserDetails {
     @Column(name = "username")
     @NotNull
     @Size(min = 2, max = 255)
-    @UniqueUser
     private String username;
 
     @Column(name = "password")
@@ -44,7 +42,6 @@ public class User implements UserDetails {
     @Column(name = "login")
     @NotNull
     @Size(min = 6, max = 255)
-    @UniqueUser
     private String login;
 
     @Column(name = "googleName")
