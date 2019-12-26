@@ -176,7 +176,7 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
         Loyalty loyalty = loyaltyRepository.findById(userInfo.getLoyaltyCode_id().getId()).get();
         int addedFunds = amount / 10;
         int newFunds = loyalty.getBalance() + addedFunds;
-        loyalty.setBalance(addedFunds);
+        loyalty.setBalance(newFunds);
         loyaltyRepository.saveAndFlush(loyalty);
         return true;
     }
