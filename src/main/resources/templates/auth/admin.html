@@ -23,7 +23,7 @@
                 <a th:case="ADMIN" href="/admin/all" class="btn btn-warning btn-lg">Все пользователи</a>
             </div>
             <br>
-            <form>
+            <form th:action="@{/admin/add100k}" method="post">
                 <div class="form-group">
                     <div class="form-group"><a href="/admin/addProduct" class="btn btn-info btn-lg">Добавить товар</a></div>
                     <div class="form-group"><a href="/admin/addCategory" class="btn btn-info btn-lg">Добавить 1 категорию</a></div>
@@ -31,6 +31,7 @@
                     <div class="form-group"><a href="/admin/addMinorCategory" class="btn btn-info btn-lg">Добавить 3 категорию</a></div>
                     <div class="form-group"><a href="/admin/addAttribute" class="btn btn-info btn-lg">Добавить аттрибут</a></div>
                     <div class="form-group"><a href="/admin/addAttributeToProduct" class="btn btn-info btn-lg">Добавить аттрибут товару</a></div>
+<!--                    <form class="form-group"><input type="submit" class="btn btn-info btn-lg" value="Добавить 100к"></form>-->
                 </div>
             </form>
         </div>

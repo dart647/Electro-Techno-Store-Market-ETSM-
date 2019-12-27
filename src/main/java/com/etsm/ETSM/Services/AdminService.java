@@ -34,6 +34,8 @@ public interface AdminService {
     List<User> findUsersPages(String page, int maxInPage);
 
     long findUsersCount();
+
+//    void add100k();
 }
 
 @Service
@@ -140,18 +142,18 @@ class AdminServiceImpl implements AdminService {
 
     @Override
     public boolean addNewAttributeToProduct(String product, String attribute, ProductAttrValue oldProductAttrValue) {
-        if(productAttrValueRepository.findByValue(oldProductAttrValue.getValue())!=null){
+        if (productAttrValueRepository.findByValue(oldProductAttrValue.getValue()) != null) {
             Product UpProduct = productRepository.findByName(product).get();
             Attribute attributeForProduct = attributeRepository.findByName(attribute).get();
             Boolean isProductHasAttrGr = false;
 
-            for (Attribute_Group attribute_group: UpProduct.getAttribute_groups()) {
-                if(attribute_group.equals(attributeForProduct.getAttribute_groups())){
+            for (Attribute_Group attribute_group : UpProduct.getAttribute_groups()) {
+                if (attribute_group.equals(attributeForProduct.getAttribute_groups())) {
                     isProductHasAttrGr = true;
                     break;
                 }
             }
-            if(!isProductHasAttrGr){
+            if (!isProductHasAttrGr) {
                 UpProduct.getAttribute_groups().add(attributeForProduct.getAttribute_groups());
             }
             ProductAttrValue newProductAttrValue = new ProductAttrValue();
@@ -169,7 +171,7 @@ class AdminServiceImpl implements AdminService {
     @Override
     public List<User> findUsersPages(String page, int maxInPage) {
         Pageable pageable = PageRequest.of(Integer.parseInt(page), maxInPage, Sort.by("login"));
-        return userRepository.findAllByLoginLike("%%",pageable);
+        return userRepository.findAllByLoginLike("%%", pageable);
     }
 
     @Override
@@ -216,4 +218,88 @@ class AdminServiceImpl implements AdminService {
     public void setProductAttrValueRepository(ProductAttrValueRepository productAttrValueRepository) {
         this.productAttrValueRepository = productAttrValueRepository;
     }
+
+
+//    @Override
+//    public void add100k() {
+//        String[] description = new String[]{
+//                "Простое описание товара.",
+//                "Описание лучшего товара на свете, других таких не найдешь!!!",
+//                "Лучший товар, что можно только найти на белом свете!!!",
+//                "Описание для товара из списка товаров.",
+//                "Товар. Простой. Как есть."
+//        };
+//
+//        String[] nameP1 = new String[]{
+//                "Bri",
+//                "Horn",
+//                "Mer",
+//                "Flex",
+//                "Lot"
+//        };
+//
+//        String[] nameP2 = new String[]{
+//                "tron",
+//                "lotl",
+//                "end",
+//                "nex",
+//                "gol"
+//        };
+//
+//        String[] nameP3 = new String[]{
+//                "X",
+//                "T",
+//                "Y",
+//                "W",
+//                "S"
+//        };
+//
+//        String[] colors = new String[]{
+//                "Красный",
+//                "Черный",
+//                "Коричневый",
+//                "Желтый",
+//                "Зеленый"
+//        };
+//
+//        String[] images = new String[]{
+//                "https://avatars.mds.yandex.net/get-zen_doc/1708669/pub_5caf954c0b1fb500b33a91a4_5caf9635db481700b3e2c67c/scale_1200",
+//                "https://avatars.mds.yandex.net/get-pdb/750514/b80354ed-2ddf-41b4-9f09-38cdb7699e96/s1200",
+//                "https://avatars.mds.yandex.net/get-zen_doc/1548443/pub_5d9785b6fbe6e700b099ea62_5d978fa58f011100b48e9cad/scale_1200",
+//                "https://user43214.clients-cdnnow.ru/image/cache/catalog/197/197762_73f81-1000x1000.jpg",
+//                "https://i.pinimg.com/originals/19/7a/47/197a47d1c82df35e129da50cc1a9cfaf.jpg"
+//        };
+//
+//        for (MinorCategory minorCategory:minorCategoryRepository.findAll()) {
+//            for (int i = 0; i < (new Random().nextInt(5) + 10); i++) {
+//
+//                String name = nameP1[new Random().nextInt(nameP1.length)]
+//                        + nameP2[new Random().nextInt(nameP2.length)]
+//                        + " "
+//                        + nameP3[new Random().nextInt(nameP3.length)]
+//                        + i;
+//
+//                Product newProduct = new Product();
+//                ProductAttrValue newProductAttrValue = new ProductAttrValue();
+//                newProduct.setAttribute_groups(new ArrayList<>());
+//                newProduct.setProductAttrValue(new ArrayList<>());
+//                newProduct.setDescription(description[new Random().nextInt(description.length)]);
+//                newProduct.setName(name);
+//                newProduct.setPrice((new Random().nextInt(100000) + 100));
+//                newProduct.setMinorCategory_id(minorCategory);
+//                newProduct.setImg(images[new Random().nextInt(images.length)]);
+//                newProduct.setCount((new Random().nextInt(100) + 2));
+//                newProduct.getAttribute_groups().add(attributeGroupRepository.findById(1L).get());
+//                newProduct.getAttribute_groups().add(attributeGroupRepository.findById(((long)new Random().nextInt((int)attributeGroupRepository.count()) + 1)).get());
+//                newProduct.getAttribute_groups().add(attributeGroupRepository.findById(((long)new Random().nextInt((int)attributeGroupRepository.count()) + 1)).get());
+//                newProduct.getAttribute_groups().add(attributeGroupRepository.findById(((long)new Random().nextInt((int)attributeGroupRepository.count()) + 1)).get());
+//                newProductAttrValue.setAttribute(attributeRepository.findByName("Цвет").get());
+//                newProductAttrValue.setProduct(newProduct);
+//                newProductAttrValue.setValue(colors[new Random().nextInt(colors.length)]);
+//                newProduct.getProductAttrValue().add(newProductAttrValue);
+//
+//                productRepository.saveAndFlush(newProduct);
+//            }
+//        }
+//    }
 }

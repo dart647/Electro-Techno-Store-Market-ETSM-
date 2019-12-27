@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Главная страница ETSM</title>
+    <title>Поиск</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -45,12 +45,12 @@
                                 <div>
                                     <label th:text="${'Цена ' + product.price}"></label>
                                 </div>
-                                <form th:unless="${product.productAttrValue.isEmpty()}" class="form-inline">
-                                    <p class="border" th:with="attribute=${product.productAttrValue[0]}"
-                                       th:text="${attribute.value}"></p>
-                                    <p class="border" th:with="attribute=${product.productAttrValue[1]}"
-                                       th:text="${attribute.value}"></p>
-                                </form>
+<!--                                <form th:unless="${product.productAttrValue.isEmpty()}" class="form-inline">-->
+<!--                                    <p class="border" th:with="attribute=${product.productAttrValue[0]}"-->
+<!--                                       th:text="${attribute.value}"></p>-->
+<!--                                    <p class="border" th:with="attribute=${product.productAttrValue[1]}"-->
+<!--                                       th:text="${attribute.value}"></p>-->
+<!--                                </form>-->
                             </a>
                             <div>
                                 <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить

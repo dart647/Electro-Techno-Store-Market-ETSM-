@@ -52,7 +52,7 @@ DROP TABLE IF EXISTS `attribute_group`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `attribute_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -163,7 +163,7 @@ CREATE TABLE `product` (
   `name` varchar(255) NOT NULL,
   `price` int(11) NOT NULL,
   `desc` longtext,
-  `img` varchar(255) DEFAULT NULL,
+  `img` longtext DEFAULT NULL,
   `minorcategory_id` int(11) NOT NULL,
   `count` int(11) NOT NULL DEFAULT '100',
   PRIMARY KEY (`id`,`minorcategory_id`),
@@ -181,7 +181,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Flexotron',123,'aaaaaa aaaaaaaaa aaaaaaaa aaaaaaa aaaaaaaaaaaa aaaaa aaaaa aaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa','https://avatars.mds.yandex.net/get-zen_doc/27036/pub_5d2d6e1d14f98000ac62352a_5d2d6e7c4e057700ad3040c7/scale_1200',1,87),(2,'Roge',321,'qwe','https://5bucks.ru/wp-content/uploads/2019/05/1.png',1,96);
+INSERT INTO `product` VALUES (1,'Flexotron',123,'Некоторое описание','https://avatars.mds.yandex.net/get-zen_doc/27036/pub_5d2d6e1d14f98000ac62352a_5d2d6e7c4e057700ad3040c7/scale_1200',1,87),(2,'Roge',321,'qwe','https://5bucks.ru/wp-content/uploads/2019/05/1.png',1,96);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +226,7 @@ CREATE TABLE `productattrvalue` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL,
-  `value` varchar(45) NOT NULL,
+  `value` varchar(255) NOT NULL,
   PRIMARY KEY (`id`,`product_id`,`attribute_id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `product_fk_idx` (`product_id`),
@@ -407,7 +407,7 @@ CREATE TABLE `userinfo` (
   `birthDate` varchar(255) DEFAULT NULL,
   `address` longtext,
   `wallet` int(11) NOT NULL DEFAULT '0',
-  `phonenumber` varchar(45) DEFAULT '0',
+  `phonenumber` varchar(255) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_userinfo_user1` (`id`)
