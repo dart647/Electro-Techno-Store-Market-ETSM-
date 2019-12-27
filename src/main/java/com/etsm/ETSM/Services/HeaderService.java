@@ -21,11 +21,10 @@ public interface HeaderService {
 
 @Service
 class HeaderServiceImpl implements HeaderService{
-    @Autowired
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
-    @Autowired
-    UserService userService;
+
+    private UserService userService;
 
     private static Header header;
 
@@ -55,6 +54,15 @@ class HeaderServiceImpl implements HeaderService{
     @Override
     public User getUser() {
         return header.getUser();
+    }
+
+    @Autowired
+    public void setCategoryRepository(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }
 
