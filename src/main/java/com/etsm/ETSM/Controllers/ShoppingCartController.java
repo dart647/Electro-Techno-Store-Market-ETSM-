@@ -46,6 +46,12 @@ public class ShoppingCartController {
     public String removeProductFromCart(@RequestParam(value = "code") String code,
                                         HttpSession session) {
         shoppingCartService.deleteItemFromCart(code,session);
+        return "redirect:/basket?deleted=true";
+    }
+
+    @GetMapping("/revert")
+    public String revertDeletion(HttpSession session) {
+        shoppingCartService.revertDeletion(session);
         return "redirect:/basket";
     }
 
@@ -68,17 +74,24 @@ public class ShoppingCartController {
         if (stage.equals("userInfo")) {
             shoppingCartService.reserve(session);
         }
+        boolean spendLoyalty = false;
         return new ModelAndView("/auth/createOrder",
                 Map.of("categories", mainService.GetAllCategories(),
                         "role", headerService.getHeaderRole(),
                         "stage", stage,
-                        "userInfo",headerService.getUser().getUserInfo()),
+                        "userInfo",headerService.getUser().getUserInfo(),
+                        "spendLoyalty",spendLoyalty),
                         HttpStatus.OK);
     }
 
     @PostMapping("/createOrder")
-    public ModelAndView createOrder(@ModelAttribute UserInfo userInfo, HttpSession session) {
+    public ModelAndView createOrder(@ModelAttribute UserInfo userInfo,
+                                    @ModelAttribute("spendLoyalty") boolean spendLoyalty,
+                                    HttpSession session) {
         User user = headerService.getUser();
+        if (spendLoyalty) {
+            shoppingCartService.spendLoyalty(user.getUserInfo(),session);
+        }
         userInformationService.addUserInfo(user, userInfo);
         return createOrder("payment",session);
     }
