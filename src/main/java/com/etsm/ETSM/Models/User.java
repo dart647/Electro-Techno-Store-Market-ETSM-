@@ -55,6 +55,26 @@ public class User implements UserDetails {
     @JoinColumn(name = "id")
     private UserInfo userInfo;
 
+    @OneToOne
+    @JoinColumn(name = "id")
+    private VerificationToken verificationToken;
+
+    public User() {
+    }
+
+    public User(String username, String password,
+                Set<Role> roles, Boolean active, String login,
+                String googleName, String googleUsername, UserInfo userInfo) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.active = active;
+        this.login = login;
+        this.googleName = googleName;
+        this.googleUsername = googleUsername;
+        this.userInfo = userInfo;
+    }
+
     public UserInfo getUserInfo() {
         return userInfo;
     }
@@ -125,6 +145,14 @@ public class User implements UserDetails {
 
     public void setGoogleUsername(String googleUsername) {
         this.googleUsername = googleUsername;
+    }
+
+    public VerificationToken getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(VerificationToken verificationToken) {
+        this.verificationToken = verificationToken;
     }
 
     @Override
