@@ -14,108 +14,116 @@
 
 <!--    Главная часть-->
 <div class="container-fluid">
-    <div class="row">
-        <!--        <div th:replace="header :: leftBar"/>-->
+    <form class="input-group" th:action="@{/search}" th:object="${attributesParams}" method="post">
+        <div class="row">
+            <!--        <div th:replace="header :: leftBar"/>-->
 
-        <!--        Заменяемая часть-->
-        <div class="col">
-            <br>
-            <form class="input-group" th:object="${attributesParams}" th:action="@{/search}" method="post">
-
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalParams">
-                    Параметры поиска
-                </button>
-                <div class="modal fade" id="modalParams" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="font-weight-bold">Фильтрация</p>
-                                        <div class="dropdown-item" th:each="attrParam:${attributes}">
-                                            <input type="checkbox" th:field="*{attrValues}"
-                                                   th:value="${attrParam.id}">
-                                            <label th:text="${attrParam.value}"></label>
+            <!--        Заменяемая часть-->
+            <div class="col">
+                <br>
+                <!--                <form class="input-group" th:object="${attributesParams}"-->
+                <!--                      th:action="@{/search?page={pageNumber}(pageNumber = ${page})}" method="post">-->
+                <div class="input-group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalParams">
+                        Параметры поиска
+                    </button>
+                    <div class="modal fade" id="modalParams" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="font-weight-bold">Фильтрация</p>
+                                            <div class="dropdown-item" th:each="attrParam:${attributes}">
+                                                <input type="checkbox" th:field="*{attrValues}"
+                                                       th:value="${attrParam.id}">
+                                                <label th:text="${attrParam.value}"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <p class="font-weight-bold">Сортировка</p>
+                                            <select class="custom-select" name="sortParam">
+                                                <option th:if="${sortParam} == name" th:value="${sortParam}" selected="selected" disabled>Имя</option>
+                                                <option th:if="${sortParam} == price" th:value="${sortParam}" selected="selected" disabled>Цена</option>
+                                                <option th:if="${sortParam} == minorcategoryid.name" th:value="${sortParam}" selected="selected" disabled>Категория</option>
+                                                <option value="name">Имя</option>
+                                                <option value="price">Цена</option>
+                                                <option value="minorcategoryid.name">Категория</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <select class="combobox" name="sortParam">
-                                            <option value="name" selected="selected">Имя</option>
-                                            <option value="price">Цена</option>
-                                            <option value="minorcategoryid.name">Категория</option>
-                                        </select>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                                <input type="submit" class="btn btn-primary" value="Сохранить и фильтровать">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть
+                                    </button>
+                                    <input type="submit" class="btn btn-primary" value="Сохранить и фильтровать">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <input class="form-control" type="search" placeholder="Поиск" area-label="Search"
-                       aria-describedby="button-addon" name="searchProduct" th:value="${search}">
-                <div class="input-group-append">
-                    <input class="btn btn-outline-success" type="submit" id="button-addon" value="Поиск">
+                    <input class="form-control" type="search" placeholder="Поиск" area-label="Search"
+                           aria-describedby="button-addon" name="searchProduct" th:value="${search}">
+                    <div class="input-group-append">
+                        <input class="btn btn-outline-success" type="submit" id="button-addon" value="Поиск">
+                    </div>
                 </div>
-            </form>
+                <!--                </form>-->
 
-            <div th:switch="${searchProducts.size()}">
-                <div class="container" th:case="0">
-                    <h4>Совпадений не найдено</h4>
-                </div>
-                <div th:case="*" class="row">
-                    <div class="col container" th:each="product: ${searchProducts}">
-                        <br>
-                        <div>
-                            <a class="btn btn-outline-dark"
-                               th:href="@{/catalog/details/{productName}(productName=${product.name})}">
-                                <img height="150" width="300" class="img" th:src="${product.img}">
-                                <div>
-                                    <label th:text="${'Название ' + product.name}"></label>
-                                </div>
-                                <div>
-                                    <label th:text="${'Цена ' + product.price}"></label>
-                                </div>
-                                <div>
-                                    <p class="border" th:with="minor = ${product.minorcategoryid}"
-                                       th:text="${minor.name}"></p>
-                                </div>
-                            </a>
+                <div th:switch="${searchProducts.size()}">
+                    <div class="container" th:case="0">
+                        <h4>Совпадений не найдено</h4>
+                    </div>
+                    <div th:case="*" class="row">
+                        <div class="col container" th:each="product: ${searchProducts}">
+                            <br>
                             <div>
-                                <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
-                                    в корзину</a>
+                                <a class="btn btn-outline-dark"
+                                   th:href="@{/catalog/details/{productName}(productName=${product.name})}">
+                                    <img height="150" width="300" class="img" th:src="${product.img}">
+                                    <div>
+                                        <label th:text="${'Название ' + product.name}"></label>
+                                    </div>
+                                    <div>
+                                        <label th:text="${'Цена ' + product.price}"></label>
+                                    </div>
+                                    <div>
+                                        <p class="border" th:with="minor = ${product.minorcategoryid}"
+                                           th:text="${minor.name}"></p>
+                                    </div>
+                                </a>
+                                <div>
+                                    <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
+                                        в корзину</a>
+                                </div>
                             </div>
+                            <br>
                         </div>
-                        <br>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div th:if="${pages.size() > 1}" class="row">
-        <div class="container">
-            <nav class="form-inline justify-content-center">
-                <ul th:each="productPage, state: ${pages}" class="pagination pagination-lg">
-                    <li class="page-item">
 
-                        <!--                            <input class="page-link" type="submit" th:value="${state.index + 1}">-->
-
-                        <a th:text="${state.index + 1}" class="page-link"
-                           th:href="@{/search?searchProduct={Search}&page={pageNumber}(Search=${search}, pageNumber=${state.index})}"></a>
-                    </li>
-                </ul>
-            </nav>
         </div>
-    </div>
+        <div th:if="${pages.size() > 1}" class="row">
+            <div class="container">
+                <nav class="form-inline justify-content-center">
+                    <ul th:each="productPage, state: ${pages}" class="pagination pagination-lg">
+                        <li class="page-item">
+                            <input type="submit" name="page" th:value="${state.index}" class="page-link">
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
