@@ -64,12 +64,11 @@ public class ProductAttrValue {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductAttrValue that = (ProductAttrValue) o;
-        return id == that.id &&
-                value.equals(that.value);
+        return value.equals(that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, value, product, attribute);
+        return Objects.hash(id, value);
     }
 }

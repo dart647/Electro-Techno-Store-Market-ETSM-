@@ -24,10 +24,6 @@ public class Product {
     @Column(name = "`price`", nullable = false)
     private int price; //Цена
 
-    @ManyToOne()
-    @JoinColumn(name = "minorcategory_id", referencedColumnName = "id")
-    private MinorCategory minorcategoryid; //Подкатегория
-
     @Column(name = "`desc`")
     private String description; //Описание
 
@@ -36,6 +32,10 @@ public class Product {
 
     @Column(name = "`count`")
     private int count;
+
+    @ManyToOne()
+    @JoinColumn(name = "minorcategory_id", referencedColumnName = "id")
+    private MinorCategory minorcategoryid; //Подкатегория
 
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private transient List<Sales_has_product> salesHasProducts;

@@ -32,7 +32,7 @@
                 <h2>Рекомендации</h2>
                 <div class="row">
                     <br>
-                    <div class="col-4 container" th:each="product:${recommendations}">
+                    <div class="col container" th:each="product:${recommendations}">
                         <br>
                         <div>
                             <a class="btn btn-outline-dark"
@@ -43,6 +43,9 @@
                                 </div>
                                 <div>
                                     <label th:text="${'Цена ' + product.price}"></label>
+                                </div>
+                                <div>
+                                    <p class="border" th:with="minor = ${product.minorcategoryid}" th:text="${minor.name}"></p>
                                 </div>
                             </a>
                             <div th:switch="${product.count}">

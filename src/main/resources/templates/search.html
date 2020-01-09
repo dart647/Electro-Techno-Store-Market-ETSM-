@@ -20,9 +20,24 @@
         <!--        Заменяемая часть-->
         <div class="col">
             <br>
-            <form class="input-group" th:action="@{/search?searchProduct=searching}" method="get">
+            <form class="input-group" th:object="${attributesParams}" th:action="@{/search}" method="post">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Параметры поиска
+                    </button>
+                    <div class="dropdown-menu row">
+                        <div class="col">
+                            <p class="font-weight-bold">Фильтрация</p>
+                            <div th:each="attrParam:${attributes}">
+                                <input type="checkbox" th:field="*{attrValues}" th:value="${attrParam.id}">
+                                <label th:text="${attrParam.value}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <input class="form-control" type="search" placeholder="Поиск" area-label="Search"
-                       aria-describedby="button-addon" name="searchProduct">
+                       aria-describedby="button-addon" name="searchProduct" th:value="${search}">
                 <div class="input-group-append">
                     <input class="btn btn-outline-success" type="submit" id="button-addon" value="Поиск">
                 </div>
@@ -33,7 +48,7 @@
                     <h4>Совпадений не найдено</h4>
                 </div>
                 <div th:case="*" class="row">
-                    <div class="col-4 container" th:each="product: ${searchProducts}">
+                    <div class="col container" th:each="product: ${searchProducts}">
                         <br>
                         <div>
                             <a class="btn btn-outline-dark"
@@ -45,12 +60,10 @@
                                 <div>
                                     <label th:text="${'Цена ' + product.price}"></label>
                                 </div>
-<!--                                <form th:unless="${product.productAttrValue.isEmpty()}" class="form-inline">-->
-<!--                                    <p class="border" th:with="attribute=${product.productAttrValue[0]}"-->
-<!--                                       th:text="${attribute.value}"></p>-->
-<!--                                    <p class="border" th:with="attribute=${product.productAttrValue[1]}"-->
-<!--                                       th:text="${attribute.value}"></p>-->
-<!--                                </form>-->
+                                <div>
+                                    <p class="border" th:with="minor = ${product.minorcategoryid}"
+                                       th:text="${minor.name}"></p>
+                                </div>
                             </a>
                             <div>
                                 <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить

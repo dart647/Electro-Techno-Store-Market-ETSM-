@@ -32,12 +32,12 @@
 
             <h1 th:text="${currSubCategory.name}"></h1>
             <div class="row">
-                <div data-th-each="minorCategory : ${minorCategories}" class="col-4">
+                <div data-th-each="minorCategory : ${minorCategories}" class="col">
                     <br>
                     <div>
                         <a class="btn btn-outline-secondary btn-block"
                            th:href="@{/catalog/category/subCategory/{minorCategoryName}(minorCategoryName=${minorCategory.name})}">
-                            <label th:text="'Название - '+ ${minorCategory.name}"></label>
+                            <label th:text="${minorCategory.name}"></label>
                         </a>
                     </div>
                     <br>

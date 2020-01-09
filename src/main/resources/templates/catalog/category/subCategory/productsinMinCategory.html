@@ -41,13 +41,21 @@
             <h1 th:text="${currMinorCategory.name}"></h1>
 
             <div class="row">
-                <div th:each="product : ${products}" class="col-4">
+                <div th:each="product : ${products}" class="col">
                     <br>
                     <div>
                         <a class="btn btn-outline-secondary btn-block"
                            th:href="@{/catalog/details/{productName}(productName=${product.name})}">
                             <img width="300" height="150" th:src="${product.img}">
-                            <label th:text="'Название - '+ ${product.name}"></label>
+                            <div>
+                                <label th:text="${'Название ' + product.name}"></label>
+                            </div>
+                            <div>
+                                <label th:text="${'Цена ' + product.price}"></label>
+                            </div>
+                            <div>
+                                <p class="border" th:with="minor = ${product.minorcategoryid}" th:text="${minor.name}"></p>
+                            </div>
                         </a>
                     </div>
                     <div th:switch="${product.count}">
