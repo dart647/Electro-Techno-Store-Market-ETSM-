@@ -29,7 +29,7 @@ public class Attribute_Group {
     private List<Attribute> attribute_id;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     @JoinTable(name = "product_has_attribute_group",
             joinColumns = @JoinColumn(name="attribute_group_id"),
             inverseJoinColumns = @JoinColumn(name="product_id"))

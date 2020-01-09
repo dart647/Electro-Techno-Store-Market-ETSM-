@@ -29,10 +29,11 @@
             </form>
 
             <div>
+                <h2>Рекомендации</h2>
                 <div class="row">
+                    <br>
                     <div class="col-4 container" th:each="product:${recommendations}">
                         <br>
-                        <h2>Рекомендации</h2>
                         <div>
                             <a class="btn btn-outline-dark"
                                th:href="@{/catalog/details/{productName}(productName=${product.name})}">
@@ -44,9 +45,14 @@
                                     <label th:text="${'Цена ' + product.price}"></label>
                                 </div>
                             </a>
-                            <div>
-                                <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
-                                    в корзину</a>
+                            <div th:switch="${product.count}">
+                                <div th:case="0">
+                                    <a class="btn btn-primary">Нет в наличии</a>
+                                </div>
+                                <div th:case="*">
+                                    <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
+                                        в корзину</a>
+                                </div>
                             </div>
                         </div>
                         <br>

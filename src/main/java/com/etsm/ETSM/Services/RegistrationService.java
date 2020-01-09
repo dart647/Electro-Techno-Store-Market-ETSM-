@@ -45,6 +45,7 @@ class RegistrationServiceImpl implements RegistrationService {
             loyalty.setBalance(0);
             userInfo.setFio("new user");
             userInfo.setWallet(0);
+            userInfo.setPhoneNumber("0");
             newUser.setUsername(user.getUsername());
             newUser.setLogin(user.getLogin());
             newUser.setPassword(passwordEncoder.encode(user.getPassword()));

@@ -44,11 +44,20 @@
                 <div th:each="product : ${products}" class="col-4">
                     <br>
                     <div>
-                <a class="btn btn-outline-secondary btn-block"
-                   th:href="@{/catalog/details/{productName}(productName=${product.name})}">
-                    <img width="300" height="150" th:src="${product.img}">
-                    <label th:text="'Название - '+ ${product.name}"></label>
-                </a>
+                        <a class="btn btn-outline-secondary btn-block"
+                           th:href="@{/catalog/details/{productName}(productName=${product.name})}">
+                            <img width="300" height="150" th:src="${product.img}">
+                            <label th:text="'Название - '+ ${product.name}"></label>
+                        </a>
+                    </div>
+                    <div th:switch="${product.count}">
+                        <div th:case="0">
+                            <a class="btn btn-primary">Нет в наличии</a>
+                        </div>
+                        <div th:case="*">
+                            <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
+                                в корзину</a>
+                        </div>
                     </div>
                     <br>
                 </div>

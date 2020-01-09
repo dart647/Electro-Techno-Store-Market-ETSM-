@@ -44,7 +44,7 @@ public class Product {
     private List<ProductAttrValue> productAttrValue;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     @JoinTable(name = "product_has_attribute_group",
     joinColumns = @JoinColumn(name="product_id"),
     inverseJoinColumns = @JoinColumn(name="attribute_group_id"))
