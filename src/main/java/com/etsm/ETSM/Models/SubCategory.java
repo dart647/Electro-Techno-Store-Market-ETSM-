@@ -1,5 +1,7 @@
 package com.etsm.ETSM.Models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -23,6 +25,7 @@ public class SubCategory {
     private Category category_id;
 
     @OneToMany(targetEntity = MinorCategory.class, mappedBy = "subcategory_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SELECT)
     private List<MinorCategory> minorCategoryList;
 
     public List<MinorCategory> getMinorCategoryList() {

@@ -75,7 +75,7 @@ public class MainController {
         List<Integer> pages = new ArrayList<>();
         int maxProductsInPage = 10;
 
-        List<Product> products = service.GetSearchProducts(search, page, maxProductsInPage);
+        List<Product> products = service.GetSearchProducts(search, page, maxProductsInPage, "name");
         for (int i = 0; i < Math.ceil((float) service.GetSearchProductsCount(search) / maxProductsInPage); i++) {
             pages.add(i);
         }
@@ -94,6 +94,7 @@ public class MainController {
     public ModelAndView SearchPage(@ModelAttribute("attributesParams") AttributeWrapper filterParams,
                              @RequestParam(name = "page", defaultValue = "0") String page,
                              @RequestParam(name = "searchProduct", defaultValue = "") String search,
+                             @RequestParam(name = "sortParam", defaultValue = "") String sort,
                              Principal principal) {
         List<ProductAttrValue> attrValues = service.GetAllAttributes();
         AttributeWrapper attributeWrapper = filterParams;
@@ -102,7 +103,7 @@ public class MainController {
         List<Integer> pages = new ArrayList<>();
         int maxProductsInPage = 10;
 
-        List<Product> products = service.GetSearchProducts(search, page, maxProductsInPage);
+        List<Product> products = service.GetSearchProducts(search, page, maxProductsInPage, sort);
 
         for (int i = 0; i < Math.ceil((float) service.GetSearchProductsCount(search) / maxProductsInPage); i++) {
             pages.add(i);
@@ -117,26 +118,6 @@ public class MainController {
                         "pages", pages),
                 HttpStatus.OK);
     }
-
-
-//    @PostMapping("/")
-//    public ModelAndView MainPageWithSearch(@RequestParam(name = "page", defaultValue = "0") String page,
-//                                           @ModelAttribute("searching") String searching, Principal principal) {
-//        headerService.setHeader(principal);
-//        List<Integer> pages = new ArrayList<>();
-//        int maxProductsInPage = 1;
-//        List<Product> products = service.GetSearchProducts(searching, page, maxProductsInPage);
-//        for (int i = 0; i < Math.ceil((float)service.GetSearchProductsCount(searching) / maxProductsInPage); i++) {
-//            pages.add(i);
-//        }
-//        return new ModelAndView("/main",
-//                Map.of("categories", service.GetAllCategories(),
-//                        "search", searching,
-//                        "role", headerService.getHeaderRole(),
-//                        "recommendations", service.SetRecommendations(),
-//                        "pages", pages),
-//                HttpStatus.OK);
-//    }
 
     //User Cabinet Page
     @GetMapping("/user")

@@ -25,7 +25,7 @@ public interface MainService {
 
     User GetUser(String login);
 
-    List<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage);
+    List<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage, String sortParam);
 
     long GetAllProductsCount();
 
@@ -68,8 +68,8 @@ class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage) {
-        Pageable productPage = PageRequest.of(Integer.parseInt(page), maxProductsInPage, Sort.by("name"));
+    public List<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage, String sortParam) {
+        Pageable productPage = PageRequest.of(Integer.parseInt(page), maxProductsInPage, Sort.by(sortParam));
         return productRepository.findByNameLike(String.format("%%%s%%", searchingProduct), productPage);
     }
 

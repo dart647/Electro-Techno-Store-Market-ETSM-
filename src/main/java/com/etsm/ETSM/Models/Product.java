@@ -38,9 +38,11 @@ public class Product {
     private MinorCategory minorcategoryid; //Подкатегория
 
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SELECT)
     private transient List<Sales_has_product> salesHasProducts;
 
     @OneToMany(targetEntity = ProductAttrValue.class,mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SELECT)
     private List<ProductAttrValue> productAttrValue;
 
     @ManyToMany(fetch = FetchType.EAGER)

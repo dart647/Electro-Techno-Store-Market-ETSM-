@@ -25,7 +25,7 @@ public class Attribute_Group {
     private String name;
 
     @OneToMany(targetEntity = Attribute.class,mappedBy = "attribute_groups", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     private List<Attribute> attribute_id;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -8,7 +8,6 @@ import com.etsm.ETSM.Repositories.ProductRepository;
 import com.etsm.ETSM.Repositories.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 public class MainServiceImplTest {
@@ -91,9 +89,7 @@ public class MainServiceImplTest {
         Pageable productPage =  PageRequest.of(Integer.parseInt("1"), 10, Sort.by("name"));
         Mockito.when(productRepositoryMock.findByNameLike(String.format("%%%s%%","searchingProduct"), productPage)).thenReturn(productList);
 
-        mainService.GetSearchProducts("product","1",10);
-
-
+        mainService.GetSearchProducts("product","1",10, "name");
     }
 
     @Test
