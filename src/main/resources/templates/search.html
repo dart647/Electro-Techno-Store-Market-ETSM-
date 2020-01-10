@@ -21,8 +21,6 @@
             <!--        Заменяемая часть-->
             <div class="col">
                 <br>
-                <!--                <form class="input-group" th:object="${attributesParams}"-->
-                <!--                      th:action="@{/search?page={pageNumber}(pageNumber = ${page})}" method="post">-->
                 <div class="input-group">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalParams">
                         Параметры поиска
@@ -52,13 +50,13 @@
                                             <p class="font-weight-bold">Сортировка</p>
                                             <select class="custom-select" name="sortParam" th:switch="${sortParam}">
                                                 <option th:case="name" th:value="${sortParam}"
-                                                        selected="selected" readonly>Имя
+                                                        selected="selected">Имя
                                                 </option>
                                                 <option th:case="price" th:value="${sortParam}"
-                                                        selected="selected" readonly>Цена
+                                                        selected="selected">Цена
                                                 </option>
                                                 <option th:case="count" th:value="${sortParam}"
-                                                        selected="selected"readonly>Кол-во
+                                                        selected="selected">Кол-во
                                                 </option>
                                                 <option th:unless="${sortParam} == name" value="name">Имя</option>
                                                 <option th:unless="${sortParam} == price" value="price">Цена</option>
@@ -82,7 +80,6 @@
                         <input class="btn btn-outline-success" type="submit" id="button-addon" value="Поиск">
                     </div>
                 </div>
-                <!--                </form>-->
 
                 <div th:switch="${searchProducts.size()}">
                     <div class="container" th:case="0">

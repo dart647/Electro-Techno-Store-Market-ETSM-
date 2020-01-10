@@ -65,47 +65,12 @@ public class MainController {
                 HttpStatus.OK);
     }
 
-//    @GetMapping("/search")
-//    public ModelAndView SearchPage(@RequestParam(name = "searchProduct", defaultValue = "") String search,
-//                                   Principal principal) {
-//        String page = "0";
-//        String sort = "name";
-//        List<ProductAttrValue> attrValues = service.GetAllAttributes();
-//        AttributeWrapper attributeWrapper = new AttributeWrapper(new ArrayList<>());
-//
-//        headerService.setHeader(principal);
-//        List<Integer> pages = new ArrayList<>();
-//        int maxProductsInPage = 10;
-//
-//        List<Product> products = service.GetSearchProducts(search, page, maxProductsInPage, "name");
-//        for (int i = 0; i < Math.ceil((float) service.GetSearchProductsCount(search) / maxProductsInPage); i++) {
-//            pages.add(i);
-//        }
-//        return new ModelAndView("/search",
-//                Map.of("categories", service.GetAllCategories(),
-//                        "attributesParams", new AttributeWrapper(new ArrayList<>()),
-//                        "attributes", attrValues,
-//                        "searchProducts", products,
-//                        "sortParam", sort,
-//                        "search", search,
-//                        "role", headerService.getHeaderRole(),
-//                        "pages", pages,
-//                        "page", page),
-//                HttpStatus.OK);
-//    }
-
     @GetMapping("/search")
     public ModelAndView SearchPage( @ModelAttribute(name = "attributeParams")AttributeWrapper filterParams,
                              @RequestParam(name = "page",defaultValue = "0") String page,
                              @ModelAttribute(name = "searchProduct") String search,
                              @RequestParam(name = "sortParam", defaultValue = "name") String sort,
                              Principal principal) {
-//        if(page.equals("")){
-//            page = "0";
-//        }
-//        if(sort.equals("")){
-//            sort = "name";
-//        }
         List<ProductAttrValue> attrValues = service.GetAllAttributes();
 
         headerService.setHeader(principal);
@@ -129,11 +94,6 @@ public class MainController {
                         "page", page),
                 HttpStatus.OK);
     }
-//
-//    @PostMapping("/search")
-//    public String SearchPageFilter(@ModelAttribute(name = "page") String page) {
-//        return "redirect:/search";
-//    }
 
     //User Cabinet Page
     @GetMapping("/user")
