@@ -183,7 +183,7 @@ public class ShoppingCartControllerTest {
         HttpSession httpSession = new MockHttpSession();
         Mockito.when(headerServiceMock.getUser()).thenReturn(user);
 
-        ModelAndView m1 = shoppingCartController.createOrder(userInfo,httpSession);
+        ModelAndView m1 = shoppingCartController.createOrder(userInfo,false,httpSession);
         assertEquals(m1.getViewName(),"payment");
 
     }

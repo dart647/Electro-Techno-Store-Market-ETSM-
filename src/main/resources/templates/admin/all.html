@@ -29,6 +29,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Логин</th>
                 <th scope="col">Email</th>
+                <th scope="col">Роль</th>
                 <th scope="col">Доступен?</th>
                 </thead>
                 <tbody>
@@ -39,6 +40,7 @@
                         </a>
                     </td>
                     <td th:text="${user.username}"></td>
+                    <td th:text="${user.roles}"></td>
                     <td th:text="${user.active}"></td>
                 </tr>
                 </tbody>

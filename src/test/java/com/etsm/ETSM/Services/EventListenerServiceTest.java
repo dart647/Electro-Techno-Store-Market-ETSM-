@@ -5,28 +5,25 @@ import com.etsm.ETSM.Models.Product;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationEvent;
-import org.springframework.mock.web.MockBodyContent;
 import org.springframework.mock.web.MockHttpSession;
 
 import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
-public class SessionListenerServiceTest {
-
+public class EventListenerServiceTest {
+/*
     @Test
     public void onApplicationEventTest(){
 
-        SessionListenerService sessionListenerService = new SessionListenerService();
+        EventListenerService eventListenerService = new EventListenerService();
         HttpSession httpSessionMock = mock(HttpSession.class);
         ProductService productServiceMock = mock(ProductService.class);
-        sessionListenerService.setHttpSession(httpSessionMock);
-        sessionListenerService.setProductService(productServiceMock);
+        eventListenerService.setHttpSession(httpSessionMock);
+        eventListenerService.setProductService(productServiceMock);
 
         HttpSession httpSession = new MockHttpSession();
 
@@ -56,10 +53,10 @@ public class SessionListenerServiceTest {
         Mockito.when(httpSessionMock.getAttribute("cart")).thenReturn(test);
         Mockito.when(productServiceMock.reserveItem(product,1,false)).thenReturn(false);
 
-        sessionListenerService.onApplicationEvent(applicationEvent);
+        eventListenerService.onApplicationEvent(applicationEvent);
 
 
 
     }
-
+*/
 }

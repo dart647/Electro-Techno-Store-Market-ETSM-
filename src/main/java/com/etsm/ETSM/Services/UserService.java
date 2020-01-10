@@ -4,6 +4,7 @@
 
 package com.etsm.ETSM.Services;
 
+import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -48,5 +52,27 @@ public class UserService implements UserDetailsService {
         }
 
         return null;
+    }
+
+    public void deactivateUser(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            User temp = user.get();
+            if (temp.isEnabled()) {
+                temp.setActive(false);
+            } else {
+                temp.setActive(true);
+            }
+            userRepository.saveAndFlush(temp);
+        }
+    }
+
+    public void changeUserRole(Long userId, String roleName) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            User temp = user.get();
+            temp.setRoles(Collections.singleton(Role.valueOf(roleName)));
+            userRepository.saveAndFlush(temp);
+        }
     }
 }

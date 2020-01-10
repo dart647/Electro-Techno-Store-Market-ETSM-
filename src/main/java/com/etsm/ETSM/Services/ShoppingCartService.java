@@ -24,6 +24,8 @@ public interface ShoppingCartService {
     public boolean performOrder(HttpSession session, UserInfo userInfo);
     public boolean addFundsOnLoyalty(int amount, UserInfo userInfo);
     public void reserve(HttpSession session);
+    public void revertDeletion(HttpSession session);
+    public void spendLoyalty(UserInfo userInfo, HttpSession session);
 }
 
 @Service
@@ -69,9 +71,18 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
         int index = this.exists(id,cart);
         if (index == -1)
             return false;
+        session.setAttribute("deletedItem",cart.get(index));
         cart.remove(index);
         session.setAttribute("cart",cart);
         return true;
+    }
+
+    @Override
+    public void revertDeletion(HttpSession session) {
+        CartItem item = (CartItem) session.getAttribute("deletedItem");
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        cart.add(item);
+        session.setAttribute("cart",cart);
     }
 
     @Override
@@ -148,6 +159,10 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
         if (userInfo.getSales() == null) {
             userInfo.setSales(new ArrayList<>());
         }
+        if ((int)session.getAttribute("toSpend") != 0) {
+            Loyalty loyalty = loyaltyRepository.findById(userInfo.getLoyaltyCode_id().getId()).get();
+            loyalty.setBalance(0);
+        }
         addFundsOnLoyalty(sum,userInfo);
         newSale.setSum(sum);
         newSale.setUserInfoId(userInfo);
@@ -174,7 +189,7 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public boolean addFundsOnLoyalty(int amount, UserInfo userInfo) {
         Loyalty loyalty = loyaltyRepository.findById(userInfo.getLoyaltyCode_id().getId()).get();
-        int addedFunds = amount / 10;
+        int addedFunds = amount / 20;
         int newFunds = loyalty.getBalance() + addedFunds;
         loyalty.setBalance(newFunds);
         loyaltyRepository.saveAndFlush(loyalty);
@@ -190,6 +205,16 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
                 productService.reserveItem(product,quantity,true);
             }
         }
+    }
+
+    @Override
+    public void spendLoyalty(UserInfo userInfo, HttpSession session) {
+        Loyalty loyalty = loyaltyRepository.findById(userInfo.getLoyaltyCode_id().getId()).get();
+        int toSpend = loyalty.getBalance();
+        int sum = (int)session.getAttribute("totalOrderPrice");
+        sum -= toSpend;
+        session.setAttribute("totalOrderPrice",sum);
+        session.setAttribute("toSpend",toSpend);
     }
 
     @Autowired

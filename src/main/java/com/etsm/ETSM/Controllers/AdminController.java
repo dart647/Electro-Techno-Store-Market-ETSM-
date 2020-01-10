@@ -22,37 +22,40 @@ public class AdminController {
     UserInformationService userInformationService;
     private ProductService productService;
     private HeaderService headerService;
+    private UserService userService;
 
     public AdminController(AdminService adminService,
                            MainService mainService,
                            UserInformationService userInformationService,
-                           ProductService productService) {
+                           ProductService productService,
+                           UserService userService) {
         this.adminService = adminService;
         this.mainService = mainService;
         this.userInformationService = userInformationService;
         this.productService = productService;
+        this.userService = userService;
     }
 
     @Autowired
     public void setHeaderService(HeaderService headerService) {
         this.headerService = headerService;
     }
-
     @Autowired
     public void setAdminService(AdminService adminService) {
         this.adminService = adminService;
     }
-
     @Autowired
     public void setMainService(MainService mainService) {
         this.mainService = mainService;
     }
-
     @Autowired
     public void setUserInformationService(UserInformationService userInformationService) {
         this.userInformationService = userInformationService;
     }
-
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
     @GetMapping("/all")
     public ModelAndView getAllUsers(@RequestParam(name = "page", defaultValue = "0")String page, Principal principal) {
         headerService.setHeader(principal);
@@ -89,6 +92,19 @@ public class AdminController {
     public String deleteOneUser(@PathVariable long userId) {
         Optional<User> optionalUser = adminService.findUserById(userId);
         optionalUser.ifPresent(user -> userInformationService.deleteUser(user));
+        return "redirect:/admin/all";
+    }
+
+    @GetMapping("{userId}/block")
+    public String deactivateUser(@PathVariable long userId) {
+        userService.deactivateUser(userId);
+        return "redirect:/admin/all";
+    }
+
+    @PostMapping("{userId}/changeRole")
+    public String changeUserRole(@PathVariable long userId,
+                                 @ModelAttribute("roleName") String roleName ) {
+        userService.changeUserRole(userId,roleName);
         return "redirect:/admin/all";
     }
 
