@@ -37,6 +37,7 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     private ProductService productService;
     private UserService userService;
     private LoyaltyRepository loyaltyRepository;
+    private ERPService erpService;
 
     @Override
     public boolean addItemToCart(String code, HttpSession session) {
@@ -159,7 +160,7 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
         if (userInfo.getSales() == null) {
             userInfo.setSales(new ArrayList<>());
         }
-        if ((int)session.getAttribute("toSpend") != 0) {
+        if (session.getAttribute("toSpend") != null) {
             Loyalty loyalty = loyaltyRepository.findById(userInfo.getLoyaltyCode_id().getId()).get();
             loyalty.setBalance(0);
         }
@@ -180,6 +181,7 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
             hasProduct.setSales_id(newSale);
             hasProduct.setProduct_id(cartItem.getProduct());
             sales_has_productRepository.saveAndFlush(hasProduct);
+            erpService.addIncomeToCategory(cartItem);
         }
         salesRepository.saveAndFlush(newSale);
         clearCart(session);
@@ -240,5 +242,9 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     public void setLoyaltyRepository(LoyaltyRepository loyaltyRepository) {
         this.loyaltyRepository = loyaltyRepository;
+    }
+    @Autowired
+    public void setErpService(ERPService erpService) {
+        this.erpService = erpService;
     }
 }

@@ -95,6 +95,32 @@ INSERT INTO `category` VALUES (9,'Автоэлектроника'),(8,'Игры 
 UNLOCK TABLES;
 
 --
+-- Table structure for table `categoryincome`
+--
+
+DROP TABLE IF EXISTS `categoryincome`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categoryincome` (
+  `id` int(11) NOT NULL,
+  `total` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `income_fk` FOREIGN KEY (`id`) REFERENCES `category` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categoryincome`
+--
+
+LOCK TABLES `categoryincome` WRITE;
+/*!40000 ALTER TABLE `categoryincome` DISABLE KEYS */;
+INSERT INTO `categoryincome` VALUES (1,233333,65),(2,15600,6),(3,34222,20),(4,23244,24),(5,234444,22),(6,2322,1),(7,234448,15),(8,23444,20),(9,17454,6);
+/*!40000 ALTER TABLE `categoryincome` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `loyalty`
 --
 
@@ -109,7 +135,7 @@ CREATE TABLE `loyalty` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `userinfo_id_UNIQUE` (`userinfo_id`),
   CONSTRAINT `loyalty_fk` FOREIGN KEY (`userinfo_id`) REFERENCES `userinfo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,7 +144,7 @@ CREATE TABLE `loyalty` (
 
 LOCK TABLES `loyalty` WRITE;
 /*!40000 ALTER TABLE `loyalty` DISABLE KEYS */;
-INSERT INTO `loyalty` VALUES (1,1,0),(2,2,32),(3,3,0),(4,4,0),(5,5,0),(6,6,0),(7,7,0),(8,8,0),(9,9,0),(10,10,0),(11,11,0),(12,12,0),(13,13,0),(14,14,0),(15,15,0),(16,16,0);
+INSERT INTO `loyalty` VALUES (1,1,0),(2,2,258),(3,3,0),(4,4,0),(5,5,0),(6,6,0),(7,7,0),(8,8,0),(9,9,0),(10,10,0),(11,11,0),(12,12,0),(13,13,0),(14,14,0),(15,15,0),(16,16,0),(17,17,0);
 /*!40000 ALTER TABLE `loyalty` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,7 +207,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Flexotron',123,'aaaaaa aaaaaaaaa aaaaaaaa aaaaaaa aaaaaaaaaaaa aaaaa aaaaa aaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa','https://avatars.mds.yandex.net/get-zen_doc/27036/pub_5d2d6e1d14f98000ac62352a_5d2d6e7c4e057700ad3040c7/scale_1200',1,80),(2,'Roge',321,'qwe','https://5bucks.ru/wp-content/uploads/2019/05/1.png',1,90);
+INSERT INTO `product` VALUES (1,'Flexotron',123,'aaaaaa aaaaaaaaa aaaaaaaa aaaaaaa aaaaaaaaaaaa aaaaa aaaaa aaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaaaaaa','https://avatars.mds.yandex.net/get-zen_doc/27036/pub_5d2d6e1d14f98000ac62352a_5d2d6e7c4e057700ad3040c7/scale_1200',1,64),(2,'Roge',321,'qwe','https://5bucks.ru/wp-content/uploads/2019/05/1.png',1,75);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +287,7 @@ CREATE TABLE `sales` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_sales_userInfo1_idx` (`userInfo_id`),
   CONSTRAINT `fk_sales_userInfo1` FOREIGN KEY (`userInfo_id`) REFERENCES `userinfo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +296,7 @@ CREATE TABLE `sales` (
 
 LOCK TABLES `sales` WRITE;
 /*!40000 ALTER TABLE `sales` DISABLE KEYS */;
-INSERT INTO `sales` VALUES (1,2,888),(2,2,888),(3,2,123),(4,2,321);
+INSERT INTO `sales` VALUES (1,2,444);
 /*!40000 ALTER TABLE `sales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,7 +320,7 @@ CREATE TABLE `sales_has_product` (
   KEY `fk_sales_has_product_sales1_idx` (`sales_id`),
   CONSTRAINT `fk_sales_has_product_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_sales_has_product_sales1` FOREIGN KEY (`sales_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,7 +329,7 @@ CREATE TABLE `sales_has_product` (
 
 LOCK TABLES `sales_has_product` WRITE;
 /*!40000 ALTER TABLE `sales_has_product` DISABLE KEYS */;
-INSERT INTO `sales_has_product` VALUES (1,2,1,2,0,246),(2,2,2,2,0,642),(3,3,1,1,0,123),(4,4,2,1,0,321);
+INSERT INTO `sales_has_product` VALUES (1,1,1,1,0,123),(2,1,2,1,0,321);
 /*!40000 ALTER TABLE `sales_has_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,7 +382,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `login_UNIQUE` (`username`),
   CONSTRAINT `fk_user_userinfo1` FOREIGN KEY (`id`) REFERENCES `userinfo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,7 +391,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'spivak@yandex.ru','$2a$10$NcMe4vVenbCJvQ7VwHicBu/OvQh0Fev7i6Z.ZoU6ufK.9Z.a9Bpga','ADMIN',1,'dart647',NULL,NULL),(2,'test@mail.ru','$2a$10$FfaAufw9xBu6Ruy1rNEltu2gvE6Cy.f7uQmjCmXmq5mTs6X83QJY6','ADMIN',1,'test',NULL,NULL),(3,'testM@mail.com','$2a$10$FybbEfi0Z7EmKXbWDpRazuLgL6afzk/z5rVVB7xLsVAw7h3XdKgIS','MANAGER',1,'testM',NULL,NULL),(4,'testU@mail.com','$2a$10$C2IsBKkQ9dLi/QMj3ZTZne20UIwS94oSH1c2a4NgZhEy0o3XADueK','USER',1,'testU',NULL,NULL),(5,'kavo@yandex.ru','$2a$10$iFBi7g.LJ3rEc1LQuXi.I.6UB5dbNXrHVbLWcwlVLNWobJt9xaCUe','USER',1,'bulanov',NULL,NULL),(15,'xurica1@mail.ru','$2a$10$b76SfZU7/Blgr45TFmUSPewSrUKQLbpG61rVfXigXcQ1L2iwvUWAK','USER',1,'qweqweqwe',NULL,NULL);
+INSERT INTO `user` VALUES (1,'spivak@yandex.ru','$2a$10$NcMe4vVenbCJvQ7VwHicBu/OvQh0Fev7i6Z.ZoU6ufK.9Z.a9Bpga','ADMIN',1,'dart647',NULL,NULL),(2,'test@mail.ru','$2a$10$FfaAufw9xBu6Ruy1rNEltu2gvE6Cy.f7uQmjCmXmq5mTs6X83QJY6','ADMIN',1,'test',NULL,NULL),(3,'testM@mail.com','$2a$10$FybbEfi0Z7EmKXbWDpRazuLgL6afzk/z5rVVB7xLsVAw7h3XdKgIS','MANAGER',1,'testM',NULL,NULL),(4,'testU@mail.com','$2a$10$C2IsBKkQ9dLi/QMj3ZTZne20UIwS94oSH1c2a4NgZhEy0o3XADueK','USER',1,'testU',NULL,NULL),(5,'kavo@yandex.ru','$2a$10$iFBi7g.LJ3rEc1LQuXi.I.6UB5dbNXrHVbLWcwlVLNWobJt9xaCUe','USER',1,'bulanov',NULL,NULL),(15,'xurica1@mail.ru','$2a$10$b76SfZU7/Blgr45TFmUSPewSrUKQLbpG61rVfXigXcQ1L2iwvUWAK','USER',1,'qweqweqwe',NULL,NULL),(17,'12345@12345.com','$2a$10$yRZOHSqOb8SBKNZRbh0Rr.zQ27NCnyE1lXcmwVUjjaC4NKQOcEbPS','USER',0,'123456',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,7 +416,7 @@ CREATE TABLE `user_roles` (
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` VALUES (1,'ADMIN'),(2,'ADMIN'),(3,'MANAGER'),(4,'USER'),(5,'USER'),(15,'USER');
+INSERT INTO `user_roles` VALUES (1,'ADMIN'),(2,'ADMIN'),(3,'MANAGER'),(4,'USER'),(5,'USER'),(15,'USER'),(17,'USER');
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -411,7 +437,7 @@ CREATE TABLE `userinfo` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_userinfo_user1` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -420,7 +446,7 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` VALUES (1,'Спивак А.А.','1999-01-04','Шоссе Энтузиастов',0,'0'),(2,'Жмышенко Валерий Альбертович','1984-07-10','Самара, ул. Ленина, д.14',0,'0'),(3,'new user',NULL,NULL,0,'0'),(4,'new user',NULL,NULL,0,'0'),(5,'new user',NULL,NULL,0,NULL),(6,'new user',NULL,NULL,0,NULL),(7,'new user',NULL,NULL,0,NULL),(8,'new user',NULL,NULL,0,NULL),(9,'new user',NULL,NULL,0,NULL),(10,'new user',NULL,NULL,0,NULL),(11,'new user',NULL,NULL,0,NULL),(12,'new user',NULL,NULL,0,NULL),(13,'new user',NULL,NULL,0,NULL),(14,'new user',NULL,NULL,0,NULL),(15,'new user',NULL,NULL,0,NULL),(16,'new user',NULL,NULL,0,NULL);
+INSERT INTO `userinfo` VALUES (1,'Спивак А.А.','1999-01-04','Шоссе Энтузиастов',0,'0'),(2,'Жмышенко Валерий Альбертович','1984-07-10','Самара, ул. Ленина, д.14',0,'0'),(3,'new user',NULL,NULL,0,'0'),(4,'new user',NULL,NULL,0,'0'),(5,'new user',NULL,NULL,0,NULL),(6,'new user',NULL,NULL,0,NULL),(7,'new user',NULL,NULL,0,NULL),(8,'new user',NULL,NULL,0,NULL),(9,'new user',NULL,NULL,0,NULL),(10,'new user',NULL,NULL,0,NULL),(11,'new user',NULL,NULL,0,NULL),(12,'new user',NULL,NULL,0,NULL),(13,'new user',NULL,NULL,0,NULL),(14,'new user',NULL,NULL,0,NULL),(15,'new user',NULL,NULL,0,NULL),(16,'new user',NULL,NULL,0,NULL),(17,'new user',NULL,NULL,0,'0');
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -447,7 +473,7 @@ CREATE TABLE `verificationtoken` (
 
 LOCK TABLES `verificationtoken` WRITE;
 /*!40000 ALTER TABLE `verificationtoken` DISABLE KEYS */;
-INSERT INTO `verificationtoken` VALUES (1,'b7f0e777-9f23-4a0b-8410-059919c9129a',15);
+INSERT INTO `verificationtoken` VALUES (1,'b7f0e777-9f23-4a0b-8410-059919c9129a',15),(2,'d1d3a15c-d7c9-4628-8d5b-202866610d5c',17);
 /*!40000 ALTER TABLE `verificationtoken` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -468,4 +494,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-09 17:44:18
+-- Dump completed on 2020-01-10 19:02:57

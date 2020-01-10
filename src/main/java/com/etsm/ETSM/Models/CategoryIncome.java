@@ -16,7 +16,10 @@ public class CategoryIncome {
     private long id;
 
     @Column(name = "total")
-    private long total;
+    private int total;
+
+    @Column(name = "quantity")
+    private int quantity;
 
     @OneToOne
     @MapsId
@@ -31,11 +34,11 @@ public class CategoryIncome {
         this.id = id;
     }
 
-    public long getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(long total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
@@ -45,5 +48,13 @@ public class CategoryIncome {
 
     public void setCategory_id(Category category_id) {
         this.category_id = category_id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
