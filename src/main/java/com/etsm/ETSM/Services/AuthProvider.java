@@ -37,7 +37,9 @@ public class AuthProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
 
         User user = (User) userService.loadUserByUsername(username);
-
+        if (!user.getActive()) {
+            throw new BadCredentialsException("User is not activated");
+        }
         if (user != null && (user.getUsername().equals(username) || user.getLogin().equals(username))) {
             if (!passwordEncoder.matches(password,user.getPassword()))
             {
