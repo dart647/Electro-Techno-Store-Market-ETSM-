@@ -27,13 +27,23 @@
 
             <h1 th:text="${currCategory}"></h1>
             <div class="row">
-                <div th:each="subCategory : ${subCategories}" class="col-4">
+                <div th:each="subCategory : ${subCategories}" class="col border">
                     <br>
                     <div>
-                        <a class="btn btn-outline-secondary"
-                           th:href="@{/catalog/category/{subCategoryName}(subCategoryName=${subCategory.name})}">
-                            <label th:text="'Название - '+ ${subCategory.name}"></label>
+                        <a class="btn btn-block font-weight-bold"
+                           th:href="@{/catalog/category/{subCategoryName}(subCategoryName=${subCategory.name})}"
+                           th:text="${subCategory.name}">
                         </a>
+                    </div>
+                    <div>
+                        <ul th:each="minor:${subCategory.minorCategoryList}">
+                            <li>
+                                <a class="btn btn-link btn-block"
+                                   th:href="@{/catalog/category/subCategory/{minorCategoryName}(minorCategoryName=${minor.name})}"
+                                   th:text="${minor.name}">
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                     <br>
                 </div>

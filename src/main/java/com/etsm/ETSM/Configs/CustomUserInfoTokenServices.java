@@ -4,6 +4,7 @@
 
 package com.etsm.ETSM.Configs;
 
+import com.etsm.ETSM.Models.Loyalty;
 import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
 import com.etsm.ETSM.Models.UserInfo;
@@ -108,17 +109,21 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
             String googleUsername = (String) map.get("email");
 
             User user = userRepository.findByGoogleUsername(googleUsername);
-            UserInfo userInfo = null;
+            UserInfo userInfo;
 
-            if (user != null) {
-                userInfo = userInfoRepository.findById(user.getId()).get();
-            }
+//            if (user != null) {
+//                userInfo = userInfoRepository.findById(user.getId()).get();
+//            }
 
             if(user == null)
             {
+                Loyalty loyalty = new Loyalty();
                 userInfo = new UserInfo();
                 userInfo.setFio("new user");
                 userInfo.setWallet(0);
+                userInfo.setPhoneNumber("0");
+                loyalty.setUserInfo_id(userInfo);
+                loyalty.setBalance(0);
                 user = new User();
                 user.setActive(true);
                 user.setRoles(Collections.singleton(Role.USER));

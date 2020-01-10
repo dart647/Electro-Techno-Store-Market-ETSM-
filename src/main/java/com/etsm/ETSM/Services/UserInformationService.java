@@ -59,6 +59,7 @@ class UserInformationServiceImpl implements UserInformationService {
         newInfo.setWallet(0);
         newInfo.setSales(new ArrayList<>());
         newInfo.setFio(userInfo.getFio());
+        newInfo.setPhoneNumber(userInfo.getPhoneNumber());
         userInfoRepository.saveAndFlush(newInfo);
         return true;
     }

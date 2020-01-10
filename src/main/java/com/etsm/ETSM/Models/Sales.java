@@ -1,5 +1,7 @@
 package com.etsm.ETSM.Models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -23,6 +25,7 @@ public class Sales {
     private UserInfo userInfoId;
 
     @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "sales_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SELECT)
     private List<Sales_has_product> salesHasProducts;
 
     public List<Sales_has_product> getSalesHasProducts() {

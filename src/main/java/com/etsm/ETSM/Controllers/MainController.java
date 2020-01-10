@@ -1,11 +1,10 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.Product;
-import com.etsm.ETSM.Services.HeaderService;
-import com.etsm.ETSM.Services.MainService;
-import com.etsm.ETSM.Services.ShoppingCartService;
-import com.etsm.ETSM.Services.UserService;
+import com.etsm.ETSM.Models.ProductAttrValue;
+import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,45 +66,34 @@ public class MainController {
     }
 
     @GetMapping("/search")
-    public ModelAndView SearchPage(@RequestParam(name = "page", defaultValue = "0") String page,
-                                 @RequestParam(name = "searchProduct", defaultValue = "") String search,
-                                 Principal principal) {
+    public ModelAndView SearchPage( @ModelAttribute(name = "attributeParams")AttributeWrapper filterParams,
+                             @RequestParam(name = "page",defaultValue = "0") String page,
+                             @ModelAttribute(name = "searchProduct") String search,
+                             @RequestParam(name = "sortParam", defaultValue = "name") String sort,
+                             Principal principal) {
+        List<ProductAttrValue> attrValues = service.GetAllAttributes();
+
         headerService.setHeader(principal);
         List<Integer> pages = new ArrayList<>();
-            int maxProductsInPage = 10;
+        int maxProductsInPage = 10;
 
-        List<Product> products = service.GetSearchProducts(search, page, maxProductsInPage);
-        for (int i = 0; i < Math.ceil((float)service.GetSearchProductsCount(search) / maxProductsInPage); i++) {
+        Page<Product> products = service.GetSearchProducts(search, page, maxProductsInPage, sort, filterParams);
+
+        for (int i = 0; i < products.getTotalPages(); i++) {
             pages.add(i);
         }
         return new ModelAndView("/search",
                 Map.of("categories", service.GetAllCategories(),
-                        "searchProducts", products,
+                        "attributesParams", filterParams,
+                        "attributes", attrValues,
+                        "searchProducts", products.getContent(),
+                        "sortParam", sort,
                         "search", search,
                         "role", headerService.getHeaderRole(),
-                        "pages", pages),
+                        "pages", pages,
+                        "page", page),
                 HttpStatus.OK);
     }
-
-
-//    @PostMapping("/")
-//    public ModelAndView MainPageWithSearch(@RequestParam(name = "page", defaultValue = "0") String page,
-//                                           @ModelAttribute("searching") String searching, Principal principal) {
-//        headerService.setHeader(principal);
-//        List<Integer> pages = new ArrayList<>();
-//        int maxProductsInPage = 1;
-//        List<Product> products = service.GetSearchProducts(searching, page, maxProductsInPage);
-//        for (int i = 0; i < Math.ceil((float)service.GetSearchProductsCount(searching) / maxProductsInPage); i++) {
-//            pages.add(i);
-//        }
-//        return new ModelAndView("/main",
-//                Map.of("categories", service.GetAllCategories(),
-//                        "search", searching,
-//                        "role", headerService.getHeaderRole(),
-//                        "recommendations", service.SetRecommendations(),
-//                        "pages", pages),
-//                HttpStatus.OK);
-//    }
 
     //User Cabinet Page
     @GetMapping("/user")

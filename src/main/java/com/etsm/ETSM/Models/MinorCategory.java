@@ -4,6 +4,8 @@
 
 package com.etsm.ETSM.Models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -27,6 +29,7 @@ public class MinorCategory {
     private SubCategory subcategory_id;
 
     @OneToMany(targetEntity = Product.class, mappedBy = "minorcategoryid", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SELECT)
     private List<Product> productList;
 
     public long getId() {

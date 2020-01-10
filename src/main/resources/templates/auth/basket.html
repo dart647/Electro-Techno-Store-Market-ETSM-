@@ -89,7 +89,7 @@
             </table>
             <h3>Общая стоимость</h3>
             <p th:text="${#session.getAttribute('totalOrderPrice')}"></p>
-            <a th:if="${#session.getAttribute('cart')}" class="btn btn-outline-secondary" href="/basket/createOrder?stage=begin">Оформить заказ</a>
+            <a th:if="${#session.getAttribute('cart').size()>0}" class="btn btn-outline-secondary" href="/basket/createOrder?stage=begin">Оформить заказ</a>
     </div>
     </div>
 </div>

@@ -259,4 +259,9 @@ public class AdminController {
         }
     }
 
+//    @PostMapping("/add100k")
+//    public String add100k() {
+//        adminService.add100k();
+//        return "redirect:/admin";
+//    }
 }

@@ -1,5 +1,7 @@
 package com.etsm.ETSM.Models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -22,6 +24,7 @@ public class Attribute {
     private Attribute_Group attribute_groups;
 
     @OneToMany(targetEntity = ProductAttrValue.class,mappedBy = "attribute", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SELECT)
     private List<ProductAttrValue> productAttrValue;
 
     public long getId() {

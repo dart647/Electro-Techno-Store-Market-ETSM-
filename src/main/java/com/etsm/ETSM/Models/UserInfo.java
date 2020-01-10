@@ -1,10 +1,10 @@
 package com.etsm.ETSM.Models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,8 +31,10 @@ public class UserInfo {
     @PrimaryKeyJoinColumn
     private User user_id;
     @OneToMany(targetEntity = Sales.class, mappedBy = "userInfoId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SELECT)
     private transient List<Sales> sales;
     @OneToOne(targetEntity = Loyalty.class, mappedBy = "userInfo_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SELECT)
     private Loyalty loyaltyCode_id;
 
     public Loyalty getLoyaltyCode_id() {

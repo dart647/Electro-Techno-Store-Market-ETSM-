@@ -46,10 +46,15 @@
                     </div>
                     <div class="form-group col">
                         <h1 th:text="'Цена: ' + ${product.price}"></h1>
-                        <div>
-                            <a class="btn btn-primary btn-lg" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
-                                в
-                                корзину</a>
+                        <div th:switch="${product.count}">
+                            <div th:case="0">
+                                <a class="btn btn-primary">Нет в наличии</a>
+                            </div>
+                            <div th:case="*">
+                                <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
+                                    в корзину</a>
+
+                            </div>
                         </div>
                     </div>
                 </form>
