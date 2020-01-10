@@ -9,12 +9,11 @@ import com.etsm.ETSM.Repositories.ProductAttrValueRepository;
 import com.etsm.ETSM.Repositories.ProductRepository;
 import com.etsm.ETSM.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -25,7 +24,7 @@ public interface MainService {
 
     User GetUser(String login);
 
-    List<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage, String sortParam);
+    Page<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage, String sortParam, AttributeWrapper attributeWrapper);
 
     long GetAllProductsCount();
 
@@ -68,9 +67,45 @@ class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage, String sortParam) {
-        Pageable productPage = PageRequest.of(Integer.parseInt(page), maxProductsInPage, Sort.by(sortParam));
-        return productRepository.findByNameLike(String.format("%%%s%%", searchingProduct), productPage);
+    public Page<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage, String sortParam, AttributeWrapper attributeWrapper) {
+        int pageNumber = Integer.parseInt(page);
+        Pageable productPage = PageRequest.of(pageNumber, maxProductsInPage, Sort.by(sortParam));
+        List<Product> productList = productRepository.findByNameLike(String.format("%%%s%%", searchingProduct));
+
+        List<Product> newProductList;
+        if(attributeWrapper.getAttrValues() != null){
+            newProductList = new ArrayList<>();
+            for (Product product:productList) {
+                if(product.getProductAttrValue().containsAll(attributeWrapper.getAttrValues())){
+                    newProductList.add(product);
+                }
+            }
+        }else{
+            newProductList = productList;
+        }
+
+        switch (sortParam){
+            case "name":{
+                newProductList.sort(Comparator.comparing(Product::getName));
+                break;
+            }
+            case "price":{
+                newProductList.sort(Comparator.comparing(Product::getPrice));
+                break;
+            }
+            case "count":{
+                newProductList.sort(Comparator.comparing(Product::getCount));
+                break;
+            }
+        }
+
+        List<Product> resultProductList = new ArrayList<>();
+        for (int i = ((pageNumber) * maxProductsInPage); (i < ((pageNumber + 1) * maxProductsInPage) && i < newProductList.size()); i++) {
+            resultProductList.add(newProductList.get(i));
+        }
+
+        Page<Product> products = new PageImpl<Product>(resultProductList, productPage, newProductList.size());
+        return products;
     }
 
     @Override

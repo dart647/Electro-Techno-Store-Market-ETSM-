@@ -13,9 +13,9 @@
 <header th:replace="header :: head"/>
 
 <!--    Главная часть-->
-<div class="container-fluid">
-    <form class="input-group" th:action="@{/search}" th:object="${attributesParams}" method="post">
-        <div class="row">
+<form class="input-group"  th:action="@{/search}" th:object="${attributesParams}"  method="post">
+    <div class="container-fluid">
+        <div class="row form-group">
             <!--        <div th:replace="header :: leftBar"/>-->
 
             <!--        Заменяемая часть-->
@@ -50,13 +50,19 @@
                                         </div>
                                         <div class="col">
                                             <p class="font-weight-bold">Сортировка</p>
-                                            <select class="custom-select" name="sortParam">
-                                                <option th:if="${sortParam} == name" th:value="${sortParam}" selected="selected" disabled>Имя</option>
-                                                <option th:if="${sortParam} == price" th:value="${sortParam}" selected="selected" disabled>Цена</option>
-                                                <option th:if="${sortParam} == minorcategoryid.name" th:value="${sortParam}" selected="selected" disabled>Категория</option>
+                                            <select  class="custom-select" name="sortParam">
+                                                <option th:if="${sortParam} == name" value="name"
+                                                        selected="selected" disabled>Имя
+                                                </option>
+                                                <option th:if="${sortParam} == price" value="price"
+                                                        selected="selected" disabled>Цена
+                                                </option>
+                                                <option th:if="${sortParam} == count"
+                                                        value="count" selected="selected" disabled>Кол-во
+                                                </option>
                                                 <option value="name">Имя</option>
                                                 <option value="price">Цена</option>
-                                                <option value="minorcategoryid.name">Категория</option>
+                                                <option value="count">Кол-во</option>
                                             </select>
                                         </div>
                                     </div>
@@ -94,6 +100,7 @@
                                     </div>
                                     <div>
                                         <label th:text="${'Цена ' + product.price}"></label>
+                                        <label th:text="${'Кол-во ' + product.count}"></label>
                                     </div>
                                     <div>
                                         <p class="border" th:with="minor = ${product.minorcategoryid}"
@@ -110,11 +117,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
-        <div th:if="${pages.size() > 1}" class="row">
+        <div th:if="${pages.size() > 1}" class="row form-group">
             <div class="container">
-                <nav class="form-inline justify-content-center">
+                <nav class="input-group justify-content-center">
                     <ul th:each="productPage, state: ${pages}" class="pagination pagination-lg">
                         <li class="page-item">
                             <input type="submit" name="page" th:value="${state.index}" class="page-link">
@@ -123,8 +129,8 @@
                 </nav>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

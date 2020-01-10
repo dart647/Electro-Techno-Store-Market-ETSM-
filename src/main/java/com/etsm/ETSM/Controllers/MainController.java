@@ -4,6 +4,7 @@ import com.etsm.ETSM.Models.Product;
 import com.etsm.ETSM.Models.ProductAttrValue;
 import com.etsm.ETSM.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -111,16 +112,16 @@ public class MainController {
         List<Integer> pages = new ArrayList<>();
         int maxProductsInPage = 10;
 
-        List<Product> products = service.GetSearchProducts(search, page, maxProductsInPage, sort);
+        Page<Product> products = service.GetSearchProducts(search, page, maxProductsInPage, sort, filterParams);
 
-        for (int i = 0; i < Math.ceil((float) service.GetSearchProductsCount(search) / maxProductsInPage); i++) {
+        for (int i = 0; i < products.getTotalPages(); i++) {
             pages.add(i);
         }
         return new ModelAndView("/search",
                 Map.of("categories", service.GetAllCategories(),
                         "attributesParams", filterParams,
                         "attributes", attrValues,
-                        "searchProducts", products,
+                        "searchProducts", products.getContent(),
                         "sortParam", sort,
                         "search", search,
                         "role", headerService.getHeaderRole(),

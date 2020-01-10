@@ -91,7 +91,7 @@ public class MainControllerTest {
     product.setId(1L);
     List<Product> productList = List.of(product);
 
-    Mockito.when(mainServiceMock.GetSearchProducts(search,page,maxProductsInPage, "name")).thenReturn(productList);
+//    Mockito.when(mainServiceMock.GetSearchProducts(search,page,maxProductsInPage, "name")).thenReturn(productList);
     Mockito.when(mainServiceMock.GetSearchProductsCount(search)).thenReturn(2L);
 
     for (int i =0; i<2;i++){
@@ -190,7 +190,7 @@ public class MainControllerTest {
     product.setId(1L);
     List<Product> productList = List.of(product);
 
-    Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
+//    Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
     Mockito.when(mainServiceMock.GetSearchProductsCount(searching)).thenReturn(2L);
 
     for (int i =0; i<2;i++){
@@ -241,7 +241,7 @@ public class MainControllerTest {
     product.setId(1L);
     List<Product> productList = List.of(product);
 
-    Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
+//    Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
     Mockito.when(mainServiceMock.GetSearchProductsCount(searching)).thenReturn(2L);
 
     for (int i =0; i<2;i++){
@@ -292,7 +292,7 @@ public class MainControllerTest {
         product.setId(1L);
         List<Product> productList = List.of(product);
 
-        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
+//        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
         Mockito.when(mainServiceMock.GetSearchProductsCount(searching)).thenReturn(2L);
 
         for (int i =0; i<2;i++){
@@ -343,7 +343,7 @@ public class MainControllerTest {
         product.setId(1L);
         List<Product> productList = List.of(product);
 
-        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
+//        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
         Mockito.when(mainServiceMock.GetSearchProductsCount(searching)).thenReturn(2L);
 
         for (int i =0; i<2;i++){
@@ -395,7 +395,7 @@ public class MainControllerTest {
         product.setId(1L);
         List<Product> productList = List.of(product);
 
-        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
+//        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
         Mockito.when(mainServiceMock.GetSearchProductsCount(searching)).thenReturn(2L);
 
         for (int i =0; i<2;i++){
@@ -447,7 +447,7 @@ public class MainControllerTest {
         product.setId(1L);
         List<Product> productList = List.of(product);
 
-        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
+//        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
         Mockito.when(mainServiceMock.GetSearchProductsCount(searching)).thenReturn(2L);
 
         for (int i =0; i<2;i++){
@@ -526,7 +526,7 @@ public class MainControllerTest {
         product.setId(1L);
         List<Product> productList = List.of(product);
 
-        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
+//        Mockito.when(mainServiceMock.GetSearchProducts(searching,page,maxProductsInPage, "name")).thenReturn(productList);
         Mockito.when(mainServiceMock.GetSearchProductsCount(searching)).thenReturn(2L);
 
         for (int i =0; i<2;i++){

@@ -89,7 +89,7 @@ public class MainServiceImplTest {
         Pageable productPage =  PageRequest.of(Integer.parseInt("1"), 10, Sort.by("name"));
         Mockito.when(productRepositoryMock.findByNameLike(String.format("%%%s%%","searchingProduct"), productPage)).thenReturn(productList);
 
-        mainService.GetSearchProducts("product","1",10, "name");
+//        mainService.GetSearchProducts("product","1",10, "name");
     }
 
     @Test
