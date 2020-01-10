@@ -25,6 +25,10 @@ public class Category {
     @Fetch(value = FetchMode.SELECT)
     private List<SubCategory> subCategories = new ArrayList<>();
 
+    @OneToOne(targetEntity = CategoryIncome.class, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private CategoryIncome categoryIncome;
+
     public List<SubCategory> getSubCategories() {
         return subCategories;
     }
@@ -47,6 +51,14 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public CategoryIncome getCategoryIncome() {
+        return categoryIncome;
+    }
+
+    public void setCategoryIncome(CategoryIncome categoryIncome) {
+        this.categoryIncome = categoryIncome;
     }
 
     @Override
