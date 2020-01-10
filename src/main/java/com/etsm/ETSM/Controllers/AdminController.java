@@ -23,17 +23,20 @@ public class AdminController {
     private ProductService productService;
     private HeaderService headerService;
     private UserService userService;
+    private ERPService erpService;
 
     public AdminController(AdminService adminService,
                            MainService mainService,
                            UserInformationService userInformationService,
                            ProductService productService,
-                           UserService userService) {
+                           UserService userService,
+                           ERPService erpService) {
         this.adminService = adminService;
         this.mainService = mainService;
         this.userInformationService = userInformationService;
         this.productService = productService;
         this.userService = userService;
+        this.erpService = erpService;
     }
 
     @Autowired
@@ -56,6 +59,11 @@ public class AdminController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+    @Autowired
+    public void setErpService(ERPService erpService) {
+        this.erpService = erpService;
+    }
+
     @GetMapping("/all")
     public ModelAndView getAllUsers(@RequestParam(name = "page", defaultValue = "0")String page, Principal principal) {
         headerService.setHeader(principal);
@@ -257,6 +265,19 @@ public class AdminController {
         else {
             return "redirect:/admin/addAttributeToProduct";
         }
+    }
+
+    @GetMapping("/charts")
+    public ModelAndView statisticCharts(Principal principal) {
+        headerService.setHeader(principal);
+        List<List<Map<Object,Object>>> canvasjsIncomeDataList = erpService.getIncomeChartData();
+        return new ModelAndView("admin/charts",
+                Map.of("role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories(),
+                        "incomeDataList",canvasjsIncomeDataList,
+                        "incomeList", erpService.getIncomeList(),
+                        "saleCount", erpService.getSalesCount()),
+                HttpStatus.OK);
     }
 
 //    @PostMapping("/add100k")

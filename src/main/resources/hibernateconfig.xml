@@ -23,6 +23,7 @@
       <mapping class="com.etsm.ETSM.Models.ProductAttrValue"/>
       <mapping class="com.etsm.ETSM.Models.Loyalty"/>
       <mapping class="com.etsm.ETSM.Models.VerificationToken"/>
+      <mapping class="com.etsm.ETSM.Models.CategoryIncome"/>
     <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 

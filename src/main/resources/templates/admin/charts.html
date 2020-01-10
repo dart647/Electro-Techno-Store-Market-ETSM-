@@ -1,0 +1,138 @@
+<!--
+  ~ Copyright (c) 2020. Smalkov Nikita.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Данные пользователя</title>
+    <script type="text/javascript" th:inline="javascript" class="init">
+        /*<![CDATA[*/
+        window.onload = function (e) {
+            var dps = [];
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "light2", // "light1", "dark1", "dark2"
+                exportEnabled: true,
+                zoomEnabled: true,
+                title: {
+                    text: "Доход по категориям"
+                },
+                data: [{
+                    type: "pie",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    yValueFormatString: "#,###\"%\"",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}",
+                    dataPoints: dps
+                }]
+            });
+
+
+            var incomeDataList = /*[[${incomeDataList}]]*/ 'null';
+
+            count = 0;
+            for (var i = 0; i < incomeDataList.length; i++) {
+                var incomeDataListElement = incomeDataList[i];
+                for (var j = 0; j < incomeDataListElement.length; j++) {
+                    dps[count++] = {
+                        label: incomeDataListElement[j].label,
+                        y: incomeDataListElement[j].y
+                    };
+                }
+            }
+            chart.render();
+        }
+        /*]]>*/
+    </script>
+</head>
+
+<body>
+<!--Header-->
+<header th:replace="header :: head"/>
+
+<!--Main-->
+<div class="container">
+    <div class="row">
+        <!--Заменяемая часть-->
+        <div class="row">
+            <a href="/admin">Назад</a>
+        </div>
+        <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    </div>
+
+    <div class="row">
+        <h3 th:text="'Количество выполненных заказов: ' + ${saleCount}"></h3>
+    </div>
+
+    <div class="row">
+        <table class="table table-stripped" id="myTable2">
+            <thead>
+            <th scope="col" onclick="sortTable(0)">Название категории</th>
+            <th scope="col" onclick="sortTable(1)">Выручка</th>
+            <th scope="col" onclick="sortTable(2)">Количество проданных товаров</th>
+            </thead>
+            <tbody>
+            <tr th:each="income: ${incomeList}">
+                <td><p th:text="${income.key}"></p></td>
+                <td><p th:text="${income.value.total}"></p></td>
+                <td><p th:text="${income.value.quantity}"></p></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("myTable2");
+        switching = true;
+        dir = "asc";
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

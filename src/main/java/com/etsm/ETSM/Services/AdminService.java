@@ -96,7 +96,11 @@ class AdminServiceImpl implements AdminService {
             return false;
         }
         Category newCategory = new Category();
+        CategoryIncome categoryIncome = new CategoryIncome();
+        categoryIncome.setTotal(0);
+        categoryIncome.setQuantity(0);
         newCategory.setName(category.getName());
+        newCategory.setCategoryIncome(categoryIncome);
         categoryRepository.saveAndFlush(newCategory);
         return true;
     }

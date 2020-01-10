@@ -30,9 +30,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
 
 
@@ -81,9 +82,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         HeaderService headerServicemock = mock(HeaderService.class);
         adminController.setHeaderService(headerServicemock);
@@ -133,9 +135,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
 
         adminController.setAdminService(adminServiceMock);
@@ -156,9 +159,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
 
         HeaderService headerServiceMock = mock(HeaderService.class);
@@ -224,9 +228,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
    adminController.setAdminService(adminServiceMock);
    Product product = new Product();
@@ -244,9 +249,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         HeaderService headerServiceMock = mock(HeaderService.class);
         adminController.setHeaderService(headerServiceMock);
@@ -286,9 +292,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         adminController.setAdminService(adminServiceMock);
 
@@ -307,9 +314,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         HeaderService headerServiceMock = mock(HeaderService.class);
         adminController.setHeaderService(headerServiceMock);
@@ -351,9 +359,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         SubCategory subCategory = new SubCategory();
         subCategory.setId(1L);
@@ -373,9 +382,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         HeaderService headerServiceMock = mock(HeaderService.class);
         adminController.setHeaderService(headerServiceMock);
@@ -417,9 +427,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         adminController.setAdminService(adminServiceMock);
         MinorCategory minorCategory = new MinorCategory();
@@ -440,9 +451,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         HeaderService headerServiceMock = mock(HeaderService.class);
         adminController.setHeaderService(headerServiceMock);
@@ -501,9 +513,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         adminController.setAdminService(adminServiceMock);
         Attribute attribute = new Attribute();
@@ -525,9 +538,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
         HeaderService headerServiceMock = mock(HeaderService.class);
         adminController.setHeaderService(headerServiceMock);
@@ -584,9 +598,10 @@ public class AdminControllerTest {
         UserInformationService userInformationServiceMock = mock(UserInformationService.class);
         ProductService productServiceMock = mock(ProductService.class);
         UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
         AdminController adminController = new AdminController(adminServiceMock,
                 mainServiceMock,userInformationServiceMock,
-                productServiceMock,userServiceMock);
+                productServiceMock,userServiceMock, erpService);
 
 
         adminController.setAdminService(adminServiceMock);
