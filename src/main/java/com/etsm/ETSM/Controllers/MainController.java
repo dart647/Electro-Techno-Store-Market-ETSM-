@@ -94,18 +94,18 @@ public class MainController {
 //                HttpStatus.OK);
 //    }
 
-    @PostMapping("/search")
-    public ModelAndView SearchPage(@ModelAttribute("attributesParams") AttributeWrapper filterParams,
-                             @ModelAttribute(name = "page") String page,
+    @GetMapping("/search")
+    public ModelAndView SearchPage( @ModelAttribute(name = "attributeParams")AttributeWrapper filterParams,
+                             @RequestParam(name = "page",defaultValue = "0") String page,
                              @ModelAttribute(name = "searchProduct") String search,
-                             @ModelAttribute(name = "sortParam") String sort,
+                             @RequestParam(name = "sortParam", defaultValue = "name") String sort,
                              Principal principal) {
-        if(page.equals("")){
-            page = "0";
-        }
-        if(sort.equals("")){
-            sort = "name";
-        }
+//        if(page.equals("")){
+//            page = "0";
+//        }
+//        if(sort.equals("")){
+//            sort = "name";
+//        }
         List<ProductAttrValue> attrValues = service.GetAllAttributes();
 
         headerService.setHeader(principal);
@@ -129,6 +129,11 @@ public class MainController {
                         "page", page),
                 HttpStatus.OK);
     }
+//
+//    @PostMapping("/search")
+//    public String SearchPageFilter(@ModelAttribute(name = "page") String page) {
+//        return "redirect:/search";
+//    }
 
     //User Cabinet Page
     @GetMapping("/user")

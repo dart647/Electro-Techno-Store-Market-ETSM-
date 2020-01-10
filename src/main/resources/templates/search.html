@@ -13,7 +13,7 @@
 <header th:replace="header :: head"/>
 
 <!--    Главная часть-->
-<form class="input-group"  th:action="@{/search}" th:object="${attributesParams}"  method="post">
+<form class="input-group"  th:action="@{/search}"  method="get">
     <div class="container-fluid">
         <div class="row form-group">
             <!--        <div th:replace="header :: leftBar"/>-->
@@ -43,26 +43,26 @@
                                         <div class="col">
                                             <p class="font-weight-bold">Фильтрация</p>
                                             <div class="dropdown-item" th:each="attrParam:${attributes}">
-                                                <input type="checkbox" th:field="*{attrValues}"
+                                                <input class="custom-checkbox" type="checkbox" th:field="${attributesParams.attrValues}"
                                                        th:value="${attrParam.id}">
                                                 <label th:text="${attrParam.value}"></label>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <p class="font-weight-bold">Сортировка</p>
-                                            <select  class="custom-select" name="sortParam">
-                                                <option th:if="${sortParam} == name" value="name"
-                                                        selected="selected" disabled>Имя
+                                            <select class="custom-select" name="sortParam" th:switch="${sortParam}">
+                                                <option th:case="name" th:value="${sortParam}"
+                                                        selected="selected" readonly>Имя
                                                 </option>
-                                                <option th:if="${sortParam} == price" value="price"
-                                                        selected="selected" disabled>Цена
+                                                <option th:case="price" th:value="${sortParam}"
+                                                        selected="selected" readonly>Цена
                                                 </option>
-                                                <option th:if="${sortParam} == count"
-                                                        value="count" selected="selected" disabled>Кол-во
+                                                <option th:case="count" th:value="${sortParam}"
+                                                        selected="selected"readonly>Кол-во
                                                 </option>
-                                                <option value="name">Имя</option>
-                                                <option value="price">Цена</option>
-                                                <option value="count">Кол-во</option>
+                                                <option th:unless="${sortParam} == name" value="name">Имя</option>
+                                                <option th:unless="${sortParam} == price" value="price">Цена</option>
+                                                <option th:unless="${sortParam} == count" value="count">Кол-во</option>
                                             </select>
                                         </div>
                                     </div>
