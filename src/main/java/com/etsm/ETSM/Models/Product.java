@@ -56,11 +56,6 @@ public class Product {
         return minorcategoryid;
     }
 
-    public void setMinorcategoryid(MinorCategory minorcategoryid) {
-        minorcategoryid.getProductList().add(this);
-        this.minorcategoryid = minorcategoryid;
-    }
-
     public List<Sales_has_product> getSalesHasProducts() {
         return salesHasProducts;
     }
@@ -107,10 +102,6 @@ public class Product {
 
     public void setImg(String img) {
         this.img = img;
-    }
-
-    public MinorCategory getSubCategory_id() {
-        return minorcategoryid;
     }
 
     public int getCount() {

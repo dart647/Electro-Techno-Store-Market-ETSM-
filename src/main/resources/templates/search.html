@@ -31,37 +31,54 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Параметры</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="font-weight-bold">Фильтрация</p>
-                                            <div class="dropdown-item" th:each="attrParam:${attributes}">
-                                                <input class="custom-checkbox" type="checkbox" th:field="${attributesParams.attrValues}"
-                                                       th:value="${attrParam.id}">
-                                                <label th:text="${attrParam.value}"></label>
+                                    <div class="row form-group">
+                                        <label for="sortHolder" class="font-weight-bold">Сортировка</label>
+                                        <select id="sortHolder" class="custom-select form-control" name="sortParam" th:switch="${sortParam}">
+                                            <option th:case="name" th:value="${sortParam}"
+                                                    selected="selected">Имя
+                                            </option>
+                                            <option th:case="price" th:value="${sortParam}"
+                                                    selected="selected">Цена
+                                            </option>
+                                            <option th:case="count" th:value="${sortParam}"
+                                                    selected="selected">Кол-во
+                                            </option>
+                                            <option th:unless="${sortParam} == name" value="name">Имя</option>
+                                            <option th:unless="${sortParam} == price" value="price">Цена</option>
+                                            <option th:unless="${sortParam} == count" value="count">Кол-во</option>
+                                        </select>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label for="priceHolder" class="font-weight-bold">Фильтрация по цене</label>
+                                        <input class="form-control" id="priceHolder" type="number" name="maxPrice" th:value="${maxPrice}">
+                                    </div>
+                                    <div class="row form-group">
+                                        <label for="categoryHolder" class="font-weight-bold">Фильтрация по категории</label>
+                                        <select id="categoryHolder" class="custom-select form-control" name="categoryName">
+                                            <option th:unless="${categoryName} == all" th:value="${categoryName}" th:text="${categoryName}" selected></option>
+                                            <option value="all">Все категории</option>
+                                            <div>
+                                                <option th:each="category:${categories}" th:unless="${categoryName} == ${category.name}" th:value="${category.name}"
+                                                th:text="${category.name}"></option>
                                             </div>
-                                        </div>
-                                        <div class="col">
-                                            <p class="font-weight-bold">Сортировка</p>
-                                            <select class="custom-select" name="sortParam" th:switch="${sortParam}">
-                                                <option th:case="name" th:value="${sortParam}"
-                                                        selected="selected">Имя
-                                                </option>
-                                                <option th:case="price" th:value="${sortParam}"
-                                                        selected="selected">Цена
-                                                </option>
-                                                <option th:case="count" th:value="${sortParam}"
-                                                        selected="selected">Кол-во
-                                                </option>
-                                                <option th:unless="${sortParam} == name" value="name">Имя</option>
-                                                <option th:unless="${sortParam} == price" value="price">Цена</option>
-                                                <option th:unless="${sortParam} == count" value="count">Кол-во</option>
-                                            </select>
+                                        </select>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div>
+                                            <label class="font-weight-bold">Фильтрация по атрибутам</label>
+                                            <div th:each="attrParam:${attributes}">
+                                                <div class="dropdown-item">
+                                                    <input class="custom-checkbox" type="checkbox" th:field="${attributesParams.attrValues}"
+                                                           th:value="${attrParam.id}">
+                                                    <label th:text="${attrParam.value}"></label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

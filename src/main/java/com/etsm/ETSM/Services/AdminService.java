@@ -35,6 +35,8 @@ public interface AdminService {
 
     long findUsersCount();
 
+    void addNewAttributeGroup(String attributeGroup);
+
 //    void add100k();
 }
 
@@ -181,6 +183,18 @@ class AdminServiceImpl implements AdminService {
     @Override
     public long findUsersCount() {
         return userRepository.count();
+    }
+
+    @Override
+    public void addNewAttributeGroup(String attributeGroup) {
+        if (attributeGroupRepository.findByName(attributeGroup).isPresent()) {
+            return;
+        }
+        Attribute_Group newAttributeGroup = new Attribute_Group();
+        newAttributeGroup.setName(attributeGroup);
+        newAttributeGroup.setProduct_id(new ArrayList<>());
+        newAttributeGroup.setAttribute_id(new ArrayList<>());
+        attributeGroupRepository.saveAndFlush(newAttributeGroup);
     }
 
     @Autowired
