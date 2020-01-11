@@ -25,11 +25,8 @@
         <div th:switch="${stage}">
             <div class="col">
                 <br>
-                <div>
-                    <a class="btn btn-outline-secondary" href="/basket/cancelOrder">Отменить заказ</a>
-                </div>
                 <div th:case="begin">
-                    <h1>Проверьте правильность товаров</h1>
+                    <h1>Проверьте правильность заказа</h1>
                     <table class="table table-stripped">
                         <thead>
                         <th scope="col">Изображение</th>
@@ -54,6 +51,7 @@
                         оформление
                         заказа</a>
                     <a class="btn btn-outline-secondary" href="/basket/">Вернуться в корзину</a>
+                    <a class="btn btn-outline-secondary" href="/basket/cancelOrder">Отменить заказ</a>
                 </div>
                 <div th:case="userInfo">
                     <div class="container">
@@ -80,12 +78,15 @@
                                     <input class="form-control" id="phoneNumber" type="text" name="phoneNumber"
                                            th:value="${userInfo.phoneNumber}">
                                 </div>
-                                <div><h3 th:text="'Баланс бонусной карты ' + ${userInfo.loyaltyCode_id.balance} + ' баллов. Списать?'"></h3></div>
+                                <div><h3
+                                        th:text="'Баланс бонусной карты ' + ${userInfo.loyaltyCode_id.balance} + ' баллов. Списать?'"></h3>
+                                </div>
                                 <div class="form-group">
-                                    <input
-                                        type="checkbox"
-                                        name="spendLoyalty"
-                                        th:checked="${spendLoyalty}"/>
+                                    <input id="yes"
+                                           type="checkbox"
+                                           name="spendLoyalty"
+                                           th:checked="${spendLoyalty}"/>
+                                    <label for="yes">Да</label>
                                 </div>
                                 <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
                                 <input type="submit" value="Изменить" class="btn btn-success"/>
@@ -96,13 +97,13 @@
                         </div>
                     </div>
                 </div>
-            <div th:case="payment">
-                <h1>Выберите вид оплаты</h1>
-                <a class="btn btn-outline-secondary" href="/payment/">Оплата картой</a>
+                <div th:case="payment">
+                    <h1>Выберите вид оплаты</h1>
+                    <a class="btn btn-outline-secondary" href="/payment/">Оплата картой</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

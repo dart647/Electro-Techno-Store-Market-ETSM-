@@ -243,6 +243,24 @@ public class AdminController {
         return "redirect:/admin/addAttribute";
     }
 
+    @GetMapping("/addAttributeGroup")
+    public ModelAndView addAttributeGroup(Principal principal) {
+        headerService.setHeader(principal);
+        Attribute_Group attributeGroup = new Attribute_Group();
+        return new ModelAndView("admin/addAttributeGroup",
+                Map.of( "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories(),
+                        "productList", productService.findAllProducts(),
+                        "attributeGroup", attributeGroup),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/addAttributeGroup")
+    public String addAttributeGroup(@ModelAttribute("attribute_group") String attributeGroup) {
+        adminService.addNewAttributeGroup(attributeGroup);
+        return "redirect:/admin/addAttributeGroup";
+    }
+
     @GetMapping("/addAttributeToProduct")
     public ModelAndView addAttributeToProduct(Principal principal) {
         headerService.setHeader(principal);

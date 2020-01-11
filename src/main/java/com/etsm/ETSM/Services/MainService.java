@@ -24,7 +24,9 @@ public interface MainService {
 
     User GetUser(String login);
 
-    Page<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage, String sortParam, AttributeWrapper attributeWrapper);
+    Page<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage,
+    int maxPrice, String sortParam, String categoryName,
+    AttributeWrapper attributeWrapper);
 
     long GetAllProductsCount();
 
@@ -67,44 +69,21 @@ class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Page<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage, String sortParam, AttributeWrapper attributeWrapper) {
+    public Page<Product> GetSearchProducts(String searchingProduct, String page, int maxProductsInPage,
+                                           int maxPrice, String sortParam, String categoryName,
+                                           AttributeWrapper attributeWrapper) {
         int pageNumber = Integer.parseInt(page);
         Pageable productPage = PageRequest.of(pageNumber, maxProductsInPage, Sort.by(sortParam));
         List<Product> productList = productRepository.findByNameLike(String.format("%%%s%%", searchingProduct));
 
-        List<Product> newProductList;
+        productList.retainAll(FilterAndSorting.FilterByCategory(productList, categoryName));
+        productList.retainAll(FilterAndSorting.FilterByPrice(productList, maxPrice));
         if(attributeWrapper.getAttrValues() != null){
-            newProductList = new ArrayList<>();
-            for (Product product:productList) {
-                if(product.getProductAttrValue().containsAll(attributeWrapper.getAttrValues())){
-                    newProductList.add(product);
-                }
-            }
-        }else{
-            newProductList = productList;
+            productList.retainAll(FilterAndSorting.FilterByAttribute(productList, attributeWrapper));
         }
 
-        switch (sortParam){
-            case "name":{
-                newProductList.sort(Comparator.comparing(Product::getName));
-                break;
-            }
-            case "price":{
-                newProductList.sort(Comparator.comparing(Product::getPrice));
-                break;
-            }
-            case "count":{
-                newProductList.sort(Comparator.comparing(Product::getCount));
-                break;
-            }
-        }
-
-        List<Product> resultProductList = new ArrayList<>();
-        for (int i = ((pageNumber) * maxProductsInPage); (i < ((pageNumber + 1) * maxProductsInPage) && i < newProductList.size()); i++) {
-            resultProductList.add(newProductList.get(i));
-        }
-
-        Page<Product> products = new PageImpl<Product>(resultProductList, productPage, newProductList.size());
+        Page<Product> products = new PageImpl<Product>(FilterAndSorting.GetProductsForPage(FilterAndSorting.SortBy(productList,sortParam), maxProductsInPage, pageNumber),
+                productPage, productList.size());
         return products;
     }
 
