@@ -24,16 +24,26 @@
             </div>
             <br>
             <form th:action="@{/admin/add100k}" method="post">
-                <div class="form-group">
-                    <div class="form-group"><a href="/admin/addProduct" class="btn btn-info btn-lg">Добавить товар</a></div>
-                    <div class="form-group"><a href="/admin/addCategory" class="btn btn-info btn-lg">Добавить 1 категорию</a></div>
-                    <div class="form-group"><a href="/admin/addSubCategory" class="btn btn-info btn-lg">Добавить 2 категорию</a></div>
-                    <div class="form-group"><a href="/admin/addMinorCategory" class="btn btn-info btn-lg">Добавить 3 категорию</a></div>
-                    <div class="form-group"><a href="/admin/addAttributeGroup" class="btn btn-info btn-lg">Добавить группу атрибутов</a></div>
-                    <div class="form-group"><a href="/admin/addAttribute" class="btn btn-info btn-lg">Добавить атрибут</a></div>
-                    <div class="form-group"><a href="/admin/addAttributeToProduct" class="btn btn-info btn-lg">Добавить атрибут товару</a></div>
-<!--                    <form class="form-group"><input type="submit" class="btn btn-info btn-lg" value="Добавить 100к"></form>-->
-                    <div class="form-group"><a href="/admin/charts" class="btn btn-info btn-lg">Показать статистику</a></div>
+                <div class="row">
+                    <div class="col form-group">
+                        <div class="form-group"><a href="/admin/addProduct" class="btn btn-info btn-lg">Добавить товар</a></div>
+                        <div class="form-group"><a href="/admin/addCategory" class="btn btn-info btn-lg">Добавить 1 категорию</a></div>
+                        <div class="form-group"><a href="/admin/addSubCategory" class="btn btn-info btn-lg">Добавить 2 категорию</a></div>
+                        <div class="form-group"><a href="/admin/addMinorCategory" class="btn btn-info btn-lg">Добавить 3 категорию</a></div>
+                        <div class="form-group"><a href="/admin/addAttributeGroup" class="btn btn-info btn-lg">Добавить группу атрибутов</a></div>
+                        <div class="form-group"><a href="/admin/addAttribute" class="btn btn-info btn-lg">Добавить атрибут</a></div>
+                        <div class="form-group"><a href="/admin/addAttributeToProduct" class="btn btn-info btn-lg">Добавить атрибут товару</a></div>
+                        <!--                    <form class="form-group"><input type="submit" class="btn btn-info btn-lg" value="Добавить 100к"></form>-->
+                        <div class="form-group"><a href="/admin/charts" class="btn btn-info btn-lg">Показать статистику</a></div>
+                    </div>
+                    <div class="col form-group">
+                        <div class="form-group"><a href="/admin/editProduct" class="btn btn-info btn-lg">Изменить товар</a></div>
+                        <div class="form-group"><a href="/admin/editCategory" class="btn btn-info btn-lg">Изменить 1 категорию</a></div>
+                        <div class="form-group"><a href="/admin/editSubCategory" class="btn btn-info btn-lg">Изменить 2 категорию</a></div>
+                        <div class="form-group"><a href="/admin/editMinorCategory" class="btn btn-info btn-lg">Изменить 3 категорию</a></div>
+                        <div class="form-group"><a href="/admin/editAttributeGroup" class="btn btn-info btn-lg">Изменить группу атрибутов</a></div>
+                        <div class="form-group"><a href="/admin/editAttribute" class="btn btn-info btn-lg">Изменить атрибут</a></div>
+                    </div>
                 </div>
             </form>
         </div>

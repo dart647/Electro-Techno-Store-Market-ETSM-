@@ -9,7 +9,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Добавить группу атрибутов</title>
+    <title>Изменить атрибут</title>
 </head>
 <body>
 <!--Header-->
@@ -20,13 +20,27 @@
     <div class="row">
         <!--Заменяемая часть-->
         <div class="col">
-            <h1>Добавить группу атрибутов</h1>
-            <form th:action="@{/admin/addAttributeGroup}" method="post">
+            <h1>Изменить аттрибут</h1>
+            <form th:action="@{/admin/editAttribute}" method="post">
                 <div class="form-group">
-                    <label for="name"> Название группы атрибутов:</label>
-                    <input type="text" name="name" id="name"/>
+                    <label for="attrId">Старый атрибут:</label>
+                    <select class="combobox" name="id" id="attrId">
+                        <option value="" selected="selected"></option>
+                        <option th:each="attr: ${attributes}" th:value="${attr.id}" th:text="${attr.name}"></option>
+                    </select>
                 </div>
-                <input type="submit" value="Добавить" class="btn btn-success"/>
+                <div class="form-group">
+                    <label for="name"> Новое название атрибута:</label>
+                    <input type="text" name="name" id="name"/>
+
+                    <label for="group"> Новая группа атрибутов:</label>
+                    <select class="combobox" name="attribute_group" id="group">
+                        <option value="" selected="selected"></option>
+                        <option th:each="attributeGroup: ${attributeGroupsList}" th:value="${attributeGroup.name}"
+                                th:text="${attributeGroup.name}"></option>
+                    </select>
+                </div>
+                <input type="submit" value="Изменить" class="btn btn-success"/>
             </form>
         </div>
     </div>

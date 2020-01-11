@@ -256,7 +256,7 @@ public class AdminController {
     }
 
     @PostMapping("/addAttributeGroup")
-    public String addAttributeGroup(@ModelAttribute("attribute_group") String attributeGroup) {
+    public String addAttributeGroup(@ModelAttribute("attribute_group") Attribute_Group attributeGroup) {
         adminService.addNewAttributeGroup(attributeGroup);
         return "redirect:/admin/addAttributeGroup";
     }
@@ -296,6 +296,137 @@ public class AdminController {
                         "incomeList", erpService.getIncomeList(),
                         "saleCount", erpService.getSalesCount()),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/editProduct")
+    public ModelAndView EditProduct(@RequestParam(name = "page", defaultValue = "0")String page, Principal principal) {
+        headerService.setHeader(principal);
+        Product product = new Product();
+        String minorCategoryName = "";
+
+        return new ModelAndView("admin/editProduct",
+                Map.of("products", productService.findAllProducts(),
+                        "product", product,
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories(),
+                        "minorCategoryName", minorCategoryName,
+                        "categoryList", productService.findCategories(),
+                        "subCategoryList", productService.findSubCategories(),
+                        "minorCategoryList", productService.findMinorCategories()),
+                HttpStatus.OK);
+    }
+
+
+    @PostMapping("/editProduct")
+    public String EditProduct(@ModelAttribute Product product,
+                             @ModelAttribute("minorCategoryName") String minorCategoryName) {
+        adminService.addNewProduct(product, minorCategoryName);
+        return "redirect:/admin/editProduct";
+    }
+
+    @GetMapping("/editCategory")
+    public ModelAndView EditCategory(Principal principal) {
+        headerService.setHeader(principal);
+        Category category = new Category();
+        return new ModelAndView("admin/editCategory",
+                Map.of("category", category,
+                        "categoryList", productService.findCategories(),
+                        "productList", productService.findAllProducts(),
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/editCategory")
+    public String EditCategory(@ModelAttribute Category category) {
+        adminService.addNewCategory(category);
+        return "redirect:/admin/editCategory";
+    }
+
+    @GetMapping("/editSubCategory")
+    public ModelAndView EditSubCategory(Principal principal) {
+        headerService.setHeader(principal);
+        SubCategory subCategory = new SubCategory();
+        String categoryName = "";
+        return new ModelAndView("admin/editSubCategory",
+                Map.of("subCategory", subCategory,
+                        "categoryName", categoryName,
+                        "categoryList", productService.findCategories(),
+                        "subCategoryList", productService.findSubCategories(),
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/editSubCategory")
+    public String EditSubCategory(@ModelAttribute SubCategory subCategory,
+                                 @ModelAttribute("categoryName") String categoryName
+    ) {
+        adminService.addNewSubCategory(categoryName, subCategory);
+        return "redirect:/admin/editSubCategory";
+    }
+
+    @GetMapping("/editMinorCategory")
+    public ModelAndView EditMinorCategory(Principal principal) {
+        headerService.setHeader(principal);
+        MinorCategory minorCategory = new MinorCategory();
+        String subCategoryName = "";
+
+        return new ModelAndView("admin/editMinorCategory",
+                Map.of("minorCategory", minorCategory,
+                        "subCategoryName", subCategoryName,
+                        "subCategoryList", productService.findAllSubCategories(),
+                        "minorCategoryList", productService.findMinorCategories(),
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories()),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/editMinorCategory")
+    public String EditMinorCategory(@ModelAttribute MinorCategory minorCategory,
+                                   @ModelAttribute("subCategoryName") String subCategoryName) {
+        adminService.addNewMinorCategory(subCategoryName, minorCategory);
+        return "redirect:/admin/editMinorCategory";
+    }
+
+    @GetMapping("/editAttribute")
+    public ModelAndView EditAttribute(@RequestParam(name = "page", defaultValue = "0")String page, Principal principal) {
+        headerService.setHeader(principal);
+        Attribute attribute = new Attribute();
+        return new ModelAndView("admin/editAttribute",
+                Map.of("attribute", attribute,
+                        "attributes", productService.findAttributes(),
+                        "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories(),
+                        "productList", productService.findAllProducts(),
+                        "attributeGroupsList", adminService.findAllAtrubutesGroups()),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/editAttribute")
+    public String EditAttribute(@ModelAttribute Attribute attribute,
+                               @ModelAttribute("attribute_group") String attribute_group) {
+        adminService.addNewAttribute(attribute, attribute_group);
+        return "redirect:/admin/editAttribute";
+    }
+
+    @GetMapping("/editAttributeGroup")
+    public ModelAndView EditAttributeGroup(Principal principal) {
+        headerService.setHeader(principal);
+        Attribute_Group attributeGroup = new Attribute_Group();
+        return new ModelAndView("admin/editAttributeGroup",
+                Map.of( "role", headerService.getHeaderRole(),
+                        "categories", headerService.getHeaderCategories(),
+                        "productList", productService.findAllProducts(),
+                        "attributeGroup", attributeGroup,
+                        "attributeGroups", adminService.findAllAtrubutesGroups()),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/editAttributeGroup")
+    public String EditAttributeGroup(@ModelAttribute("attributeGroup") Attribute_Group attributeGroup) {
+        adminService.addNewAttributeGroup(attributeGroup);
+        return "redirect:/admin/editAttributeGroup";
     }
 
 //    @PostMapping("/add100k")

@@ -8,11 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public interface AdminService {
     boolean addNewProduct(Product product, String subCategoryName);
@@ -37,7 +35,7 @@ public interface AdminService {
 
     long findUsersCount();
 
-    void addNewAttributeGroup(String attributeGroup);
+    void addNewAttributeGroup(Attribute_Group attributeGroup);
 
 //    void add100k();
 }
@@ -73,8 +71,16 @@ class AdminServiceImpl implements AdminService {
         newProduct.setDescription(product.getDescription());
         newProduct.setName(product.getName());
         newProduct.setPrice(product.getPrice());
-        newProduct.setAttribute_groups(new ArrayList<>());
         newProduct.setMinorCategory_id(minorCategory);
+        if(product.getId()!=0){
+            product = productRepository.findById(product.getId()).get();
+            newProduct.setId(product.getId());
+            newProduct.setAttribute_groups(product.getAttribute_groups());
+            newProduct.setImg(product.getImg());
+            newProduct.setCount(product.getCount());
+        }else{
+            newProduct.setAttribute_groups(new ArrayList<>());
+        }
         productRepository.saveAndFlush(newProduct);
         return true;
     }
@@ -100,11 +106,18 @@ class AdminServiceImpl implements AdminService {
             return false;
         }
         Category newCategory = new Category();
-        CategoryIncome categoryIncome = new CategoryIncome();
-        categoryIncome.setTotal(0);
-        categoryIncome.setQuantity(0);
         newCategory.setName(category.getName());
-        newCategory.setCategoryIncome(categoryIncome);
+        if(category.getId()!=0){
+            category = categoryRepository.findById(category.getId()).get();
+            newCategory.setId(category.getId());
+            newCategory.setSubCategories(category.getSubCategories());
+            newCategory.setCategoryIncome(category.getCategoryIncome());
+        }else {
+            CategoryIncome categoryIncome = new CategoryIncome();
+            categoryIncome.setTotal(0);
+            categoryIncome.setQuantity(0);
+            newCategory.setCategoryIncome(categoryIncome);
+        }
         categoryRepository.saveAndFlush(newCategory);
         return true;
     }
@@ -116,8 +129,13 @@ class AdminServiceImpl implements AdminService {
         }
         Category category = categoryRepository.findByName(categoryName).get();
         SubCategory newSubCategory = new SubCategory();
-        newSubCategory.setCategory_id(category);
         newSubCategory.setName(subCategory.getName());
+        newSubCategory.setCategory_id(category);
+        if(subCategory.getId()!=0){
+            subCategory = subCategoryRepository.findById(subCategory.getId()).get();
+            newSubCategory.setId(subCategory.getId());
+            newSubCategory.setMinorCategoryList(subCategory.getMinorCategoryList());
+        }
         subCategoryRepository.saveAndFlush(newSubCategory);
         return true;
     }
@@ -129,8 +147,13 @@ class AdminServiceImpl implements AdminService {
         }
         SubCategory subCategory = subCategoryRepository.findByName(subCategoryName).get();
         MinorCategory newMinorCategory = new MinorCategory();
-        newMinorCategory.setSubcategory_id(subCategory);
         newMinorCategory.setName(minorCategory.getName());
+        newMinorCategory.setSubcategory_id(subCategory);
+        if(minorCategory.getId()!=0){
+            minorCategory = minorCategoryRepository.findById(minorCategory.getId()).get();
+            newMinorCategory.setId(minorCategory.getId());
+            newMinorCategory.setProductList(minorCategory.getProductList());
+        }
         minorCategoryRepository.saveAndFlush(newMinorCategory);
         return true;
     }
@@ -142,9 +165,14 @@ class AdminServiceImpl implements AdminService {
         }
         Attribute newAttribute = new Attribute();
         newAttribute.setName(attribute.getName());
-        newAttribute.setAttribute_groups(attributeGroupRepository.findByName(attribute_group).get());
+        if(attribute.getId()!=0){
+            attribute = attributeRepository.findById(attribute.getId()).get();
+            newAttribute.setId(attribute.getId());
+            newAttribute.setAttribute_groups(attribute.getAttribute_groups());
+        }else {
+            newAttribute.setAttribute_groups(attributeGroupRepository.findByName(attribute_group).get());
+        }
         attributeRepository.saveAndFlush(newAttribute);
-
         return false;
     }
 
@@ -188,14 +216,21 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addNewAttributeGroup(String attributeGroup) {
-        if (attributeGroupRepository.findByName(attributeGroup).isPresent()) {
+    public void addNewAttributeGroup(Attribute_Group attributeGroup) {
+        if (attributeGroupRepository.findByName(attributeGroup.getName()).isPresent()) {
             return;
         }
         Attribute_Group newAttributeGroup = new Attribute_Group();
-        newAttributeGroup.setName(attributeGroup);
-        newAttributeGroup.setProduct_id(new ArrayList<>());
-        newAttributeGroup.setAttribute_id(new ArrayList<>());
+        newAttributeGroup.setName(attributeGroup.getName());
+        if(attributeGroup.getId()!=0){
+            attributeGroup = attributeGroupRepository.findById(attributeGroup.getId()).get();
+            newAttributeGroup.setId(attributeGroup.getId());
+            newAttributeGroup.setProduct_id(attributeGroup.getProduct_id());
+            newAttributeGroup.setAttribute_id(attributeGroup.getAttribute_id());
+        }else {
+            newAttributeGroup.setProduct_id(new ArrayList<>());
+            newAttributeGroup.setAttribute_id(new ArrayList<>());
+        }
         attributeGroupRepository.saveAndFlush(newAttributeGroup);
     }
 
@@ -310,6 +345,7 @@ class AdminServiceImpl implements AdminService {
 //
 //        int i = 1000;
 //        List<Attribute_Group> attribute_groups = attributeGroupRepository.findAll();
+//        List<Attribute> attributes = attributeRepository.findAll();
 //        Random random = new Random();
 //        for (MinorCategory minorCategory:minorCategoryRepository.findAll()) {
 //            for (int j = 0; j < (random.nextInt(10) + 50); j++, i++) {
@@ -332,14 +368,11 @@ class AdminServiceImpl implements AdminService {
 //                newProduct.setCount((random.nextInt(100) + 2));
 //                for (int k = 0; k < 5; k++) {
 //                    newProduct.getAttribute_groups().add(attribute_groups.get(random.nextInt(attribute_groups.size())));
+//                    newProductAttrValue.setAttribute(attributes.get(random.nextInt(attributes.size())));
+//                    newProductAttrValue.setProduct(newProduct);
+//                    newProductAttrValue.setValue(colors[random.nextInt(colors.length)]);
+//                    newProduct.getProductAttrValue().add(newProductAttrValue);
 //                }
-//                newProductAttrValue.setAttribute(attributeRepository.findByName("Цвет").get());
-//                newProductAttrValue.setAttribute(attributeRepository.findByName("Материал").get());
-//                newProductAttrValue.setAttribute(attributeRepository.findByName("Разрешение").get());
-//                newProductAttrValue.setProduct(newProduct);
-//                newProductAttrValue.setValue(colors[random.nextInt(colors.length)]);
-//                newProduct.getProductAttrValue().add(newProductAttrValue);
-//
 //                productRepository.saveAndFlush(newProduct);
 //                System.out.println(newProduct.getId());
 //            }

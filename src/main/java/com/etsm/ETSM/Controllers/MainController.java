@@ -77,7 +77,7 @@ public class MainController {
 
         headerService.setHeader(principal);
         List<Integer> pages = new ArrayList<>();
-        int maxProductsInPage = 10;
+        int maxProductsInPage = 20;
 
         if(maxPrice <= 0){
             maxPrice = 100000;

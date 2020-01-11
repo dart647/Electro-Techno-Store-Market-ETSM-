@@ -13,7 +13,7 @@
 <header th:replace="header :: head"/>
 
 <!--    Главная часть-->
-<form class="input-group"  th:action="@{/search}"  method="get">
+<form class="input-group" th:action="@{/search}" method="get">
     <div class="container-fluid">
         <div class="row form-group">
             <!--        <div th:replace="header :: leftBar"/>-->
@@ -39,7 +39,8 @@
                                 <div class="modal-body">
                                     <div class="row form-group">
                                         <label for="sortHolder" class="font-weight-bold">Сортировка</label>
-                                        <select id="sortHolder" class="custom-select form-control" name="sortParam" th:switch="${sortParam}">
+                                        <select id="sortHolder" class="custom-select form-control" name="sortParam"
+                                                th:switch="${sortParam}">
                                             <option th:case="name" th:value="${sortParam}"
                                                     selected="selected">Имя
                                             </option>
@@ -56,16 +57,22 @@
                                     </div>
                                     <div class="row form-group">
                                         <label for="priceHolder" class="font-weight-bold">Фильтрация по цене</label>
-                                        <input class="form-control" id="priceHolder" type="number" name="maxPrice" th:value="${maxPrice}">
+                                        <input class="form-control" id="priceHolder" type="number" name="maxPrice"
+                                               th:value="${maxPrice}">
                                     </div>
                                     <div class="row form-group">
-                                        <label for="categoryHolder" class="font-weight-bold">Фильтрация по категории</label>
-                                        <select id="categoryHolder" class="custom-select form-control" name="categoryName">
-                                            <option th:unless="${categoryName} == all" th:value="${categoryName}" th:text="${categoryName}" selected></option>
+                                        <label for="categoryHolder" class="font-weight-bold">Фильтрация по
+                                            категории</label>
+                                        <select id="categoryHolder" class="custom-select form-control"
+                                                name="categoryName">
+                                            <option th:unless="${categoryName} == all" th:value="${categoryName}"
+                                                    th:text="${categoryName}" selected></option>
                                             <option value="all">Все категории</option>
                                             <div>
-                                                <option th:each="category:${categories}" th:unless="${categoryName} == ${category.name}" th:value="${category.name}"
-                                                th:text="${category.name}"></option>
+                                                <option th:each="category:${categories}"
+                                                        th:unless="${categoryName} == ${category.name}"
+                                                        th:value="${category.name}"
+                                                        th:text="${category.name}"></option>
                                             </div>
                                         </select>
                                     </div>
@@ -74,7 +81,8 @@
                                             <label class="font-weight-bold">Фильтрация по атрибутам</label>
                                             <div th:each="attrParam:${attributes}">
                                                 <div class="dropdown-item">
-                                                    <input class="custom-checkbox" type="checkbox" th:field="${attributesParams.attrValues}"
+                                                    <input class="custom-checkbox" type="checkbox"
+                                                           th:field="${attributesParams.attrValues}"
                                                            th:value="${attrParam.id}">
                                                     <label th:text="${attrParam.value}"></label>
                                                 </div>
@@ -98,35 +106,57 @@
                     </div>
                 </div>
 
-                <div th:switch="${searchProducts.size()}">
-                    <div class="container" th:case="0">
-                        <h4>Совпадений не найдено</h4>
-                    </div>
-                    <div th:case="*" class="row">
-                        <div class="col container" th:each="product: ${searchProducts}">
-                            <br>
+                <div class="container-fluid">
+                    <div class="row" th:switch="${searchProducts.size()}">
+                        <div class="col-2">
+                            <h4>Выбранные параметры</h4>
                             <div>
-                                <a class="btn btn-outline-dark"
-                                   th:href="@{/catalog/details/{productName}(productName=${product.name})}">
-                                    <img height="150" width="300" class="img" th:src="${product.img}">
-                                    <div>
-                                        <label th:text="${'Название ' + product.name}"></label>
-                                    </div>
-                                    <div>
-                                        <label th:text="${'Цена ' + product.price}"></label>
-                                        <label th:text="${'Кол-во ' + product.count}"></label>
-                                    </div>
-                                    <div>
-                                        <p class="border" th:with="minor = ${product.minorcategoryid}"
-                                           th:text="${minor.name}"></p>
-                                    </div>
-                                </a>
-                                <div>
-                                    <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
-                                        в корзину</a>
+                                <label for="catName" class="font-weight-bold">Категория поиска:</label>
+                                <p id="catName" type="text" disabled th:text="${categoryName}">
+                            </div>
+                            <div>
+                                <label for="price" class="font-weight-bold">Цена до:</label>
+                                <p id="price" type="text" disabled th:text="${maxPrice}">
+                            </div>
+                            <div>
+                                <label for="sortPar" class="font-weight-bold">Сортировка по:</label>
+                                <p id="sortPar" type="text" disabled th:text="${sortParam}">
+                            </div>
+                            <div>
+                                <label class="font-weight-bold">Фильтр по атрибутам:</label>
+                                <div th:each="attr : ${attributeParams.attrValues}">
+                                    <p type="text" disabled th:text="${attr.value}">
                                 </div>
                             </div>
-                            <br>
+                        </div>
+                        <div class="col" th:case="0">
+                            <h4>Совпадений не найдено</h4>
+                        </div>
+                        <div class="col" th:case="*">
+                            <div class="row">
+                                <div class="col" th:each="product: ${searchProducts}">
+                                    <a class="btn btn-outline-dark"
+                                       th:href="@{/catalog/details/{productName}(productName=${product.name})}">
+                                        <img height="150" width="300" class="img" th:src="${product.img}">
+                                        <div>
+                                            <label th:text="${'Название ' + product.name}"></label>
+                                        </div>
+                                        <div>
+                                            <label th:text="${'Цена ' + product.price}"></label>
+                                            <label th:text="${'Кол-во ' + product.count}"></label>
+                                        </div>
+                                        <div>
+                                            <p class="border" th:with="minor = ${product.minorcategoryid}"
+                                               th:text="${minor.name}"></p>
+                                        </div>
+                                    </a>
+                                    <div>
+                                        <a class="btn btn-primary" th:href="@{/buyProduct?code={id}(id=${product.id})}">Добавить
+                                            в корзину</a>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
