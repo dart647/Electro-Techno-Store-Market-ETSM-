@@ -8,9 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 public interface AdminService {
     boolean addNewProduct(Product product, String subCategoryName);
@@ -253,7 +255,9 @@ class AdminServiceImpl implements AdminService {
 //                "Horn",
 //                "Mer",
 //                "Flex",
-//                "Lot"
+//                "Lot",
+//                "Dot",
+//                "Mascot"
 //        };
 //
 //        String[] nameP2 = new String[]{
@@ -261,7 +265,12 @@ class AdminServiceImpl implements AdminService {
 //                "lotl",
 //                "end",
 //                "nex",
-//                "gol"
+//                "gol",
+//                "coatl",
+//                "ierihon",
+//                " Termex",
+//                " Rolblood",
+//                " Gear"
 //        };
 //
 //        String[] nameP3 = new String[]{
@@ -277,7 +286,11 @@ class AdminServiceImpl implements AdminService {
 //                "Черный",
 //                "Коричневый",
 //                "Желтый",
-//                "Зеленый"
+//                "Зеленый",
+//                "1600*900",
+//                "1920*1080",
+//                "Металл",
+//                "Пластик"
 //        };
 //
 //        String[] images = new String[]{
@@ -285,38 +298,50 @@ class AdminServiceImpl implements AdminService {
 //                "https://avatars.mds.yandex.net/get-pdb/750514/b80354ed-2ddf-41b4-9f09-38cdb7699e96/s1200",
 //                "https://avatars.mds.yandex.net/get-zen_doc/1548443/pub_5d9785b6fbe6e700b099ea62_5d978fa58f011100b48e9cad/scale_1200",
 //                "https://user43214.clients-cdnnow.ru/image/cache/catalog/197/197762_73f81-1000x1000.jpg",
-//                "https://i.pinimg.com/originals/19/7a/47/197a47d1c82df35e129da50cc1a9cfaf.jpg"
+//                "https://i.pinimg.com/originals/19/7a/47/197a47d1c82df35e129da50cc1a9cfaf.jpg",
+//                "https://games.mail.ru/hotbox/content_files/gallery/9a/b8/8b19145c.jpeg",
+//                "https://images.ua.prom.st/1682067017_w640_h640_stajler-dlya-volos.jpg",
+//                "https://trashbox.ru/files/794958_aad885/x1maxgncouple-2gnb.png",
+//                "https://up.kiev.ua/id_pic/49/494900_1.jpg",
+//                "https://images.ua.prom.st/1848534456_w640_h640_smart-chasy-uwatch-smart.jpg",
+//                "http://ikuzotelevision.com/wp-content/uploads/2014/12/Tvs-Plasma.jpg",
+//                "https://www.1music.kz/upload/iblock/860/860259a5776d030cfa684e360ecf9c87.jpeg"
 //        };
 //
+//        int i = 1000;
+//        List<Attribute_Group> attribute_groups = attributeGroupRepository.findAll();
+//        Random random = new Random();
 //        for (MinorCategory minorCategory:minorCategoryRepository.findAll()) {
-//            for (int i = 0; i < (new Random().nextInt(5) + 10); i++) {
+//            for (int j = 0; j < (random.nextInt(10) + 50); j++, i++) {
 //
-//                String name = nameP1[new Random().nextInt(nameP1.length)]
-//                        + nameP2[new Random().nextInt(nameP2.length)]
+//                String name = nameP1[random.nextInt(nameP1.length)]
+//                        + nameP2[random.nextInt(nameP2.length)]
 //                        + " "
-//                        + nameP3[new Random().nextInt(nameP3.length)]
+//                        + nameP3[random.nextInt(nameP3.length)]
 //                        + i;
 //
 //                Product newProduct = new Product();
 //                ProductAttrValue newProductAttrValue = new ProductAttrValue();
 //                newProduct.setAttribute_groups(new ArrayList<>());
 //                newProduct.setProductAttrValue(new ArrayList<>());
-//                newProduct.setDescription(description[new Random().nextInt(description.length)]);
+//                newProduct.setDescription(description[random.nextInt(description.length)]);
 //                newProduct.setName(name);
-//                newProduct.setPrice((new Random().nextInt(100000) + 100));
+//                newProduct.setPrice((random.nextInt(100000) + 100));
 //                newProduct.setMinorCategory_id(minorCategory);
-//                newProduct.setImg(images[new Random().nextInt(images.length)]);
-//                newProduct.setCount((new Random().nextInt(100) + 2));
-//                newProduct.getAttribute_groups().add(attributeGroupRepository.findById(1L).get());
-//                newProduct.getAttribute_groups().add(attributeGroupRepository.findById(((long)new Random().nextInt((int)attributeGroupRepository.count()) + 1)).get());
-//                newProduct.getAttribute_groups().add(attributeGroupRepository.findById(((long)new Random().nextInt((int)attributeGroupRepository.count()) + 1)).get());
-//                newProduct.getAttribute_groups().add(attributeGroupRepository.findById(((long)new Random().nextInt((int)attributeGroupRepository.count()) + 1)).get());
+//                newProduct.setImg(images[random.nextInt(images.length)]);
+//                newProduct.setCount((random.nextInt(100) + 2));
+//                for (int k = 0; k < 5; k++) {
+//                    newProduct.getAttribute_groups().add(attribute_groups.get(random.nextInt(attribute_groups.size())));
+//                }
 //                newProductAttrValue.setAttribute(attributeRepository.findByName("Цвет").get());
+//                newProductAttrValue.setAttribute(attributeRepository.findByName("Материал").get());
+//                newProductAttrValue.setAttribute(attributeRepository.findByName("Разрешение").get());
 //                newProductAttrValue.setProduct(newProduct);
-//                newProductAttrValue.setValue(colors[new Random().nextInt(colors.length)]);
+//                newProductAttrValue.setValue(colors[random.nextInt(colors.length)]);
 //                newProduct.getProductAttrValue().add(newProductAttrValue);
 //
 //                productRepository.saveAndFlush(newProduct);
+//                System.out.println(newProduct.getId());
 //            }
 //        }
 //    }
