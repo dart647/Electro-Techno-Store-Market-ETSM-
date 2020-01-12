@@ -31,7 +31,6 @@
                 <th scope="col">Название</th>
                 <th scope="col">Цена</th>
                 <th scope="col">Количество</th>
-                <th scope="col">Скидка</th>
                 <th scope="col">Сумма</th>
                 </thead>
                 <tbody>
@@ -40,7 +39,6 @@
                     <td><p th:text="${orderItem.product_id.name}"></p></td>
                     <td><p th:text="${orderItem.product_id.price}"></p></td>
                     <td><p th:text="${orderItem.count}"></p></td>
-                    <td><p th:text="${orderItem.discount}"></p></td>
                     <td><p th:text="${orderItem.summ}"></p></td>
                 </tr>
                 </tbody>

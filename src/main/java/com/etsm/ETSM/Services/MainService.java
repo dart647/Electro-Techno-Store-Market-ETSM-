@@ -45,8 +45,10 @@ class MainServiceImpl implements MainService {
 
     private ProductAttrValueRepository productAttrValueRepository;
 
+    private ProductService productService;
+
     public List<Product> SetRecommendations() {
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productService.findAllProducts();
         List<Product> recommendations = new ArrayList<>();
         if (productRepository.count() != 0) {
             for (int i = 0; i < 12; i++) {
@@ -128,6 +130,11 @@ class MainServiceImpl implements MainService {
     @Autowired
     public void setProductAttrValueRepository(ProductAttrValueRepository productAttrValueRepository) {
         this.productAttrValueRepository = productAttrValueRepository;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 }
 

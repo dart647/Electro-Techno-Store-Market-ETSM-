@@ -38,8 +38,6 @@ public interface AdminService {
     long findUsersCount();
 
     void addNewAttributeGroup(Attribute_Group attributeGroup);
-
-//    void add100k();
 }
 
 @Service
@@ -284,108 +282,4 @@ class AdminServiceImpl implements AdminService {
         this.productAttrValueRepository = productAttrValueRepository;
     }
 
-
-//    @Override
-//    public void add100k() {
-//        String[] description = new String[]{
-//                "Простое описание товара.",
-//                "Описание лучшего товара на свете, других таких не найдешь!!!",
-//                "Лучший товар, что можно только найти на белом свете!!!",
-//                "Описание для товара из списка товаров.",
-//                "Товар. Простой. Как есть."
-//        };
-//
-//        String[] nameP1 = new String[]{
-//                "Bri",
-//                "Horn",
-//                "Mer",
-//                "Flex",
-//                "Lot",
-//                "Dot",
-//                "Mascot"
-//        };
-//
-//        String[] nameP2 = new String[]{
-//                "tron",
-//                "lotl",
-//                "end",
-//                "nex",
-//                "gol",
-//                "coatl",
-//                "ierihon",
-//                " Termex",
-//                " Rolblood",
-//                " Gear"
-//        };
-//
-//        String[] nameP3 = new String[]{
-//                "X",
-//                "T",
-//                "Y",
-//                "W",
-//                "S"
-//        };
-//
-//        String[] colors = new String[]{
-//                "Красный",
-//                "Черный",
-//                "Коричневый",
-//                "Желтый",
-//                "Зеленый",
-//                "1600*900",
-//                "1920*1080",
-//                "Металл",
-//                "Пластик"
-//        };
-//
-//        String[] images = new String[]{
-//                "https://avatars.mds.yandex.net/get-zen_doc/1708669/pub_5caf954c0b1fb500b33a91a4_5caf9635db481700b3e2c67c/scale_1200",
-//                "https://avatars.mds.yandex.net/get-pdb/750514/b80354ed-2ddf-41b4-9f09-38cdb7699e96/s1200",
-//                "https://avatars.mds.yandex.net/get-zen_doc/1548443/pub_5d9785b6fbe6e700b099ea62_5d978fa58f011100b48e9cad/scale_1200",
-//                "https://user43214.clients-cdnnow.ru/image/cache/catalog/197/197762_73f81-1000x1000.jpg",
-//                "https://i.pinimg.com/originals/19/7a/47/197a47d1c82df35e129da50cc1a9cfaf.jpg",
-//                "https://games.mail.ru/hotbox/content_files/gallery/9a/b8/8b19145c.jpeg",
-//                "https://images.ua.prom.st/1682067017_w640_h640_stajler-dlya-volos.jpg",
-//                "https://trashbox.ru/files/794958_aad885/x1maxgncouple-2gnb.png",
-//                "https://up.kiev.ua/id_pic/49/494900_1.jpg",
-//                "https://images.ua.prom.st/1848534456_w640_h640_smart-chasy-uwatch-smart.jpg",
-//                "http://ikuzotelevision.com/wp-content/uploads/2014/12/Tvs-Plasma.jpg",
-//                "https://www.1music.kz/upload/iblock/860/860259a5776d030cfa684e360ecf9c87.jpeg"
-//        };
-//
-//        int i = 1000;
-//        List<Attribute_Group> attribute_groups = attributeGroupRepository.findAll();
-//        List<Attribute> attributes = attributeRepository.findAll();
-//        Random random = new Random();
-//        for (MinorCategory minorCategory:minorCategoryRepository.findAll()) {
-//            for (int j = 0; j < (random.nextInt(10) + 50); j++, i++) {
-//
-//                String name = nameP1[random.nextInt(nameP1.length)]
-//                        + nameP2[random.nextInt(nameP2.length)]
-//                        + " "
-//                        + nameP3[random.nextInt(nameP3.length)]
-//                        + i;
-//
-//                Product newProduct = new Product();
-//                ProductAttrValue newProductAttrValue = new ProductAttrValue();
-//                newProduct.setAttribute_groups(new ArrayList<>());
-//                newProduct.setProductAttrValue(new ArrayList<>());
-//                newProduct.setDescription(description[random.nextInt(description.length)]);
-//                newProduct.setName(name);
-//                newProduct.setPrice((random.nextInt(100000) + 100));
-//                newProduct.setMinorCategory_id(minorCategory);
-//                newProduct.setImg(images[random.nextInt(images.length)]);
-//                newProduct.setCount((random.nextInt(100) + 2));
-//                for (int k = 0; k < 5; k++) {
-//                    newProduct.getAttribute_groups().add(attribute_groups.get(random.nextInt(attribute_groups.size())));
-//                    newProductAttrValue.setAttribute(attributes.get(random.nextInt(attributes.size())));
-//                    newProductAttrValue.setProduct(newProduct);
-//                    newProductAttrValue.setValue(colors[random.nextInt(colors.length)]);
-//                    newProduct.getProductAttrValue().add(newProductAttrValue);
-//                }
-//                productRepository.saveAndFlush(newProduct);
-//                System.out.println(newProduct.getId());
-//            }
-//        }
-//    }
 }

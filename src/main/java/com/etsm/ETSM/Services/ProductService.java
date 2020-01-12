@@ -209,6 +209,7 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(cacheNames = "productPages")
     public List<Product> findAllProductsPages(String page, int maxInPage) {
         Pageable pageable = PageRequest.of(Integer.parseInt(page), maxInPage, Sort.by("name"));
         return productRepository.findAllByNameLike("%%", pageable);
