@@ -110,9 +110,10 @@
                     <div class="row" th:switch="${searchProducts.size()}">
                         <div class="col-2">
                             <h4>Выбранные параметры</h4>
-                            <div>
-                                <label for="catName" class="font-weight-bold">Категория поиска:</label>
-                                <p id="catName" type="text" disabled th:text="${categoryName}">
+                            <div th:switch="${sortParam}">
+                                <label class="font-weight-bold">Категория поиска:</label>
+                                <p th:case="all" type="text" disabled>Все категории</p>
+                                <p th:case="*" type="text" disabled th:text="${categoryName}"></p>
                             </div>
                             <div>
                                 <label for="price" class="font-weight-bold">Цена до:</label>
