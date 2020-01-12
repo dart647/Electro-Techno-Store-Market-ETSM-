@@ -41,6 +41,16 @@
             <h1 th:text="${currMinorCategory.name}"></h1>
 
             <div class="row">
+                <form class="input-group" th:action="@{/search}" method="get">
+                    <input class="form-control" type="search" placeholder="Поиск" area-label="Search"
+                           aria-describedby="button-addon" name="searchProduct">
+                    <div class="input-group-append">
+                        <input class="btn btn-outline-success" type="submit" id="button-addon" value="Поиск">
+                    </div>
+                    <input type="hidden" name="categoryName" th:value="${currMinorCategory.subcategory_id.category_id.name}">
+                </form>
+            </div>
+            <div class="row">
                 <div th:each="product : ${products}" class="col">
                     <br>
                     <div>

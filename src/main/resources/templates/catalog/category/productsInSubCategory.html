@@ -30,6 +30,17 @@
                 </ol>
             </nav>
 
+            <div class="row">
+                <form class="input-group" th:action="@{/search}" method="get">
+                    <input class="form-control" type="search" placeholder="Поиск" area-label="Search"
+                           aria-describedby="button-addon" name="searchProduct">
+                    <div class="input-group-append">
+                        <input class="btn btn-outline-success" type="submit" id="button-addon" value="Поиск">
+                    </div>
+                    <input type="hidden" name="categoryName" th:value="${currSubCategory.category_id.name}">
+                </form>
+            </div>
+
             <h1 th:text="${currSubCategory.name}"></h1>
             <div class="row">
                 <div data-th-each="minorCategory : ${minorCategories}" class="col">

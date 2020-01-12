@@ -135,6 +135,7 @@
                         <div class="col" th:case="*">
                             <div class="row">
                                 <div class="col" th:each="product: ${searchProducts}">
+                                    <br>
                                     <a class="btn btn-outline-dark"
                                        th:href="@{/catalog/details/{productName}(productName=${product.name})}">
                                         <img height="150" width="300" class="img" th:src="${product.img}">

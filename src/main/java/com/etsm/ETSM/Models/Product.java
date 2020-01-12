@@ -37,11 +37,11 @@ public class Product {
     @JoinColumn(name = "minorcategory_id", referencedColumnName = "id")
     private MinorCategory minorcategoryid; //Подкатегория
 
-    @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Sales_has_product.class, mappedBy = "product_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SELECT)
     private transient List<Sales_has_product> salesHasProducts;
 
-    @OneToMany(targetEntity = ProductAttrValue.class,mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = ProductAttrValue.class,mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SELECT)
     private List<ProductAttrValue> productAttrValue;
 

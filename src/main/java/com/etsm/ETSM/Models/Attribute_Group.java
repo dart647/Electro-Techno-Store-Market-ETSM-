@@ -28,7 +28,7 @@ public class Attribute_Group {
     @Fetch(value = FetchMode.SELECT)
     private List<Attribute> attribute_id;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SELECT)
     @JoinTable(name = "product_has_attribute_group",
             joinColumns = @JoinColumn(name="attribute_group_id"),
