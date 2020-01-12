@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(exclude=HibernateJpaAutoConfiguration.class)
 @EnableJpaRepositories(basePackageClasses = ProductRepository.class)
-@EnableCaching
+//@EnableCaching
 public class EtsmApplication {
 
 	public static void main(String[] args) {
