@@ -428,10 +428,4 @@ public class AdminController {
         adminService.addNewAttributeGroup(attributeGroup);
         return "redirect:/admin/editAttributeGroup";
     }
-
-//    @PostMapping("/add100k")
-//    public String add100k() {
-//        adminService.add100k();
-//        return "redirect:/admin";
-//    }
 }

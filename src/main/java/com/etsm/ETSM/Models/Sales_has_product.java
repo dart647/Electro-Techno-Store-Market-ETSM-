@@ -17,9 +17,6 @@ public class Sales_has_product {
     @Column(name = "`count`")
     private int count;
 
-    @Column(name = "`discount`")
-    private float discount;
-
     @Column(name = "`summ`")
     private int summ;
 
@@ -37,14 +34,6 @@ public class Sales_has_product {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public float getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(float discount) {
-        this.discount = discount;
     }
 
     public int getSumm() {
@@ -91,6 +80,6 @@ public class Sales_has_product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, count, discount, summ, sales_id, product_id);
+        return Objects.hash(id, count, summ, sales_id, product_id);
     }
 }

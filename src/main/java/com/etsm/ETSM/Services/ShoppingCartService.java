@@ -177,7 +177,6 @@ class ShoppingCartServiceImpl implements ShoppingCartService {
             }
             hasProduct.setCount(cartItem.getQuantity());
             hasProduct.setSumm(cartItem.getTotalPrice());
-            hasProduct.setDiscount(0);
             hasProduct.setSales_id(newSale);
             hasProduct.setProduct_id(cartItem.getProduct());
             sales_has_productRepository.saveAndFlush(hasProduct);
