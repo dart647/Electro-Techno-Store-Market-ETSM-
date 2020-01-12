@@ -23,6 +23,7 @@ public interface HeaderService {
 class HeaderServiceImpl implements HeaderService{
     private CategoryRepository categoryRepository;
 
+    private ProductService productService;
 
     private UserService userService;
 
@@ -36,7 +37,7 @@ class HeaderServiceImpl implements HeaderService{
             user = (User) userService.loadUserByUsername(principal.getName());
         }
 
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = productService.findCategories();
         header = new Header(categories, user);
         return header;
     }
@@ -63,6 +64,11 @@ class HeaderServiceImpl implements HeaderService{
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 }
 

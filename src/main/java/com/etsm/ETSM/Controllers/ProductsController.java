@@ -36,21 +36,6 @@ public class ProductsController {
         this.headerService = headerService;
     }
 
-    //Products List Page
-//    @GetMapping("/list")
-//    ModelAndView GetAllProducts(Principal principal) {
-//        User userForRole = new User();
-//        userForRole.setRoles(new HashSet<Role>(Collections.singleton(Role.USER)));
-//        if (principal != null) {
-//            userForRole = (User) userService.loadUserByUsername(principal.getName());
-//        }
-//        return new ModelAndView("catalog/list",
-//                Map.of("products", productService.findAllProducts(),
-//                        "categories", mainService.GetAllCategories(),
-//                        "role", userForRole.getRoles().toArray()[0].toString()),
-//                HttpStatus.OK);
-//    }
-
     @GetMapping("{categoryName}")
     public ModelAndView GetCategory(@PathVariable String categoryName, Principal principal) {
         headerService.setHeader(principal);
