@@ -285,4 +285,48 @@ public class ShoppingCartServiceImplTest {
 
 
     }
+
+    @Test
+    public void revertDeletionTest(){
+        ShoppingCartServiceImpl shoppingCartService = new ShoppingCartServiceImpl();
+        //
+        //HttpSession httpSession = new MockHttpSession();
+        //httpSession.setAttribute("cart","1");
+        //httpSession.setAttribute("deletedItem","1");
+
+
+        //shoppingCartService.revertDeletion(httpSession);
+
+    }
+
+    @Test
+    public void spendLoyaltyTest(){
+        ShoppingCartServiceImpl shoppingCartService = new ShoppingCartServiceImpl();
+        LoyaltyRepository loyaltyRepositoryMock = mock(LoyaltyRepository.class);
+        shoppingCartService.setLoyaltyRepository(loyaltyRepositoryMock);
+        ERPService erpServiceMock = mock(ERPService.class);
+        shoppingCartService.setErpService(erpServiceMock);
+        //
+
+        User user = new User();
+        user.setId(1L);
+
+        Loyalty loyalty = new Loyalty();
+        loyalty.setId(1L);
+        loyalty.setBalance(100);
+        //loyalty.setUserInfo_id();
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(1L);
+        userInfo.setLoyaltyCode_id(loyalty);
+        user.setUserInfo(userInfo);
+
+        HttpSession httpSession= new MockHttpSession();
+        httpSession.setAttribute("totalOrderPrice",1000);
+
+        Optional<Loyalty> optionalLoyalty = Optional.of(loyalty);
+
+        Mockito.when(loyaltyRepositoryMock.findById(userInfo.getLoyaltyCode_id().getId())).thenReturn(optionalLoyalty);
+        shoppingCartService.spendLoyalty(userInfo,httpSession);
+    }
 }

@@ -80,9 +80,11 @@ public class ShoppingCartControllerTest {
 
         String s = shoppingCartController.removeProductFromCart(code, httpSession);
 
-        Assert.assertEquals(s, "redirect:/basket");
+        Assert.assertEquals(s, "redirect:/basket?deleted=true");
 
     }
+
+
 
     @Test
     public void changeQuantityTest() {

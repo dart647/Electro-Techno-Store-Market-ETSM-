@@ -1,6 +1,7 @@
 package com.etsm.ETSM.Controllers;
 
 import com.etsm.ETSM.Models.*;
+import com.etsm.ETSM.Repositories.CategoryRepository;
 import com.etsm.ETSM.Services.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.mock;
 public class AdminControllerTest {
 
 
-    @Test //(expected = NullPointerException.class)
+    @Test
     public void getAllUsersTest(){
         AdminService adminServiceMock = mock(AdminService.class);
         MainService mainServiceMock = mock(MainService.class);
@@ -75,7 +76,7 @@ public class AdminControllerTest {
 
     }
 
-    @Test //(expected = NullPointerException.class)
+    @Test
     public void userTest(){
         AdminService adminServiceMock = mock(AdminService.class);
         MainService mainServiceMock = mock(MainService.class);
@@ -621,5 +622,644 @@ adminController.setMainService(mainServiceMock);
 
     }
 
+    @Test
+    public void deactivateUserTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        //
 
+        User user = new User();
+        user.setId(1L);
+        user.setActive(true);
+
+        String s = "redirect:/admin/all";
+
+        Assert.assertEquals(s,adminController.deactivateUser(user.getId()));
+
+
+    }
+
+    @Test
+    public void changeUserRoleTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        //
+
+        User user = new User();
+        user.setId(1L);
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.USER));
+
+        String s = "redirect:/admin/all";
+
+        Assert.assertEquals(s,adminController.changeUserRole(user.getId(),"ADMIN"));
+
+
+    }
+
+    @Test
+    public void addAttributeGroupTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+        ////
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.ADMIN));
+        Category category = new Category();
+        category.setId(1L);
+        List<Category>categoryList=List.of(category);
+        List<Category>categoryLinkedList=new LinkedList<>(categoryList);
+
+        User finalUserForRole = user;
+        Principal principal = () -> finalUserForRole.getUsername();
+        Mockito.when(categoryRepositoryMock.findAll()).thenReturn(categoryLinkedList);
+        headerServiceMock.setHeader(principal);
+        adminController.setHeaderService(headerServiceMock);
+        Mockito.when(headerServiceMock.getHeaderRole()).thenReturn("ADMIN");
+
+        Mockito.when(headerServiceMock.getHeaderCategories()).thenReturn(categoryLinkedList);
+
+        Product product = new Product();
+        product.setId(1L);
+        List<Product>productList=List.of(product);
+        List<Product>productLinkedList=new LinkedList<>(productList);
+
+        Mockito.when(productServiceMock.findAllProducts()).thenReturn(productLinkedList);
+
+        ModelAndView m1 = adminController.addAttributeGroup(principal);
+
+        Assert.assertEquals(m1.getViewName(),"admin/addAttributeGroup");
+
+
+    }
+
+    @Test
+    public void StringAddAttributeGroupTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+        ////
+
+
+        Attribute_Group attribute_group = new Attribute_Group();
+        attribute_group.setId(1L);
+
+        String s = "redirect:/admin/addAttributeGroup";
+
+        Assert.assertEquals(s,adminController.addAttributeGroup(attribute_group));
+
+    }
+
+
+    @Test
+    public void statisticChartsTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.ADMIN));
+        User finalUserForRole = user;
+        Principal principal = () -> finalUserForRole.getUsername();
+        headerServiceMock.setHeader(principal);
+        adminController.setHeaderService(headerServiceMock);
+
+        Category category = new Category();
+        category.setId(1L);
+        List<Category>categoryList = List.of(category);
+        List<Category>categoryLinkedList = new LinkedList<>(categoryList);
+
+
+
+        CategoryIncome categoryIncome = new CategoryIncome();
+        categoryIncome.setId(1L);
+        List<CategoryIncome>categoryIncomeList=List.of(categoryIncome);
+        List<CategoryIncome>categoryIncomeLinkedList=new LinkedList<>(categoryIncomeList);
+       // Mockito.when(erpServiceMock.getIncomeChartData()).thenReturn();
+        Mockito.when(headerServiceMock.getHeaderRole()).thenReturn("ADMIN");
+        Mockito.when(headerServiceMock.getHeaderCategories()).thenReturn(categoryLinkedList);
+        //Mockito.when(erpService.getIncomeList()).thenReturn(categoryIncomeLinkedList);
+
+        ModelAndView m1 = adminController.statisticCharts(principal);
+
+        Assert.assertEquals(m1.getViewName(),"admin/charts");
+    }
+
+    @Test
+    public void EditProductTest(){
+
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.ADMIN));
+        User finalUserForRole = user;
+        Principal principal = () -> finalUserForRole.getUsername();
+        headerServiceMock.setHeader(principal);
+        adminController.setHeaderService(headerServiceMock);
+
+        Category category = new Category();
+        category.setId(1L);
+        List<Category>categoryList = List.of(category);
+        List<Category>categoryLinkedList = new LinkedList<>(categoryList);
+
+
+
+        CategoryIncome categoryIncome = new CategoryIncome();
+        categoryIncome.setId(1L);
+        List<CategoryIncome>categoryIncomeList=List.of(categoryIncome);
+        List<CategoryIncome>categoryIncomeLinkedList=new LinkedList<>(categoryIncomeList);
+        // Mockito.when(erpServiceMock.getIncomeChartData()).thenReturn();
+        Mockito.when(headerServiceMock.getHeaderRole()).thenReturn("ADMIN");
+        Mockito.when(headerServiceMock.getHeaderCategories()).thenReturn(categoryLinkedList);
+        //Mockito.when(erpService.getIncomeList()).thenReturn(categoryIncomeLinkedList);
+
+        ModelAndView m1 = adminController.EditProduct("page",principal);
+
+        Assert.assertEquals(m1.getViewName(),"admin/editProduct");
+
+    }
+
+    @Test
+    public void StringEditProductTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+        Product product = new Product();
+        product.setId(1L);
+
+        String s = adminController.EditProduct(product,"name");
+        Assert.assertEquals(s,"redirect:/admin/editProduct");
+
+    }
+
+    @Test
+    public void EditCategoryTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.ADMIN));
+        User finalUserForRole = user;
+        Principal principal = () -> finalUserForRole.getUsername();
+        headerServiceMock.setHeader(principal);
+        adminController.setHeaderService(headerServiceMock);
+
+        Category category = new Category();
+        category.setId(1L);
+        List<Category>categoryList = List.of(category);
+        List<Category>categoryLinkedList = new LinkedList<>(categoryList);
+
+
+
+        CategoryIncome categoryIncome = new CategoryIncome();
+        categoryIncome.setId(1L);
+        List<CategoryIncome>categoryIncomeList=List.of(categoryIncome);
+        List<CategoryIncome>categoryIncomeLinkedList=new LinkedList<>(categoryIncomeList);
+        // Mockito.when(erpServiceMock.getIncomeChartData()).thenReturn();
+        Mockito.when(headerServiceMock.getHeaderRole()).thenReturn("ADMIN");
+        Mockito.when(headerServiceMock.getHeaderCategories()).thenReturn(categoryLinkedList);
+        //Mockito.when(erpService.getIncomeList()).thenReturn(categoryIncomeLinkedList);
+
+        ModelAndView m1 = adminController.EditCategory(principal);
+
+        Assert.assertEquals(m1.getViewName(),"admin/editCategory");
+
+    }
+
+    @Test
+    public void StringEditCategoryTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+        Category category = new Category();
+        category.setId(1L);
+
+        String s = adminController.EditCategory(category);
+        Assert.assertEquals(s,"redirect:/admin/editCategory");
+
+    }
+
+    @Test
+    public void EditSubCategoryTest(){
+
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.ADMIN));
+        User finalUserForRole = user;
+        Principal principal = () -> finalUserForRole.getUsername();
+        headerServiceMock.setHeader(principal);
+        adminController.setHeaderService(headerServiceMock);
+
+        Category category = new Category();
+        category.setId(1L);
+        List<Category>categoryList = List.of(category);
+        List<Category>categoryLinkedList = new LinkedList<>(categoryList);
+
+
+
+        CategoryIncome categoryIncome = new CategoryIncome();
+        categoryIncome.setId(1L);
+        List<CategoryIncome>categoryIncomeList=List.of(categoryIncome);
+        List<CategoryIncome>categoryIncomeLinkedList=new LinkedList<>(categoryIncomeList);
+        // Mockito.when(erpServiceMock.getIncomeChartData()).thenReturn();
+        Mockito.when(headerServiceMock.getHeaderRole()).thenReturn("ADMIN");
+        Mockito.when(headerServiceMock.getHeaderCategories()).thenReturn(categoryLinkedList);
+        //Mockito.when(erpService.getIncomeList()).thenReturn(categoryIncomeLinkedList);
+
+        ModelAndView m1 = adminController.EditSubCategory(principal);
+
+        Assert.assertEquals(m1.getViewName(),"admin/editSubCategory");
+
+    }
+
+    @Test
+    public void StringEditSubCategoryTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(1L);
+
+        String s = adminController.EditSubCategory(subCategory,"name");
+        Assert.assertEquals(s,"redirect:/admin/editSubCategory");
+    }
+
+    @Test
+    public void EditMinorCategoryTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.ADMIN));
+        User finalUserForRole = user;
+        Principal principal = () -> finalUserForRole.getUsername();
+        headerServiceMock.setHeader(principal);
+        adminController.setHeaderService(headerServiceMock);
+
+        Category category = new Category();
+        category.setId(1L);
+        List<Category>categoryList = List.of(category);
+        List<Category>categoryLinkedList = new LinkedList<>(categoryList);
+
+
+
+        CategoryIncome categoryIncome = new CategoryIncome();
+        categoryIncome.setId(1L);
+        List<CategoryIncome>categoryIncomeList=List.of(categoryIncome);
+        List<CategoryIncome>categoryIncomeLinkedList=new LinkedList<>(categoryIncomeList);
+        // Mockito.when(erpServiceMock.getIncomeChartData()).thenReturn();
+        Mockito.when(headerServiceMock.getHeaderRole()).thenReturn("ADMIN");
+        Mockito.when(headerServiceMock.getHeaderCategories()).thenReturn(categoryLinkedList);
+        //Mockito.when(erpService.getIncomeList()).thenReturn(categoryIncomeLinkedList);
+
+        ModelAndView m1 = adminController.EditMinorCategory(principal);
+
+        Assert.assertEquals(m1.getViewName(),"admin/editMinorCategory");
+
+
+    }
+
+    @Test
+    public void StringEditMinorCategoryTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+        MinorCategory minorCategory = new MinorCategory();
+        minorCategory.setId(1L);
+
+        String s = adminController.EditMinorCategory(minorCategory,"name");
+        Assert.assertEquals(s,"redirect:/admin/editMinorCategory");
+
+    }
+
+    @Test
+    public void EditAttributeTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.ADMIN));
+        User finalUserForRole = user;
+        Principal principal = () -> finalUserForRole.getUsername();
+        headerServiceMock.setHeader(principal);
+        adminController.setHeaderService(headerServiceMock);
+
+        Category category = new Category();
+        category.setId(1L);
+        List<Category>categoryList = List.of(category);
+        List<Category>categoryLinkedList = new LinkedList<>(categoryList);
+
+
+
+        CategoryIncome categoryIncome = new CategoryIncome();
+        categoryIncome.setId(1L);
+        List<CategoryIncome>categoryIncomeList=List.of(categoryIncome);
+        List<CategoryIncome>categoryIncomeLinkedList=new LinkedList<>(categoryIncomeList);
+        // Mockito.when(erpServiceMock.getIncomeChartData()).thenReturn();
+        Mockito.when(headerServiceMock.getHeaderRole()).thenReturn("ADMIN");
+        Mockito.when(headerServiceMock.getHeaderCategories()).thenReturn(categoryLinkedList);
+        //Mockito.when(erpService.getIncomeList()).thenReturn(categoryIncomeLinkedList);
+
+        ModelAndView m1 = adminController.EditAttribute("page",principal);
+
+        Assert.assertEquals(m1.getViewName(),"admin/editAttribute");
+
+    }
+
+    @Test
+    public void StringEditAttributeTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+        Attribute attribute = new Attribute();
+        attribute.setId(1L);
+
+        String s = adminController.EditAttribute(attribute,"name");
+        Assert.assertEquals(s,"redirect:/admin/editAttribute");
+
+    }
+
+    @Test
+    public void EditAttributeGroupTest(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.ADMIN));
+        User finalUserForRole = user;
+        Principal principal = () -> finalUserForRole.getUsername();
+        headerServiceMock.setHeader(principal);
+        adminController.setHeaderService(headerServiceMock);
+
+        Category category = new Category();
+        category.setId(1L);
+        List<Category>categoryList = List.of(category);
+        List<Category>categoryLinkedList = new LinkedList<>(categoryList);
+
+
+
+        CategoryIncome categoryIncome = new CategoryIncome();
+        categoryIncome.setId(1L);
+        List<CategoryIncome>categoryIncomeList=List.of(categoryIncome);
+        List<CategoryIncome>categoryIncomeLinkedList=new LinkedList<>(categoryIncomeList);
+        // Mockito.when(erpServiceMock.getIncomeChartData()).thenReturn();
+        Mockito.when(headerServiceMock.getHeaderRole()).thenReturn("ADMIN");
+        Mockito.when(headerServiceMock.getHeaderCategories()).thenReturn(categoryLinkedList);
+        //Mockito.when(erpService.getIncomeList()).thenReturn(categoryIncomeLinkedList);
+
+        ModelAndView m1 = adminController.EditAttributeGroup(principal);
+
+        Assert.assertEquals(m1.getViewName(),"admin/editAttributeGroup");
+
+    }
+
+    @Test
+    public void StringEditAttributeGroup(){
+        AdminService adminServiceMock = mock(AdminService.class);
+        MainService mainServiceMock = mock(MainService.class);
+        UserInformationService userInformationServiceMock = mock(UserInformationService.class);
+        ProductService productServiceMock = mock(ProductService.class);
+        UserService userServiceMock = mock(UserService.class);
+        ERPService erpService = mock(ERPService.class);
+        HeaderService headerServiceMock = mock(HeaderService.class);
+        AdminController adminController = new AdminController(adminServiceMock,
+                mainServiceMock,userInformationServiceMock,
+                productServiceMock,userServiceMock, erpService);
+        adminController.setUserService(userServiceMock);
+        CategoryRepository categoryRepositoryMock = mock(CategoryRepository.class);
+
+        ERPService erpServiceMock = mock(ERPService.class);
+        adminController.setErpService(erpServiceMock);
+        ////
+        Attribute_Group attribute_group = new Attribute_Group();
+        attribute_group.setId(1L);
+
+        String s = adminController.EditAttributeGroup(attribute_group);
+        Assert.assertEquals(s,"redirect:/admin/editAttributeGroup");
+
+    }
 }
