@@ -3,6 +3,7 @@ package com.etsm.ETSM.Services;
 import com.etsm.ETSM.Models.*;
 import com.etsm.ETSM.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -99,11 +100,13 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(cacheNames="products")
     public List<Product> findAllProducts() {
         return productRepository.findAll();
     }
 
     @Override
+    @Cacheable(cacheNames="subcategories")
     public List<SubCategory> findSubCategories() {
         return subCategoryRepository.findAll();
     }
@@ -155,16 +158,19 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(cacheNames="categories")
     public List<Category> findCategories() {
         return categoryRepository.findAll();
     }
 
     @Override
+    @Cacheable(cacheNames="minorCategories")
     public List<MinorCategory> findMinorCategories() {
         return minorCategoryRepository.findAll();
     }
 
     @Override
+    @Cacheable(cacheNames="attributes")
     public List<Attribute> findAttributes() {
         return attributeRepository.findAll();
     }
@@ -176,6 +182,7 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(cacheNames="sales")
     public List<Sales> findSalesByUser(UserInfo userInfo) {
         return salesRepository.findSalesByUserInfoId(userInfo);
     }
@@ -196,6 +203,7 @@ class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(cacheNames="subCategories")
     public List<SubCategory> findAllSubCategories() {
         return subCategoryRepository.findAll();
     }

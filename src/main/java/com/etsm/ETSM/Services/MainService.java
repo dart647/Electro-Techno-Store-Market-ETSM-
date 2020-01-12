@@ -9,11 +9,11 @@ import com.etsm.ETSM.Repositories.ProductAttrValueRepository;
 import com.etsm.ETSM.Repositories.ProductRepository;
 import com.etsm.ETSM.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -59,6 +59,7 @@ class MainServiceImpl implements MainService {
     }
 
     @Override
+    @Cacheable(cacheNames="categories")
     public List<Category> GetAllCategories() {
         return categoryRepository.findAll();
     }
@@ -98,6 +99,7 @@ class MainServiceImpl implements MainService {
     }
 
     @Override
+    @Cacheable(cacheNames="attributes")
     public List<ProductAttrValue> GetAllAttributes() {
         List<ProductAttrValue> values = new ArrayList<>();
         for (ProductAttrValue value : productAttrValueRepository.findAll()) {

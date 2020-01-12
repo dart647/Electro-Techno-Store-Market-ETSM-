@@ -3,6 +3,8 @@ package com.etsm.ETSM.Services;
 import com.etsm.ETSM.Models.*;
 import com.etsm.ETSM.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -57,6 +59,7 @@ class AdminServiceImpl implements AdminService {
 
     ProductAttrValueRepository productAttrValueRepository;
 
+    @CachePut(cacheNames="product")
     public boolean addNewProduct(Product product, String minorCategoryName) {
         if (productRepository.findByName(product.getName()).isPresent()) {
             return false;
@@ -84,11 +87,13 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Cacheable(cacheNames = "users")
     public List<User> findUsers() {
         return userRepository.findAll();
     }
 
     @Override
+    @Cacheable(cacheNames = "attributeGroups")
     public List<Attribute_Group> findAllAtrubutesGroups() {
         return attributeGroupRepository.findAll();
     }
@@ -99,6 +104,7 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @CachePut(cacheNames="categories")
     public boolean addNewCategory(Category category) {
         if (categoryRepository.findByName(category.getName()).isPresent()) {
             return false;
@@ -121,6 +127,7 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @CachePut(cacheNames="subCategories")
     public boolean addNewSubCategory(String categoryName, SubCategory subCategory) {
         if (subCategoryRepository.findByName(subCategory.getName()).isPresent()) {
             return false;
@@ -139,6 +146,7 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @CachePut(cacheNames="minorCategories")
     public boolean addNewMinorCategory(String subCategoryName, MinorCategory minorCategory) {
         if (minorCategoryRepository.findByName(minorCategory.getName()).isPresent()) {
             return false;
@@ -157,6 +165,7 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @CachePut(cacheNames="attributes")
     public boolean addNewAttribute(Attribute attribute, String attribute_group) {
         if (attributeRepository.findByName(attribute.getName()).isPresent()) {
             return false;
@@ -214,6 +223,7 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @CachePut(cacheNames="attributeGroups")
     public void addNewAttributeGroup(Attribute_Group attributeGroup) {
         if (attributeGroupRepository.findByName(attributeGroup.getName()).isPresent()) {
             return;

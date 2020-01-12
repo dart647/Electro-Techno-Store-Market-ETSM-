@@ -118,9 +118,11 @@
                                 <label for="price" class="font-weight-bold">Цена до:</label>
                                 <p id="price" type="text" disabled th:text="${maxPrice}">
                             </div>
-                            <div>
-                                <label for="sortPar" class="font-weight-bold">Сортировка по:</label>
-                                <p id="sortPar" type="text" disabled th:text="${sortParam}">
+                            <div th:switch="${sortParam}">
+                                <label class="font-weight-bold">Сортировка по:</label>
+                                <p th:case="name">Имя</p>
+                                <p th:case="price">Цена</p>
+                                <p th:case="count">Кол-во</p>
                             </div>
                             <div>
                                 <label class="font-weight-bold">Фильтр по атрибутам:</label>
@@ -135,6 +137,7 @@
                         <div class="col" th:case="*">
                             <div class="row">
                                 <div class="col" th:each="product: ${searchProducts}">
+                                    <br>
                                     <a class="btn btn-outline-dark"
                                        th:href="@{/catalog/details/{productName}(productName=${product.name})}">
                                         <img height="150" width="300" class="img" th:src="${product.img}">
