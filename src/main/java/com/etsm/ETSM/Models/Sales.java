@@ -71,6 +71,6 @@ public class Sales {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sum, userInfoId, salesHasProducts);
+        return Objects.hash(id, sum);
     }
 }

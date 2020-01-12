@@ -124,6 +124,6 @@ public class UserInfo {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fio, birthDate, address, loyaltyCode_id, wallet, user_id, sales);
+        return Objects.hash(id, fio, birthDate, address, wallet);
     }
 }
