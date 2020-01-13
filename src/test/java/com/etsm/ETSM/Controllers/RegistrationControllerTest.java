@@ -1,5 +1,6 @@
 package com.etsm.ETSM.Controllers;
 
+import com.etsm.ETSM.Annotations.EmailExistsException;
 import com.etsm.ETSM.Models.Category;
 import com.etsm.ETSM.Models.Role;
 import com.etsm.ETSM.Models.User;
@@ -65,217 +66,44 @@ public class RegistrationControllerTest {
 
     }
 
- /*   @Test
+    @Test
+    public void confirmRegistrationTest(){
+
+       UserService userServiceMock = mock(UserService.class);
+        RegistrationService registrationServiceMock = mock(RegistrationService.class);
+        RegistrationController registrationController = new RegistrationController(registrationServiceMock,userServiceMock);
+    }
+
+    @Test
     public void addUserTest(){
-        RegistrationService registrationService = mock(RegistrationService.class);
         UserService userServiceMock = mock(UserService.class);
-        HeaderService headerServiceMock = mock(HeaderService.class);
-
-        RegistrationController registrationController = new RegistrationController(registrationService,userServiceMock);
-        registrationController.setRegistrationService(registrationService);
-        registrationController.setUserService(userServiceMock);
-        registrationController.setHeaderService(headerServiceMock);
-
-        User user = new User();
-        user.setId(1L);
-
-        BindingResult bindingResult = new BindingResult() {
-            @Override
-            public Object getTarget() {
-                return null;
-            }
-
-            @Override
-            public Map<String, Object> getModel() {
-                return null;
-            }
-
-            @Override
-            public Object getRawFieldValue(String field) {
-                return null;
-            }
-
-            @Override
-            public PropertyEditor findEditor(String field, Class<?> valueType) {
-                return null;
-            }
-
-            @Override
-            public PropertyEditorRegistry getPropertyEditorRegistry() {
-                return null;
-            }
-
-            @Override
-            public String[] resolveMessageCodes(String errorCode) {
-                return new String[0];
-            }
-
-            @Override
-            public String[] resolveMessageCodes(String errorCode, String field) {
-                return new String[0];
-            }
-
-            @Override
-            public void addError(ObjectError error) {
-
-            }
-
-            @Override
-            public String getObjectName() {
-                return null;
-            }
-
-            @Override
-            public void setNestedPath(String nestedPath) {
-
-            }
-
-            @Override
-            public String getNestedPath() {
-                return null;
-            }
-
-            @Override
-            public void pushNestedPath(String subPath) {
-
-            }
-
-            @Override
-            public void popNestedPath() throws IllegalStateException {
-
-            }
-
-            @Override
-            public void reject(String errorCode) {
-
-            }
-
-            @Override
-            public void reject(String errorCode, String defaultMessage) {
-
-            }
-
-            @Override
-            public void reject(String errorCode, Object[] errorArgs, String defaultMessage) {
-
-            }
-
-            @Override
-            public void rejectValue(String field, String errorCode) {
-
-            }
-
-            @Override
-            public void rejectValue(String field, String errorCode, String defaultMessage) {
-
-            }
-
-            @Override
-            public void rejectValue(String field, String errorCode, Object[] errorArgs, String defaultMessage) {
-
-            }
-
-            @Override
-            public void addAllErrors(Errors errors) {
-
-            }
-
-            @Override
-            public boolean hasErrors() {
-                return true;
-            }
-
-            @Override
-            public int getErrorCount() {
-                return 0;
-            }
-
-            @Override
-            public List<ObjectError> getAllErrors() {
-                return null;
-            }
-
-            @Override
-            public boolean hasGlobalErrors() {
-                return false;
-            }
-
-            @Override
-            public int getGlobalErrorCount() {
-                return 0;
-            }
-
-            @Override
-            public List<ObjectError> getGlobalErrors() {
-                return null;
-            }
-
-            @Override
-            public ObjectError getGlobalError() {
-                return null;
-            }
-
-            @Override
-            public boolean hasFieldErrors() {
-                return false;
-            }
-
-            @Override
-            public int getFieldErrorCount() {
-                return 0;
-            }
-
-            @Override
-            public List<FieldError> getFieldErrors() {
-                return null;
-            }
-
-            @Override
-            public FieldError getFieldError() {
-                return null;
-            }
-
-            @Override
-            public boolean hasFieldErrors(String field) {
-                return false;
-            }
-
-            @Override
-            public int getFieldErrorCount(String field) {
-                return 0;
-            }
-
-            @Override
-            public List<FieldError> getFieldErrors(String field) {
-                return null;
-            }
-
-            @Override
-            public FieldError getFieldError(String field) {
-                return null;
-            }
-
-            @Override
-            public Object getFieldValue(String field) {
-                return null;
-            }
-
-            @Override
-            public Class<?> getFieldType(String field) {
-                return null;
-            }
-        };
-        BindingResult bindingResult1 = mock(BindingResult.class);
+        RegistrationService registrationServiceMock = mock(RegistrationService.class);
+        RegistrationController registrationController = new RegistrationController(registrationServiceMock,userServiceMock);
+    ///
 
 
-        String s = registrationController.addUser(user,bindingResult);
-        Assert.assertEquals(s,"/registration");
-
-        String s2 = registrationController.addUser(user,bindingResult1);
-        Assert.assertEquals(s2,"redirect:/");
 
     }
 
-*/
+  /*  @Test//(expected = EmailExistsException.class)
+    public void createUserAccountTest() throws EmailExistsException {
+
+        UserService userServiceMock = mock(UserService.class);
+        RegistrationService registrationServiceMock = mock(RegistrationService.class);
+        RegistrationController registrationController = new RegistrationController(registrationServiceMock,userServiceMock);
+        registrationController.setRegistrationService(registrationServiceMock);
+        ///
+
+        User user = new User();
+        user.setId(1L);
+        Mockito.when(registrationServiceMock.AddNewUser(user)).thenReturn(user);
+
+        registrationController.createUserAccount
+
+
+    }
+
+   */
+
     }
 

@@ -1,62 +1,66 @@
 package com.etsm.ETSM.Services;
 
+import antlr.Token;
 import com.etsm.ETSM.Models.CartItem;
 import com.etsm.ETSM.Models.Product;
+import com.etsm.ETSM.Models.User;
+import com.etsm.ETSM.Models.VerificationToken;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationEvent;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mock.web.MockHttpSession;
 
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 import static org.mockito.Mockito.mock;
 
 public class EventListenerServiceTest {
-/*
-    @Test
+
+
+    @Test(expected = NullPointerException.class)
     public void onApplicationEventTest(){
 
-        EventListenerService eventListenerService = new EventListenerService();
+        RegistrationService registrationServiceMock = mock(RegistrationService.class);
+        JavaMailSender javaMailSenderMock = mock(JavaMailSender.class);
         HttpSession httpSessionMock = mock(HttpSession.class);
+        ShoppingCartService shoppingCartServiceMock = mock(ShoppingCartService.class);
         ProductService productServiceMock = mock(ProductService.class);
+        EventListenerService eventListenerService = new EventListenerService();
+        eventListenerService.setMailSender(javaMailSenderMock);
+        eventListenerService.setRegistrationService(registrationServiceMock);
         eventListenerService.setHttpSession(httpSessionMock);
+        eventListenerService.setShoppingCartService(shoppingCartServiceMock);
         eventListenerService.setProductService(productServiceMock);
 
-        HttpSession httpSession = new MockHttpSession();
-
-       // Object sourse = mock(Object.class);
-//        ApplicationEvent applicationEvent = (ApplicationEvent) new EventObject(sourse);
-        ApplicationEvent applicationEvent = mock(ApplicationEvent.class);
-        httpSession.setAttribute("cart", null);
-        Product product = new Product();
-        product.setId(1L);
-        product.setName("cart");
-        int quantity = 1;
-        boolean isReserve = false;
-
-        CartItem cartItem = new CartItem();
-        cartItem.setProduct(product);
-        cartItem.setQuantity(quantity);
-        List<CartItem> cartItemList = List.of(cartItem);
-        List<CartItem> cart = new ArrayList<>();
-        cart.add(new CartItem(product,1));
-        httpSession.setAttribute("cart", cart);
-
-        Object test = cart.toArray();
-
-     //   Object test = httpSessionMock.getAttribute("cart");
-      //  List<CartItem> cartItemListTEST = (List<CartItem>) httpSessionMock.getAttribute("cart");
-
-        Mockito.when(httpSessionMock.getAttribute("cart")).thenReturn(test);
-        Mockito.when(productServiceMock.reserveItem(product,1,false)).thenReturn(false);
-
-        eventListenerService.onApplicationEvent(applicationEvent);
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("UserName");
 
 
+        String token = UUID.randomUUID().toString();
+
+
+
+        OnRegistrationCompleteEvent event = new OnRegistrationCompleteEvent(user, Locale.ENGLISH,"123");
+        event.setUser(user);
+        event.setAppUrl("fr234");
+
+       // Session session = new Session();
+        //MimeMessage mimeMessage = new MimeMessage();
+       // mimeMessage
+       // Mockito.when(javaMailSenderMock.createMimeMessage()).thenReturn()
+
+
+        eventListenerService.onApplicationEvent(event);
 
     }
-*/
 }

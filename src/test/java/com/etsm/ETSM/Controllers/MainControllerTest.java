@@ -104,7 +104,7 @@ public class MainControllerTest {
     Mockito.when(mainServiceMock.GetAllCategories()).thenReturn(categoryList);
     Mockito.when(headerServiceMock.getHeaderRole()).thenReturn("ADMIN");
 
-//    ModelAndView m1 = mainController.SearchPage(page,search,principal);
+  //  ModelAndView m1 = mainController.SearchPage(page,search,principal);
 
 //    Assert.assertEquals(m1.getViewName(),"/search");
 

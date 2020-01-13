@@ -1,91 +1,112 @@
-
 package com.etsm.ETSM.Services;
 
-
+import com.etsm.ETSM.Annotations.EmailExistsException;
 import com.etsm.ETSM.Models.User;
+import com.etsm.ETSM.Models.VerificationToken;
 import com.etsm.ETSM.Repositories.UserRepository;
-import com.sun.istack.NotNull;
-import org.junit.Assert;
+import com.etsm.ETSM.Repositories.VerificationTokenRepository;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
-import java.util.Collection;
+import javax.validation.constraints.Email;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 public class RegistrationServiceImplTest {
 
-/*
-    @Test
-public void AddNewUserTest() {
-        RegistrationServiceImpl registrationServiceImpl = new RegistrationServiceImpl();
-        UserService userServiceMock = mock(UserService.class);
-        UserRepository userRepositoryMock = mock(UserRepository.class);
+    @Test(expected = EmailExistsException.class)
+    public void AddNewUserTest() throws EmailExistsException {
+
+        RegistrationServiceImpl registrationService = new RegistrationServiceImpl();
         PasswordEncoder passwordEncoderMock = mock(PasswordEncoder.class);
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        registrationService.setPasswordEncoder(passwordEncoderMock);
+        registrationService.setUserRepository(userRepositoryMock);
+        //
 
         User user = new User();
         user.setId(1L);
-        user.setUsername("test");
-        User user2 = new User();
-        user2.setId(2L);
-        user2.setUsername("test2");
+        user.setPassword("password");
+        Mockito.when(passwordEncoderMock.encode(user.getPassword())).thenReturn(user.getPassword());
+        registrationService.AddNewUser(user);
 
-        registrationServiceImpl.setUserRepository(userRepositoryMock);
-        registrationServiceImpl.setUserService(userServiceMock);
-        registrationServiceImpl.setPasswordEncoder(passwordEncoderMock);
-
-        UserDetails userDetails = new UserDetails() {
-            @Override
-            public Collection<? extends GrantedAuthority> getAuthorities() {
-                return null;
-            }
-
-            @Override
-            public String getPassword() {
-                return null;
-            }
-
-            @Override
-            public String getUsername() {
-                return null;
-            }
-
-            @Override
-            public boolean isAccountNonExpired() {
-                return false;
-            }
-
-            @Override
-            public boolean isAccountNonLocked() {
-                return false;
-            }
-
-            @Override
-            public boolean isCredentialsNonExpired() {
-                return false;
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return false;
-            }
-        };
-
-    RegistrationServiceImpl registrationServiceImpl2 = new RegistrationServiceImpl();
-        registrationServiceImpl2.setUserRepository(userRepositoryMock);
-        registrationServiceImpl2.setUserService(userServiceMock);
-        registrationServiceImpl2.setPasswordEncoder(passwordEncoderMock);
-
-        Mockito.when(userServiceMock.loadUserByUsername(user.getUsername())).thenReturn(userDetails);
-
-        Assert.assertEquals(registrationServiceImpl.AddNewUser(user),false);
-        Assert.assertEquals(registrationServiceImpl2.AddNewUser(user2),true);
+        Mockito.when(userRepositoryMock.findByUsername(user.getUsername())).thenReturn(user);
+        registrationService.AddNewUser(user);
 
     }
-*/
+
+    @Test
+    public void getUserTest(){
+        RegistrationServiceImpl registrationService = new RegistrationServiceImpl();
+        VerificationTokenRepository verificationTokenRepositoryMock = mock(VerificationTokenRepository.class);
+        registrationService.setTokenRepository(verificationTokenRepositoryMock);
+        //
+
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setId(1L);
+        User user = new User();
+        user.setId(1L);
+        user.setVerificationToken(verificationToken);
+        String token = "123";
+
+        Mockito.when(verificationTokenRepositoryMock.findByToken(token)).thenReturn(verificationToken);
+        registrationService.getUser(token);
+
+
+    }
+
+    @Test
+    public void getVerificationTokenTest(){
+        RegistrationServiceImpl registrationService = new RegistrationServiceImpl();
+        VerificationTokenRepository verificationTokenRepositoryMock = mock(VerificationTokenRepository.class);
+        registrationService.setTokenRepository(verificationTokenRepositoryMock);
+        //
+
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setId(1L);
+        User user = new User();
+        user.setId(1L);
+        user.setVerificationToken(verificationToken);
+        String token = "123";
+
+        Mockito.when(verificationTokenRepositoryMock.findByToken(token)).thenReturn(verificationToken);
+        registrationService.getVerificationToken(token);
+
+    }
+
+    @Test
+    public void saveRegisteredUserTest(){
+        RegistrationServiceImpl registrationService = new RegistrationServiceImpl();
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        registrationService.setUserRepository(userRepositoryMock);
+        //
+
+        User user = new User();
+        user.setId(1L);
+
+        registrationService.saveRegisteredUser(user);
+
+    }
+
+    @Test
+    public void createVerificationToken(){
+        RegistrationServiceImpl registrationService = new RegistrationServiceImpl();
+        VerificationTokenRepository verificationTokenRepositoryMock = mock(VerificationTokenRepository.class);
+        registrationService.setTokenRepository(verificationTokenRepositoryMock);
+        UserService userServiceMock = mock(UserService.class);
+        registrationService.setUserService(userServiceMock);
+        //
+
+        User user = new User();
+        user.setId(1L);
+
+        String tocken = "123";
+
+        registrationService.createVerificationToken(user,tocken);
+
+    }
+
+
 }
