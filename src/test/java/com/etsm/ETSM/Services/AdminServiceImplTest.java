@@ -24,6 +24,7 @@ public class AdminServiceImplTest {
     @Test
     public void addNewProductTest(){
 
+
         AdminServiceImpl adminService = new AdminServiceImpl();
         ProductRepository productRepositoryMock = mock(ProductRepository.class);
         MinorCategoryRepository minorCategoryRepositoryMock = mock(MinorCategoryRepository.class);
